@@ -1,0 +1,7 @@
+# vscode settings
+.vscode/
+
+# folders
+Debug/ 
+Release/
+.settings/

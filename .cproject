@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="llvm.win32.dxe.debug.1929216818">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="llvm.win32.dxe.debug.1929216818" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="llvm.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="llvm.win32.dxe.debug.1929216818" name="Debug" parent="llvm.win32.dxe.debug">
+					<folderInfo id="llvm.win32.dxe.debug.1929216818." name="/" resourcePath="">
+						<toolChain id="llvm.toolchain.dxe.debug.1572191774" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.debug">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.debug.402402205" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.debug"/>
+							<builder buildPath="${workspace_loc:/lynx_run}/Debug" id="llvm.toolchain.win32.builder.debug.894495062" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.debug"/>
+							<tool id="llvm.toolchain.assembler.debug.2138561280" name="Assembler" superClass="llvm.toolchain.assembler.debug">
+								<option id="llvm.toolchain.assembler.incpath.23796076" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
+								<inputType id="llvm.toolchain.assembler.inp.1579188210" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
+							</tool>
+							<tool id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
+								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
+								</option>
+								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O1" valueType="string"/>
+								<inputType id="llvm.toolchain.compiler.inp.932479137" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
+								<inputType id="llvm.inputType1.708278450" name="CI CPP" superClass="llvm.inputType1"/>
+							</tool>
+							<tool id="llvm.toolchain.compiler.ccnature.debug.95348852" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.debug">
+								<option id="llvm.toolchain.compiler.preproc.only.215256817" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
+								</option>
+							</tool>
+							<tool id="llvm.toolchain.linker.cnature.debug.67204761" name="Linker" superClass="llvm.toolchain.linker.cnature.debug">
+								<option id="llvm.toolchain.linker.cnature.gen2.release.1698415921" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
+								<option id="llvm.toolchain.linker.incpath.1218864087" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.libs.1825093978" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\stl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\testsupport&quot;"/>
+								</option>
+								<option id="llvm.toolchain.linker.cnature.libraries.release.725232556" name="Libraries" superClass="llvm.toolchain.linker.cnature.libraries.release" valueType="stringList">
+									<listOptionValue builtIn="false" value="clib.dlb"/>
+									<listOptionValue builtIn="false" value="libdsp.dlb"/>
+									<listOptionValue builtIn="false" value="macsl.dlb"/>
+									<listOptionValue builtIn="false" value="rtl.dlb"/>
+								</option>
+								<inputType id="llvm.toolchain.linker.inp.450585881" name="Linker Input" superClass="llvm.toolchain.linker.inp">
+									<additionalInput kind="additionaldependency" paths="$(USER_OBJS)"/>
+								</inputType>
+							</tool>
+							<tool id="llvm.toolchain.linker.ccnature.debug.1895093336" name="Linker" superClass="llvm.toolchain.linker.ccnature.debug">
+								<option id="llvm.toolchain.linker.cnature.gen2.release.339558645" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
+								<option id="llvm.toolchain.linker.incpath.1961482766" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.libs.699168033" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\stl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\testsupport&quot;"/>
+								</option>
+								<option id="llvm.toolchain.linker.cnature.libraries.release.2066593587" name="Libraries" superClass="llvm.toolchain.linker.cnature.libraries.release" valueType="stringList">
+									<listOptionValue builtIn="false" value="clib.dlb"/>
+									<listOptionValue builtIn="false" value="libdsp.dlb"/>
+									<listOptionValue builtIn="false" value="macsl.dlb"/>
+									<listOptionValue builtIn="false" value="rtl.dlb"/>
+								</option>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="llvm.win32.dxe.release.1017348798">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="llvm.win32.dxe.release.1017348798" moduleId="org.eclipse.cdt.core.settings" name="Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="llvm.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="llvm.win32.dxe.release.1017348798" name="Release" parent="llvm.win32.dxe.release">
+					<folderInfo id="llvm.win32.dxe.release.1017348798." name="/" resourcePath="">
+						<toolChain id="llvm.toolchain.dxe.release.1597783841" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.release">
+							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.base.1952060994" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.base"/>
+							<builder buildPath="${workspace_loc:/lynx_run}/Release" id="llvm.toolchain.win32.builder.base.344081215" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.base"/>
+							<tool id="llvm.toolchain.assembler.release.221568887" name="Assembler" superClass="llvm.toolchain.assembler.release">
+								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
+								<inputType id="llvm.toolchain.assembler.inp.821279068" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
+							</tool>
+							<tool id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
+								<option id="llvm.toolchain.compiler.preproc.only.32329742" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
+								</option>
+								<inputType id="llvm.toolchain.compiler.inp.1203652117" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
+								<inputType id="llvm.inputType1.1675958530" name="CI CPP" superClass="llvm.inputType1"/>
+							</tool>
+							<tool id="llvm.toolchain.compiler.ccnature.release.1323103281" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.release">
+								<option id="llvm.toolchain.compiler.preproc.only.1654631180" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
+								</option>
+							</tool>
+							<tool id="llvm.toolchain.linker.cnature.release.1051235865" name="Linker" superClass="llvm.toolchain.linker.cnature.release">
+								<option id="llvm.toolchain.linker.cnature.gen2.release.1094216083" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
+								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.libs.163444855" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\stl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\testsupport&quot;"/>
+								</option>
+								<option id="llvm.toolchain.linker.cnature.libraries.release.1757978533" name="Libraries" superClass="llvm.toolchain.linker.cnature.libraries.release" valueType="stringList">
+									<listOptionValue builtIn="false" value="clib.dlb"/>
+									<listOptionValue builtIn="false" value="libdsp.dlb"/>
+									<listOptionValue builtIn="false" value="macsl.dlb"/>
+									<listOptionValue builtIn="false" value="rtl.dlb"/>
+								</option>
+								<inputType id="llvm.toolchain.linker.inp.845511657" name="Linker Input" superClass="llvm.toolchain.linker.inp">
+									<additionalInput kind="additionaldependency" paths="$(USER_OBJS)"/>
+								</inputType>
+							</tool>
+							<tool id="llvm.toolchain.linker.ccnature.release.1038890368" name="Linker" superClass="llvm.toolchain.linker.ccnature.release">
+								<option id="llvm.toolchain.linker.cnature.gen2.release.1560513415" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
+								<option id="llvm.toolchain.linker.incpath.1163653548" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.libs.1934663153" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\stl&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\testsupport&quot;"/>
+								</option>
+								<option id="llvm.toolchain.linker.cnature.libraries.release.361628811" name="Libraries" superClass="llvm.toolchain.linker.cnature.libraries.release" valueType="stringList">
+									<listOptionValue builtIn="false" value="clib.dlb"/>
+									<listOptionValue builtIn="false" value="libdsp.dlb"/>
+									<listOptionValue builtIn="false" value="macsl.dlb"/>
+									<listOptionValue builtIn="false" value="rtl.dlb"/>
+								</option>
+							</tool>
+						</toolChain>
+					</folderInfo>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="lynx_run.llvm.win32.exe.1615422848" name="Executable project" projectType="llvm.win32.exe"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+</cproject>

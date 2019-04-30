@@ -1,0 +1,156 @@
+ARCHITECTURE(ADSP-TS201)
+
+$OBJECTS =  $COMMAND_LINE_OBJECTS;
+
+// Internal memory blocks are 0x20000 (128k) for 1967VN028 and 0x10000 (64k) for 1967VN034
+// Memory map below should fit for both 28 & 34, with bigger unused areas left on 28
+MEMORY
+{
+    M0Code      { TYPE(RAM) START(0x00000000) END(0x0000FFFF) WIDTH(32) }
+    M1Code      { TYPE(RAM) START(0x00100000) END(0x0010DFFF) WIDTH(32) }
+    
+    M2DataA     { TYPE(RAM) START(0x00040000) END(0x0004FFFF) WIDTH(32) }
+    M4DataA     { TYPE(RAM) START(0x00080000) END(0x0008FFFF) WIDTH(32) }
+    M6DataA     { TYPE(RAM) START(0x000C0000) END(0x000CDFFF) WIDTH(32) }
+    M6Stack     { TYPE(RAM) START(0x000CE000) END(0x000CFFFF) WIDTH(32) }
+    M8Stack     { TYPE(RAM) START(0x0010E000) END(0x0010FFFF) WIDTH(32) }
+    M10Heap     { TYPE(RAM) START(0x00140000) END(0x0014FFFF) WIDTH(32) }
+
+    MS0         { TYPE(RAM) START(0x30000000) END(0x37FFFFFF) WIDTH(32) }
+    MS1         { TYPE(RAM) START(0x38000000) END(0x3FFFFFFF) WIDTH(32) }
+    MSSD0       { TYPE(RAM) START(0x40000000) END(0x407FFFFF) WIDTH(32) }
+    MSSD1       { TYPE(RAM) START(0x50000000) END(0x53FFFFFF) WIDTH(32) }
+    MSSD2       { TYPE(RAM) START(0x60000000) END(0x63FFFFFF) WIDTH(32) }
+    MSSD3       { TYPE(RAM) START(0x70000000) END(0x73FFFFFF) WIDTH(32) }
+
+// Memory blocks need to be less than 2 Gig.
+    HOST        { TYPE(RAM) START(0x80000000) END(0x8FFFFFFF) WIDTH(32) }
+    HOST1       { TYPE(RAM) START(0x90000000) END(0xAFFFFFFF) WIDTH(32) }
+    HOST2       { TYPE(RAM) START(0xB0000000) END(0xCFFFFFFF) WIDTH(32) }
+    HOST3       { TYPE(RAM) START(0xD0000000) END(0xEFFFFFFF) WIDTH(32) }
+    HOST4       { TYPE(RAM) START(0xF0000000) END(0xFFFFFFFF) WIDTH(32) }
+}
+
+PROCESSOR P0
+{
+    OUTPUT( $COMMAND_LINE_OUTPUT_FILE )
+    SECTIONS
+    {
+        extmemseg      
+        {
+            INPUT_SECTION_ALIGN(4)
+            g_ldf_ext_mem_beg = .;
+            g_ldf_ext_mem_end = . + MEMORY_SIZEOF(MSSD0);
+            //debug zeroes
+            . = . + 10;
+            INPUT_SECTIONS( $OBJECTS(extmem) )
+
+            //note: moved into the next segment
+            //g_ldf_ext_mem_rest = .;
+        } >MSSD0
+
+        extmemsegdata
+        {
+            INPUT_SECTION_ALIGN(4)
+
+            g_ldf_ext_mem_rest = .;
+        } >MSSD0
+
+        program
+        {
+            FILL(0xb3c00000) // Fill any gaps with NOPs.
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(.startup) )
+            INPUT_SECTIONS( $OBJECTS(.program*) )
+
+
+            // The next line adds 10 nops after the last piece of code in the 
+            // code section. This is required on TS201 to prevent uninitialised 
+            // memory getting into the pipeline.
+             . = . + 10;
+
+        } >M0Code
+
+        cdata
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(code2) )
+            INPUT_SECTIONS( $OBJECTS(.cdata*) )
+            INPUT_SECTIONS( $OBJECTS(.strings*) )
+            
+            INPUT_SECTION_ALIGN(1)	// static objects' constructors must go close to each other
+            ldf_ctor_start = .;
+            INPUT_SECTIONS( $OBJECTS(.ctor0) )
+            INPUT_SECTIONS( $OBJECTS(.ctor1) )
+            INPUT_SECTIONS( $OBJECTS(.ctor2) )
+            INPUT_SECTIONS( $OBJECTS(.ctor3) )
+            INPUT_SECTIONS( $OBJECTS(.ctor4) )
+            INPUT_SECTIONS( $OBJECTS(.ctor5) )
+            ldf_ctor_end = .;
+        } >M1Code
+
+        bss ZERO_INIT
+        {
+            INPUT_SECTION_ALIGN(4)
+            ldf_bss_start = .;
+            INPUT_SECTIONS( $OBJECTS(.bss*) )
+            ldf_tls_start = .;
+            INPUT_SECTIONS( $OBJECTS(.tlsbss*) )
+            ldf_bss_end = .;
+        } >M2DataA
+
+        //note: should be placed near tlsbss
+        tlsdata
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(.tlsdata*) )
+            ldf_tls_end = .;
+        } >M2DataA
+
+        data
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(.data*) )
+        } >M6DataA
+
+        data2
+        {
+            INPUT_SECTION_ALIGN(4)
+            INPUT_SECTIONS( $OBJECTS(data2) )
+        } >M4DataA
+
+        // Allocate stacks for the application. Note that stacks
+        // grow downward, and must be quad-word aligned. This means
+        // that the location just after the highest word of the stack
+        // is quad-word aligned (evenly divisible by 4). There are two
+        // labels for each stack: "*_base" is the location just ABOVE
+        // the top of the stack, and "*_limit" is the lowest word that
+        // is part of the stack. Each stack occupies all of its own
+        // memory block.
+
+        jstackseg
+        {
+            INPUT_SECTION_ALIGN(4)
+            ldf_jstack_limit = .;
+            ldf_jstack_base = . + MEMORY_SIZEOF(M6Stack);
+        } >M6Stack
+
+        kstackseg
+        {
+            INPUT_SECTION_ALIGN(4)
+            ldf_kstack_limit = .;
+            ldf_kstack_base = . + MEMORY_SIZEOF(M8Stack);
+        } >M8Stack
+
+        // The default heap occupies its own memory block
+        defheapseg
+        {
+            INPUT_SECTION_ALIGN(4)
+            ldf_defheap_base = .;
+            ldf_defheap_size = MEMORY_SIZEOF(M10Heap);
+            _ldf_defheap_base = .;
+            _ldf_defheap_size = MEMORY_SIZEOF(M10Heap);
+        } >M10Heap
+
+    }
+}
