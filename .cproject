@@ -31,7 +31,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
-								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" name="TsCompilerOptimization" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O1" valueType="string"/>
+								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" name="TsCompilerOptimization" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O0" valueType="string"/>
 								<inputType id="llvm.toolchain.compiler.inp.932479137" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
 								<inputType id="llvm.inputType1.708278450" name="CI CPP" superClass="llvm.inputType1"/>
 							</tool>

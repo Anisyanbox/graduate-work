@@ -86,6 +86,7 @@ extern "C"
     /* sleep/non-sleep mode func */
     void HAL_PLL_SleepOn(void);
 
+    /* returns value in KHz */
     int HAL_PLL_GetRealCoreClock(void);
     int HAL_PLL_GetRealBusClock(void);
     int HAL_PLL_GetRealLinkClock(void);

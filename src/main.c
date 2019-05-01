@@ -6,7 +6,6 @@
 #include "reset_reason.h"
 #include "sysreg.h"
 
-
 int main(void) {
 	RstRsnDetect();
 	ClockInit();

@@ -8,6 +8,7 @@
 #define BUS_CLOCK_KHZ			((unsigned int)300000)
 #define LINK_CLOCK_KHZ			((unsigned int)300000)
 
+// -----------------------------------------------------------------------------
 void ClockInit(void) {
 	HAL_PLL_CoreSetup(INPUT_XTI_CLOCK_KHZ, CORE_CLOCK_KHZ);
 	HAL_PLL_BusSetup(INPUT_XTI_CLOCK_KHZ, BUS_CLOCK_KHZ);
