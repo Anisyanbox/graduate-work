@@ -3,6 +3,7 @@
 
   History:
    08-May-2015 Andrei Abramchuk - Created.
+   17-April-2019 Anisimov Alexander - Added some comments and fix
 **********************************************************************************************************************/
 #ifndef __HAL_PLL_H_
 #define __HAL_PLL_H_
@@ -15,32 +16,33 @@
  */
 typedef struct
 {
-        unsigned int ref_freq_khz;
-        unsigned int pll_freq_khz;
-        union
+    unsigned int ref_freq_khz;
+    unsigned int pll_freq_khz;
+    union
+    {
+        unsigned int value;
+        struct
         {
-                unsigned int value;
-                struct
-                {
-                        unsigned int divr   : 4;
-                        unsigned int divf   : 7;
-                        unsigned int divq   : 3;
-                        unsigned int range  : 3;
-                        unsigned int ivco   : 3;
-                        unsigned int bypass : 1;
-                        unsigned int        : 11;
-                };
+            unsigned int divr   : 4;
+            unsigned int divf   : 7;
+            unsigned int divq   : 3;
+            unsigned int range  : 3;
+            unsigned int ivco   : 3;
+            unsigned int bypass : 1;
+            unsigned int        : 11;
         };
+    };
 } PLL_ConfigTypeDef;
 
 typedef struct
 {
-	int CoreClk;
-	int LinkClk;
-	int BusClk;
+    int CoreClk;
+    int LinkClk;
+    int BusClk;
 } PLL_Freq_type;
 
 extern PLL_Freq_type PLL_Freq;
+
 /************************************************ PROTOTYPES *********************************************************/
 /******************************************************************************************************************//**
   \brief Calculate PLL configuration dividers and store actual frequencies values into pll_cfg structure.
@@ -57,24 +59,36 @@ extern PLL_Freq_type PLL_Freq;
 extern "C"
 {
 #endif
- 	int HAL_PLL_ConfigCalc(PLL_ConfigTypeDef* pll_cfg, unsigned int ref_freq_khz, unsigned int pll_freq_khz/*, unsigned int ext_range*/);
- 	void HAL_PLL_SleepOn(void);
+    /* setup settings for PLL and start func */
+    void HAL_PLL_CoreSetup(unsigned int ref_freq, unsigned int pll_freq);
+    void HAL_PLL_StartCoreSync(void);
+    void HAL_Pll_CoreStart(void);
+    void HAL_PLL_StopCoreSync(void);
 
- 	void HAL_PLL_CoreSwitch(PLL_ConfigTypeDef* pll_cfg);
- 	void HAL_PLL_LinkSwitch(PLL_ConfigTypeDef* pll_cfg);
- 	void HAL_PLL_BusSwitch(PLL_ConfigTypeDef* pll_cfg);
+    void HAL_PLL_StartExtBusSync(void);
+    void HAL_PLL_LinkSetup(unsigned int ref_freq, unsigned int pll_freq);
+    void HAL_Pll_LinkStart(void);
+    void HAL_PLL_StopExtBusSyn(void);
 
- 	void HAL_PLL_CoreSetup(unsigned int ref_freq, unsigned int pll_freq);
- 	void HAL_PLL_LinkSetup(unsigned int ref_freq, unsigned int pll_freq);
- 	void HAL_PLL_BusSetup(unsigned int ref_freq, unsigned int pll_freq);
+    void HAL_PLL_BusSetup(unsigned int ref_freq, unsigned int pll_freq);
+    void HAL_Pll_BusStart(void);
 
- 	void HAL_XTI_CoreSwitch(void);
- 	void HAL_XTI_BusSwitch(void);
- 	void HAL_XTI_LinkSwitch(void);
+    /* return clock from XTI */
+    void HAL_XTI_CoreSwitch(void);
+    void HAL_XTI_BusSwitch(void);
+    void HAL_XTI_LinkSwitch(void);
 
- 	void HAL_PLL_BusSwitchHalfCore(void);
- 	void HAL_PLL_BusSwitchFourthCore(void);
- 	void HAL_PLL_BusSwitchEighthCore(void);
+    /* switching SDRAM(bus) clock to part from core clock */
+    void HAL_PLL_BusSwitchHalfCore(void);
+    void HAL_PLL_BusSwitchFourthCore(void);
+    void HAL_PLL_BusSwitchEighthCore(void);
+
+    /* sleep/non-sleep mode func */
+    void HAL_PLL_SleepOn(void);
+
+    int HAL_PLL_GetRealCoreClock(void);
+    int HAL_PLL_GetRealBusClock(void);
+    int HAL_PLL_GetRealLinkClock(void);
 #ifdef __cplusplus
 }
 #endif // __cplusplus

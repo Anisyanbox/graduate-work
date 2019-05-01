@@ -3,6 +3,7 @@
 
   History:
    08-May-2015 Andrei Abramchuk - Created.
+   17-April-2019 Anisimov Alexander - Added some comments and fix
 **********************************************************************************************************************/
 /************************************************ INCLUDES ***********************************************************/
 #include <stdio.h>
@@ -26,6 +27,7 @@
 /************************************************ CONSTANTS **********************************************************/
 /************************************************ VARIABLES **********************************************************/
 PLL_Freq_type PLL_Freq;
+
 /************************************************ STATIC FUNCTIONS PROTOTYPES ****************************************/
 static void pause_clk(unsigned int clk)
 {
@@ -35,9 +37,34 @@ static void pause_clk(unsigned int clk)
     while ((((unsigned long long int)(__read_ccnt())) - stop) & ((unsigned long long int)1<<63));
 }
 
-/************************************************ IMPLEMENTATION *****************************************************/
+static void HAL_PLL_CoreSwitch(PLL_ConfigTypeDef* pll_cfg){
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_CPLL_SEL);
+	*((unsigned int*)PLL_CORE_CFG_LOC) = pll_cfg->value;
+	pause_clk(500);
+}
 
-int HAL_PLL_ConfigCalc(PLL_ConfigTypeDef* pll_cfg, unsigned int ref_freq, unsigned int pll_freq/*, unsigned int ext_range*/)
+static void HAL_PLL_LinkSwitch(PLL_ConfigTypeDef* pll_cfg)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(1<<7);		//LPLL_SEL ???? (for Rev. 1) (1<<7)
+	pll_cfg->bypass = 1;
+	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
+	pll_cfg->bypass = 0;
+	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
+	pause_clk(2000);
+}
+
+static void HAL_PLL_BusSwitch(PLL_ConfigTypeDef* pll_cfg)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_BPLL_SEL);		//BPLL XTI
+	pll_cfg->bypass = 1;
+	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
+	pll_cfg->bypass = 0;
+	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
+	pause_clk(2000);
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL);		//BPLL SET
+}
+
+static int HAL_PLL_ConfigCalc(PLL_ConfigTypeDef* pll_cfg, unsigned int ref_freq, unsigned int pll_freq/*, unsigned int ext_range*/)
 {
     unsigned int divr = 1;
     unsigned int divf;
@@ -97,7 +124,9 @@ int HAL_PLL_ConfigCalc(PLL_ConfigTypeDef* pll_cfg, unsigned int ref_freq, unsign
     return (int)tmp;
 }
 
-void HAL_PLL_SleepOn(void){
+/************************************************ IMPLEMENTATION *****************************************************/
+void HAL_PLL_SleepOn(void)
+{
 	unsigned int sqctlBuff, rtcCR, tmp32;
 	sqctlBuff = __builtin_sysreg_read(__SQCTL);
 	__builtin_sysreg_write(__SQCTLCL,0x3FFB);
@@ -120,34 +149,6 @@ void HAL_PLL_SleepOn(void){
 	*(unsigned int *)RTC_CR_LOC = rtcCR;
 }
 
-
-void HAL_PLL_CoreSwitch(PLL_ConfigTypeDef* pll_cfg){
-	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_CPLL_SEL);
-	*((unsigned int*)PLL_CORE_CFG_LOC) = pll_cfg->value;
-	pause_clk(500);
-	HAL_PLL_SleepOn();
-}
-
-void HAL_PLL_LinkSwitch(PLL_ConfigTypeDef* pll_cfg){
-	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(1<<7);		//LPLL_SEL ???? (for Rev. 1) (1<<7)
-	pll_cfg->bypass = 1;
-	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
-	pll_cfg->bypass = 0;
-	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
-	pause_clk(2000);
-}
-
-void HAL_PLL_BusSwitch(PLL_ConfigTypeDef* pll_cfg){
-	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_BPLL_SEL);		//BPLL XTI
-	pll_cfg->bypass = 1;
-	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
-	pll_cfg->bypass = 0;
-	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
-	pause_clk(2000);
-	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL);		//BPLL SET
-}
-
-
 void HAL_PLL_CoreSetup( unsigned int ref_freq, unsigned int pll_freq )
 {
 	PLL_ConfigTypeDef pll_cfg;
@@ -169,17 +170,34 @@ void HAL_PLL_BusSetup( unsigned int ref_freq, unsigned int pll_freq )
 	HAL_PLL_BusSwitch( &pll_cfg );
 }
 
+void HAL_Pll_CoreStart(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= CPU_CPLL_SEL;
+}
 
-void HAL_XTI_CoreSwitch(void){
+void HAL_Pll_LinkStart(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= CPU_LPLL_SEL;
+}
+
+void HAL_Pll_BusStart(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= CPU_BPLL_SEL;
+}
+
+void HAL_XTI_CoreSwitch(void)
+{
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_CPLL_SEL);
 	pause_clk(100);
 }
 
-void HAL_XTI_BusSwitch(void){
+void HAL_XTI_BusSwitch(void)
+{
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_BPLL_SEL);
 }
 
-void HAL_XTI_LinkSwitch(void){
+void HAL_XTI_LinkSwitch(void)
+{
 	PLL_ConfigTypeDef pll_cfg;
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(1<<7);		//LPLL_SEL ???? (for Rev. 1) (1<<7)
 	pll_cfg.value = *((unsigned int*)PLL_LINK_CFG_LOC);
@@ -187,16 +205,52 @@ void HAL_XTI_LinkSwitch(void){
 	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg.value;
 }
 
-
-void HAL_PLL_BusSwitchHalfCore(void){
+void HAL_PLL_BusSwitchHalfCore(void)
+{
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL) | (1<<4);		//BPLL = CPLL / 2
 }
 
-void HAL_PLL_BusSwitchFourthCore(void){
+void HAL_PLL_BusSwitchFourthCore(void)
+{
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL) | (2<<4);		//BPLL = CPLL / 4
 }
 
-void HAL_PLL_BusSwitchEighthCore(void){
+void HAL_PLL_BusSwitchEighthCore(void)
+{
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL) | (3<<4);		//BPLL = CPLL / 8
 }
 
+void HAL_PLL_StartCoreSync(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_DIS_CC);
+}
+
+void HAL_PLL_StartExtBusSync(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_DIS_BC);
+}
+
+void HAL_PLL_StopCoreSync(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= CPU_DIS_CC;
+}
+
+void HAL_PLL_StopExtBusSyn(void)
+{
+	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= CPU_DIS_BC;
+}
+
+int HAL_PLL_GetRealCoreClock(void)
+{
+	return PLL_Freq.CoreClk;
+}
+
+int HAL_PLL_GetRealBusClock(void)
+{
+	return PLL_Freq.BusClk;
+}
+
+int HAL_PLL_GetRealLinkClock(void)
+{
+	return PLL_Freq.LinkClk;
+}

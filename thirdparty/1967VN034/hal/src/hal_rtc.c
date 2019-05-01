@@ -11,6 +11,7 @@ int HAL_RTC_RegRead(enum RTCRegType RTCReg){
   	asm("j8 = [j4 + 0x800001E0];;");
   	asm("j8 = [j4 + 0x800001E0];;");
   	while(LX_RTC->RTC_BUSY == 1);
+  	return 0;
 }
 
 void HAL_RTC_Busy(void){

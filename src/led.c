@@ -6,7 +6,7 @@
 #include "pthread.h"
 #include "sysreg.h"
 
-#define LED_DELAY_BLINK ((int)500000)
+#define LED_DELAY_BLINK ((int)50000000)
 
 static void * Led1Thread(void * args) {
 	(void)args;
@@ -29,9 +29,9 @@ static void * Led2Thread(void * args) {
 }
 
 void LedInit(void) {
-    static pthread_t led1_handl;
+	static pthread_t led1_handl;
 	static pthread_t led2_handl;
-    
+
     HAL_SYS_FlagEnable();
     pthread_create(&led1_handl, NULL, Led1Thread, NULL);
 	pthread_create(&led2_handl, NULL, Led2Thread, NULL);

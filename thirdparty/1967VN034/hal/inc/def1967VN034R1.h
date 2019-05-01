@@ -1820,12 +1820,14 @@
 // CPU clock configuration register bits
 #define CPU_CPLL_SEL_P		0
 #define CPU_BPLL_SEL_P		1
+#define CPU_LPLL_SEL_P		7
 #define CPU_DIS_CCLK_P		2
 #define CPU_DIS_BCLK_P		3
 #define CPU_BCLK_SEL_P		4
 
 #define CPU_CPLL_SEL			(1<<CPU_CPLL_SEL_P)
 #define CPU_BPLL_SEL			(1<<CPU_BPLL_SEL_P)
+#define CPU_LPLL_SEL			(1<<CPU_LPLL_SEL_P)
 #define CPU_DIS_CC				(1<<CPU_DIS_CCLK_P)
 #define CPU_DIS_BC				(1<<CPU_DIS_BCLK_P)
 #define CPU_BCLK_SEL_BPLL		(0<<CPU_BCLK_SEL_P)

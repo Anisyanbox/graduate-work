@@ -31,7 +31,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
-								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O1" valueType="string"/>
+								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" name="TsCompilerOptimization" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O1" valueType="string"/>
 								<inputType id="llvm.toolchain.compiler.inp.932479137" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
 								<inputType id="llvm.inputType1.708278450" name="CI CPP" superClass="llvm.inputType1"/>
 							</tool>
@@ -51,11 +51,8 @@
 								<option id="llvm.toolchain.linker.incpath.1218864087" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.1825093978" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\os\src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\stl&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\testsupport&quot;"/>
 								</option>
 								<option id="llvm.toolchain.linker.cnature.libraries.release.725232556" name="Libraries" superClass="llvm.toolchain.linker.cnature.libraries.release" valueType="stringList">
 									<listOptionValue builtIn="false" value="clib.dlb"/>
@@ -69,7 +66,7 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.ccnature.debug.1895093336" name="Linker" superClass="llvm.toolchain.linker.ccnature.debug">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.339558645" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1961482766" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.incpath.1961482766" name="Include" superClass="llvm.toolchain.linker.incpath"/>
 								<option id="llvm.toolchain.linker.libs.699168033" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
@@ -108,7 +105,9 @@
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.base.1952060994" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.base"/>
 							<builder buildPath="${workspace_loc:/lynx_run}/Release" id="llvm.toolchain.win32.builder.base.344081215" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.base"/>
 							<tool id="llvm.toolchain.assembler.release.221568887" name="Assembler" superClass="llvm.toolchain.assembler.release">
-								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
+								</option>
 								<inputType id="llvm.toolchain.assembler.inp.821279068" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
 							</tool>
 							<tool id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
@@ -137,7 +136,9 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.cnature.release.1051235865" name="Linker" superClass="llvm.toolchain.linker.cnature.release">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1094216083" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
+								</option>
 								<option id="llvm.toolchain.linker.libs.163444855" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
@@ -158,7 +159,7 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.ccnature.release.1038890368" name="Linker" superClass="llvm.toolchain.linker.ccnature.release">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1560513415" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1163653548" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
+								<option id="llvm.toolchain.linker.incpath.1163653548" name="Include" superClass="llvm.toolchain.linker.incpath"/>
 								<option id="llvm.toolchain.linker.libs.1934663153" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
@@ -188,4 +189,16 @@
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/lynx_run"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/lynx_run"/>
+		</configuration>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="DeviceConfiguration">
+		<selected-cpu full-name="Milandr 1967 / 1967VN034 / 1967VN034"/>
+	</storageModule>
 </cproject>
