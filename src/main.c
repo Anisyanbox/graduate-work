@@ -1,5 +1,5 @@
-#include "stdbool.h"
-#include "stdint.h"
+#include <stdbool.h>
+#include <stdint.h>
 #include "clock.h"
 #include "main.h"
 #include "led.h"
@@ -7,7 +7,8 @@
 #include "sysreg.h"
 
 int main(void) {
-	RstRsnDetect();
-	ClockInit();
-	LedInit();
+  RstRsnSave();
+  ClockInit();
+  IntInit();
+  LedInit();
 }

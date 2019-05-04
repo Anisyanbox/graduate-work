@@ -9,21 +9,20 @@
 
 // -----------------------------------------------------------------------------
 static void * LedFlag0Thread(void * args) {
-	(void)args;
+  (void)args;
 
-	while (true) {
-		__builtin_sysreg_write(__FLAGREGST, 0x01); // on FLAG0
-		StupidDelayMs(LED_FLAG0_DELAY_BLINK);
-		__builtin_sysreg_write(__FLAGREGCL, 0x00); // off FLAG0
-		StupidDelayMs(LED_FLAG0_DELAY_BLINK);
-	}
+  while (true) {
+    __builtin_sysreg_write(__FLAGREGST, 0x01); // on FLAG0
+    StupidDelayMs(LED_FLAG0_DELAY_BLINK);
+    __builtin_sysreg_write(__FLAGREGCL, 0x00); // off FLAG0
+    StupidDelayMs(LED_FLAG0_DELAY_BLINK);
+  }
 }
 
 // -----------------------------------------------------------------------------
 void LedInit(void) {
-	static pthread_t led1_handl;
-	static pthread_t led2_handl;
+  static pthread_t led1_handl;
 
-    HAL_SYS_FlagEnable();
-    pthread_create(&led1_handl, NULL, LedFlag0Thread, NULL);
+  HAL_SYS_FlagEnable();
+  pthread_create(&led1_handl, NULL, LedFlag0Thread, NULL);
 }
