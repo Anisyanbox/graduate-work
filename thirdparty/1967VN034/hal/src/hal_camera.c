@@ -1,7 +1,7 @@
 /*
  * hal_camera.c
  *
- *  Created on: 15 марта 2017 г.
+ *  Created on: 15 пїЅпїЅпїЅпїЅпїЅ 2017 пїЅ.
  *      Author: sharavyev.d
  */
 
@@ -29,8 +29,8 @@ void HAL_CAMERA_Enable( CAMERA_Mode_type eMode )
 
 void HAL_CAMERA_Disable( void )
 {
-	LX_CAMERA->CR.word = 0x00000000;																// Выключаем интерфейс камеры
-	LX_CAMERA->SR.word = 0xFFFFFFFF;																// Сбрасываем все флаги
+	LX_CAMERA->CR.word = 0x00000000;																// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	LX_CAMERA->SR.word = 0xFFFFFFFF;																// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 }
 
 void HAL_CAMERA_StartDma( uint32_t ulChannel, void *pvCameraBuf, uint32_t ulXSize, uint32_t ulYSize,
@@ -46,48 +46,52 @@ void HAL_CAMERA_StartDma( uint32_t ulChannel, void *pvCameraBuf, uint32_t ulXSiz
 	switch ( ucPixelsInWord )
 	{
 		case 2:
-			ulXSize >>= 1;																			// 2 пикселя в 32-bit слове
+			ulXSize >>= 1;																			// 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32-bit пїЅпїЅпїЅпїЅпїЅ
 			break;
 		case 4:
-			ulXSize >>= 2;																			// 4 пикселя в 32-bit слове
+			ulXSize >>= 2;																			// 4 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32-bit пїЅпїЅпїЅпїЅпїЅ
 			break;
 		default:
 			break;
 	}
 
-	*( ptr + 0 ) = ( uint32_t ) pvCameraBuf;														// Источник информации
-	*( ptr + 1 ) = ( ulXSize << 16 ) | 4;															// Количество слов + инкремент адреса
-	*( ptr + 2 ) = ( ulYSize << 16 ) | ulDelta;														// Количество попыток передачи по X + инкремент адреса X
-	*( ptr + 3 ) = 	TCB_TWODIM |																	// Включение режима 2-х мерной пересылки
-//					TCB_HPRIORITY |																	// Приоритет циклов обмена
-					TCB_QUAD |																		// Длина передаваемых данных (операнда) в одном цикле обмена
-					HAL_DMA_GetTCBChannelDest( ulChannel );  											// Канал-приемник следующей цепочки
+	*( ptr + 0 ) = ( uint32_t ) pvCameraBuf;														// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	*( ptr + 1 ) = ( ulXSize << 16 ) | 4;															// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	*( ptr + 2 ) = ( ulYSize << 16 ) | ulDelta;														// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ X + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ X
+	*( ptr + 3 ) = 	TCB_TWODIM |																	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 2-пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+//					TCB_HPRIORITY |																	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+					TCB_QUAD |																		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+					HAL_DMA_GetTCBChannelDest( ulChannel );  											// пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 
-	*( ptr + 3 ) |= ( ( uint32_t ) pvCameraBuf < 0x0C000000 ) ? TCB_INTMEM : TCB_EXTMEM;			// Источник в внешней/внутренней памяти
+	*( ptr + 3 ) |= ( ( uint32_t ) pvCameraBuf < 0x0C000000 ) ? TCB_INTMEM : TCB_EXTMEM;			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	HAL_DMA_DestRqstSet( ulChannel, dmaVIDEO );
 
-	if ( pvDmaIsrHandler )																			// Настройка прерывания, если оно нужно
+	if ( pvDmaIsrHandler )																			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	{
 		switch( ulChannel )
 		{
 			case 8:
-				HAL_Interrupt_Enable( intDMA8, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA8, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA8);
 				break;
 			case 9:
-				HAL_Interrupt_Enable( intDMA9, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA9, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA9);
 				break;
 			case 10:
-				HAL_Interrupt_Enable( intDMA10, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA10, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA10);
 				break;
 			case 11:
-				HAL_Interrupt_Enable( intDMA11, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA11, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA11);
 				break;
 			default:
 				break;
 		}
-		*( ptr + 3 ) |= TCB_INT;																	// Генерация запроса прерывания после окончания работы канала
+		*( ptr + 3 ) |= TCB_INT;																	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	}
 
-	HAL_DMA_WriteDC( ulChannel, &camera_tcb );														// Запуск DMA
+	HAL_DMA_WriteDC( ulChannel, &camera_tcb );														// пїЅпїЅпїЅпїЅпїЅпїЅ DMA
 }
