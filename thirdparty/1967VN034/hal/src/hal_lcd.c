@@ -238,15 +238,19 @@ void HAL_LCD_StartDma( uint32_t ulChannel, void *pvLcdBuf,
 		{
 			case 4:
 				HAL_Interrupt_SubscribeHandler( intDMA4, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA4);
 				break;
 			case 5:
 				HAL_Interrupt_SubscribeHandler( intDMA5, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA5);
 				break;
 			case 6:
 				HAL_Interrupt_SubscribeHandler( intDMA6, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA6);
 				break;
 			case 7:
 				HAL_Interrupt_SubscribeHandler( intDMA7, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA7);
 				break;
 			default:
 				break;

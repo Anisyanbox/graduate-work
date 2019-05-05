@@ -73,15 +73,19 @@ void HAL_CAMERA_StartDma( uint32_t ulChannel, void *pvCameraBuf, uint32_t ulXSiz
 		{
 			case 8:
 				HAL_Interrupt_SubscribeHandler( intDMA8, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA8);
 				break;
 			case 9:
 				HAL_Interrupt_SubscribeHandler( intDMA9, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA9);
 				break;
 			case 10:
 				HAL_Interrupt_SubscribeHandler( intDMA10, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA10);
 				break;
 			case 11:
 				HAL_Interrupt_SubscribeHandler( intDMA11, pvDmaIsrHandler );
+				HAL_Interrupt_Enable(intDMA11);
 				break;
 			default:
 				break;

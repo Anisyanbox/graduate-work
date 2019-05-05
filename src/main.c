@@ -6,10 +6,12 @@
 #include "reset_reason.h"
 #include "interrupt.h"
 #include "sysreg.h"
+#include "rtc.h"
 
 int main(void) {
   RstRsnSave();
   ClockInit();
   IntInit();
+  RtcInit();
   LedFlagInit();
 }

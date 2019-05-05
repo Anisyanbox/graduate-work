@@ -73,8 +73,8 @@ void HAL_Interrupt_GlobalEnable(void);
 void HAL_Interrupt_GlobalDisable(void);
 
 void HAL_Interrupt_SubscribeHandler(InterruptRequest_type intRQST, void *ptrHndlr);
-void HAL_Interrupt_Mask(InterruptRequest_type intRQST);
-void HAL_Interrupt_Unmask(InterruptRequest_type intRQST);
+void HAL_Interrupt_Disable(InterruptRequest_type intRQST);
+void HAL_Interrupt_Enable(InterruptRequest_type intRQST);
 
 void HAL_Interrupt_RqstSet(InterruptRequest_type intRQST);
 void HAL_Interrupt_RqstClear(InterruptRequest_type intRQST);

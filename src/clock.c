@@ -21,3 +21,8 @@ void ClockInit(void) {
   HAL_Pll_LinkStart();
   HAL_Pll_BusStart();
 }
+
+// -----------------------------------------------------------------------------
+unsigned int ClockGetInputXtiKhz(void) {
+  return INPUT_XTI_CLOCK_KHZ;
+}

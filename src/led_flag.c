@@ -15,10 +15,10 @@ static void * LedFlag0Thread(void * args) {
   (void)args;
 
   while (true) {
-    LedOn(LED_ALL_FLAGS);
-    StupidDelayMs((uint32_t)500);
-    LedOff(LED_ALL_FLAGS);
-    StupidDelayMs((uint32_t)500);
+    LedOn(LED_FLAG_0);
+    StupidDelayMs((uint32_t)250);
+    LedOff(LED_FLAG_0);
+    StupidDelayMs((uint32_t)250);
   }
 }
 

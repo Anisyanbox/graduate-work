@@ -12,17 +12,9 @@
 void HAL_Interrupt_SubscribeHandler( InterruptRequest_type intRQST, void *ptrHndlr) {
   unsigned int tmp32;
   *( unsigned int * ) ( IVT_BASE + intRQST ) = ( unsigned int )ptrHndlr;
-
-  if ( intRQST < 32 ) {
-    tmp32 = __builtin_sysreg_read( __IMASKL );
-    __builtin_sysreg_write( __IMASKL, ( tmp32 | ( 1 << intRQST ) ) );
-  } else {
-    tmp32 = __builtin_sysreg_read( __IMASKH );
-    __builtin_sysreg_write( __IMASKH, ( tmp32 | ( 1 << ( intRQST - 32 ) ) ) );
-  }
 }
 
-void HAL_Interrupt_Mask(InterruptRequest_type intRQST) {
+void HAL_Interrupt_Disable(InterruptRequest_type intRQST) {
   unsigned int tmp32;
 
   if (intRQST < 32) {
@@ -34,7 +26,7 @@ void HAL_Interrupt_Mask(InterruptRequest_type intRQST) {
   }
 }
 
-void HAL_Interrupt_Unmask(InterruptRequest_type intRQST) {
+void HAL_Interrupt_Enable(InterruptRequest_type intRQST) {
   unsigned int tmp32;
 
   if ( intRQST < 32 ) {
