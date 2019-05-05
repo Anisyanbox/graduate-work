@@ -1,18 +1,12 @@
 #include "rtc.h"
 #include "hal_1967VN034R1.h"
 #include "clock.h"
-
-static unsigned long long app_time_ms = 0;
+#include "apptime.h"
 
 // -----------------------------------------------------------------------------
 #pragma interrupt
 void RtcIntHandler(void) {
-  ++app_time_ms;
-}
-
-// -----------------------------------------------------------------------------
-unsigned long long RtcGetAppTimeInMs(void) {
-  return app_time_ms;
+  AppTimeMsInc();
 }
 
 // -----------------------------------------------------------------------------

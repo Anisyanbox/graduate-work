@@ -2,7 +2,7 @@
 #include <sysreg.h>
 #include "led_flag.h"
 #include "hal_1967VN034R1.h"
-#include "stupid_delay.h"
+#include "delay.h"
 #include "pthread.h"
 
 // -----------------------------------------------------------------------------
@@ -16,15 +16,16 @@ static void * LedFlag0Thread(void * args) {
 
   while (true) {
     LedOn(LED_FLAG_0);
-    StupidDelayMs((uint32_t)250);
+    DelayMs(500);
     LedOff(LED_FLAG_0);
-    StupidDelayMs((uint32_t)250);
+    DelayMs(10);
   }
 }
 
 // -----------------------------------------------------------------------------
 void LedFlagInit(void) {
   static pthread_t led0_handl;
+  static pthread_t led1_handl;
 
   HAL_SYS_FlagEnable();
   FlagPinsOutModeEn(LED_ALL_FLAGS);

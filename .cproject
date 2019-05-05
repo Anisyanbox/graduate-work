@@ -24,6 +24,8 @@
 							<tool id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\apptime\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
