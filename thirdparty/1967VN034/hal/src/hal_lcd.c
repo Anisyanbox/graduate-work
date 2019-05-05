@@ -108,10 +108,10 @@ void HAL_LCD_Setup( LCD_Conf_type *pxCfg )
 {
 	uint32_t ulTemp;
 
-	LX_LCD->CTRL.REG = 0;																			// Выключаем контроллер
+	LX_LCD->CTRL.REG = 0;																			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->PWM_CR.REG = 0;
 
-	LX_LCD->VSIZE.field.VSIZE = pxCfg->usHSize * pxCfg->usVSize / 									// Задаем размер видеобуффера в 32-битных словах
+	LX_LCD->VSIZE.field.VSIZE = pxCfg->usHSize * pxCfg->usVSize / 									// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 			( ( pxCfg->ulRgbMode >> 4 ) & 0x0F );
 
 	ulTemp = PLL_Freq.CoreClk / ( 2 * pxCfg->ulPixelClock );										// PX_CLK = SOC_CLK / (P_div + 1)
@@ -120,79 +120,79 @@ void HAL_LCD_Setup( LCD_Conf_type *pxCfg )
 	wa_delay();
 	LX_LCD->PXDV.field.EN_DIV = 1;
 
-	// Количество пикселей в линии и общее количество линий
-	// Не все линии и пиксели видны на экране
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+	// пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->HVLEN.field.HT = ( ( pxCfg->usHFrontBlank + pxCfg->usHSize + pxCfg->usHBackBlank ) >> 3 ) - 1;
 	wa_delay();
 	LX_LCD->HVLEN.field.VT = ( pxCfg->usVFrontBlank + pxCfg->usVSize + pxCfg->usVBackBlank ) - 1;
 
-	// HSYNC (fpline) тайминги
+	// HSYNC (fpline) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->HTIM.field.HPS = pxCfg->usHSyncPos - 1;
 	wa_delay();
-	LX_LCD->HTIM.field.HPL = ~pxCfg->bHSyncActiveLevel;												// Активный уровень: 0 - высокий, 1 - низкий
+	LX_LCD->HTIM.field.HPL = ~pxCfg->bHSyncActiveLevel;												// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 0 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 1 - пїЅпїЅпїЅпїЅпїЅпїЅ
 	wa_delay();
 	LX_LCD->HTIM.field.HPW = pxCfg->usHSyncPos + pxCfg->usHSyncLen - 1;
 
-	// VSYNC (fpframe) тайминги
+	// VSYNC (fpframe) пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->VTIM.field.VPS = pxCfg->usVSyncPos - 1;
 	wa_delay();
-	LX_LCD->VTIM.field.VPL = ~pxCfg->bVSyncActiveLevel;												// Активный уровень: 0 - высокий, 1 - низкий
+	LX_LCD->VTIM.field.VPL = ~pxCfg->bVSyncActiveLevel;												// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 0 - пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 1 - пїЅпїЅпїЅпїЅпїЅпїЅ
 	wa_delay();
 	LX_LCD->VTIM.field.VPW = pxCfg->usVSyncPos + pxCfg->usVSyncLen - 1;
 
-	// Управление горизонтальной активной областью панели
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->HDTIM.field.HDPS = pxCfg->usHFrontBlank - 1;
 	wa_delay();
 	LX_LCD->HDTIM.field.HDPE = pxCfg->usHFrontBlank + pxCfg->usHSize - 1;
 
-	// Управление вертикальной активной областью панели
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->VDTIM.field.VDPS = pxCfg->usVFrontBlank - 1;
 	wa_delay();
 	LX_LCD->VDTIM.field.VDPE = pxCfg->usVFrontBlank + pxCfg->usVSize - 1;
 
 	if ( pxCfg->pxWindow )
 	{
-		// Видимая область по горизонтали
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		LX_LCD->HDxTIM.field.HXDPS = pxCfg->usHFrontBlank + pxCfg->pxWindow->sHOffset - 1;
 		wa_delay();
 		LX_LCD->HDxTIM.field.HXDPE = pxCfg->usHFrontBlank + pxCfg->pxWindow->sHOffset + pxCfg->pxWindow->usHSize - 1;
 
-		// Видимая область по вертикали
+		// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 		LX_LCD->VDxTIM.field.VXDPS = pxCfg->usVFrontBlank + pxCfg->pxWindow->sVOffset - 1;
 		wa_delay();
 		LX_LCD->VDxTIM.field.VXDPE = pxCfg->usVFrontBlank + pxCfg->pxWindow->sVOffset + pxCfg->pxWindow->usVSize - 1;
 
-		// Фон (для оконного режима)
+		// пїЅпїЅпїЅ (пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 		LX_LCD->FON = pxCfg->pxWindow->ulBackgndColor;
 	}
 
-	LX_LCD->PANEL_CFG.field.FPSHI = pxCfg->bPClkInverse;											// Инверсия пиксель клока
+	LX_LCD->PANEL_CFG.field.FPSHI = pxCfg->bPClkInverse;											// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 
-	// Настройка ШИМ подсветки
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	LX_LCD->PWM_CR.field.RELOAD = HAL_LCD_MAX_PWM_DUTY;
 	wa_delay();
 	LX_LCD->PWM_CR.field.DUTY = 0;
 	wa_delay();
-	LX_LCD->PWM_CR.field.PWM_Dv = pxCfg->ulPwmDiv; 													// Значение делителя;
+	LX_LCD->PWM_CR.field.PWM_Dv = pxCfg->ulPwmDiv; 													// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ;
 	wa_delay();
 	LX_LCD->PWM_CR.field.CLKEN = 1;
 
-	LX_LCD->CTRL.field.VBGR = pxCfg->bSwapRgbToBgr;													// Порядок следования цветов BGR или RGB
+	LX_LCD->CTRL.field.VBGR = pxCfg->bSwapRgbToBgr;													// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ BGR пїЅпїЅпїЅ RGB
 	wa_delay();
-	LX_LCD->CTRL.field.CD = ( pxCfg->ulRgbMode >> 2 ) & 0x3;										// 0 - 8bit, 1 - 16bit, 2 - 24bit, 3 - 32bit в пикселе
+	LX_LCD->CTRL.field.CD = ( pxCfg->ulRgbMode >> 2 ) & 0x3;										// 0 - 8bit, 1 - 16bit, 2 - 24bit, 3 - 32bit пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	wa_delay();
-	LX_LCD->CTRL.field.VBL = ( pxCfg->ulRgbMode >> 0 ) & 0x3;										// Количеств бит в пикселе
+	LX_LCD->CTRL.field.VBL = ( pxCfg->ulRgbMode >> 0 ) & 0x3;										// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	wa_delay();
-	LX_LCD->CTRL.field.BL = ~pxCfg->bDReadyActiveLevel;												// Активный уровень линии готовности данных (0 - DRDY активный высокий, 1 - DRDY активный низкий)
+	LX_LCD->CTRL.field.BL = ~pxCfg->bDReadyActiveLevel;												// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (0 - DRDY пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 1 - DRDY пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)
 	wa_delay();
-	LX_LCD->CTRL.field.W2W_EN = ( pxCfg->pxWindow != 0 );											// Если 1, то используются регистры HDxTIM и VDxTIM
+	LX_LCD->CTRL.field.W2W_EN = ( pxCfg->pxWindow != 0 );											// пїЅпїЅпїЅпїЅ 1, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ HDxTIM пїЅ VDxTIM
 	wa_delay();
-	LX_LCD->CTRL.field.PXP_EN = pxCfg->bStopPclkWhenNoData;											// Если 1, разрешен останов пиксельклока в случае если в выходном FIFO нет данных
+	LX_LCD->CTRL.field.PXP_EN = pxCfg->bStopPclkWhenNoData;											// пїЅпїЅпїЅпїЅ 1, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ FIFO пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 }
 
 void HAL_LCD_PwmSetDuty( uint8_t ucValue )
 {
-	if ( ucValue >= HAL_LCD_MAX_PWM_DUTY ) 															// Устранение небольших мерцаний при значениях duty == reload
+	if ( ucValue >= HAL_LCD_MAX_PWM_DUTY ) 															// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ duty == reload
 		ucValue = HAL_LCD_MAX_PWM_DUTY + 1;
 	LX_LCD->PWM_CR.field.DUTY = ucValue;
 }
@@ -211,42 +211,42 @@ void HAL_LCD_StartDma( uint32_t ulChannel, void *pvLcdBuf,
 	switch ( ( ulRgbMode >> 4 ) & 0x0F )
 	{
 		case 2:
-			ulXSize >>= 1;																			// 2 пикселя в 32-bit слове
+			ulXSize >>= 1;																			// 2 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32-bit пїЅпїЅпїЅпїЅпїЅ
 			break;
 		case 4:
-			ulXSize >>= 2;																			// 4 пикселя в 32-bit слове
+			ulXSize >>= 2;																			// 4 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ 32-bit пїЅпїЅпїЅпїЅпїЅ
 			break;
 		default:
 			break;
 	}
 
-	*( ptr + 0 ) = ( uint32_t ) pvLcdBuf;															// Источник информации
-	*( ptr + 1 ) = ( ulXSize << 16 ) | 4;															// Количество слов + инкремент адреса
-	*( ptr + 2 ) = ( ulYSize << 16 ) | 4;															// Количество попыток передачи по X + инкремент адреса X
-	*( ptr + 3 ) = 	TCB_TWODIM |																	// Включение режима 2-х мерной пересылки
-					TCB_QUAD |																		// Длина передаваемых данных (операнда) в одном цикле обмена
-					TCB_CHAIN | 																	// Разрешение загрузки следующей цепочки
-					HAL_DMA_GetTCBChannelDest( ulChannel ) | 										// Канал-приемник следующей цепочки
-					( ( uint32_t ) &tcb >> 2 );														// Указатель следующего регистра TCB
-	*( ptr + 3 ) |= ( ( uint32_t ) pvLcdBuf < 0x0C000000 ) ? TCB_INTMEM : TCB_EXTMEM;				// Источник в внешней/внутренней памяти
+	*( ptr + 0 ) = ( uint32_t ) pvLcdBuf;															// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	*( ptr + 1 ) = ( ulXSize << 16 ) | 4;															// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+	*( ptr + 2 ) = ( ulYSize << 16 ) | 4;															// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ X + пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ X
+	*( ptr + 3 ) = 	TCB_TWODIM |																	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 2-пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+					TCB_QUAD |																		// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ) пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+					TCB_CHAIN | 																	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+					HAL_DMA_GetTCBChannelDest( ulChannel ) | 										// пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+					( ( uint32_t ) &tcb >> 2 );														// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ TCB
+	*( ptr + 3 ) |= ( ( uint32_t ) pvLcdBuf < 0x0C000000 ) ? TCB_INTMEM : TCB_EXTMEM;				// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 
 	HAL_DMA_SourceRqstSet( ulChannel, dmaVIDEO );
 
-	if ( pvDmaIsrHandler )																			// Настройка прерывания, если оно нужно
+	if ( pvDmaIsrHandler )																			// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	{
 		switch( ulChannel )
 		{
 			case 4:
-				HAL_Interrupt_Enable( intDMA4, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA4, pvDmaIsrHandler );
 				break;
 			case 5:
-				HAL_Interrupt_Enable( intDMA5, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA5, pvDmaIsrHandler );
 				break;
 			case 6:
-				HAL_Interrupt_Enable( intDMA6, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA6, pvDmaIsrHandler );
 				break;
 			case 7:
-				HAL_Interrupt_Enable( intDMA7, pvDmaIsrHandler );
+				HAL_Interrupt_SubscribeHandler( intDMA7, pvDmaIsrHandler );
 				break;
 			default:
 				break;
@@ -254,6 +254,6 @@ void HAL_LCD_StartDma( uint32_t ulChannel, void *pvLcdBuf,
 		*( ptr + 3 ) |= TCB_INT;
 	}
 
-	HAL_DMA_WriteDC( ulChannel, &tcb );																// Запуск DMA
+	HAL_DMA_WriteDC( ulChannel, &tcb );																// пїЅпїЅпїЅпїЅпїЅпїЅ DMA
 }
 

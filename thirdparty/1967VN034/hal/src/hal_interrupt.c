@@ -3,13 +3,13 @@
 
   History:
       Zatonsky Pavel - Created.
-      Anisimov Alexander - Fixed 05.05.2019
+      Anisimov Alexander - Fixed API 05.05.2019
 **********************************************************************************************************************/
 #include <hal_1967VN034R1.h>
 #include <sysreg.h>
 #include <builtins.h>
 
-void HAL_Interrupt_Enable( InterruptRequest_type intRQST, void *ptrHndlr) {
+void HAL_Interrupt_SubscribeHandler( InterruptRequest_type intRQST, void *ptrHndlr) {
   unsigned int tmp32;
   *( unsigned int * ) ( IVT_BASE + intRQST ) = ( unsigned int )ptrHndlr;
 
@@ -22,7 +22,7 @@ void HAL_Interrupt_Enable( InterruptRequest_type intRQST, void *ptrHndlr) {
   }
 }
 
-void HAL_Interrupt_Disable(InterruptRequest_type intRQST) {
+void HAL_Interrupt_Mask(InterruptRequest_type intRQST) {
   unsigned int tmp32;
 
   if (intRQST < 32) {
@@ -31,6 +31,18 @@ void HAL_Interrupt_Disable(InterruptRequest_type intRQST) {
   } else {
     tmp32 = __builtin_sysreg_read(__IMASKH);
     __builtin_sysreg_write(__IMASKH, (tmp32 & ~(1<<(intRQST-32))));
+  }
+}
+
+void HAL_Interrupt_Unmask(InterruptRequest_type intRQST) {
+  unsigned int tmp32;
+
+  if ( intRQST < 32 ) {
+    tmp32 = __builtin_sysreg_read( __IMASKL );
+    __builtin_sysreg_write( __IMASKL, ( tmp32 | ( 1 << intRQST ) ) );
+  } else {
+    tmp32 = __builtin_sysreg_read( __IMASKH );
+    __builtin_sysreg_write( __IMASKH, ( tmp32 | ( 1 << ( intRQST - 32 ) ) ) );
   }
 }
 
@@ -52,7 +64,7 @@ void HAL_Interrupt_ILATClear(void) {
   __builtin_sysreg_write(__ILATCLH, 0);
 }
 
-void HAL_Interrupt_RqstReset(InterruptRequest_type intRQST) {
+void HAL_Interrupt_RqstClear(InterruptRequest_type intRQST) {
   if (intRQST < 32){
     __builtin_sysreg_write( __ILATCLL, ~(1<<intRQST) );
   }
@@ -62,12 +74,10 @@ void HAL_Interrupt_RqstReset(InterruptRequest_type intRQST) {
 }
 
 void HAL_Interrupt_RqstSet(InterruptRequest_type intRQST) {
-  if (intRQST < 32){
-    __builtin_sysreg_write( __ILATSTL, (1<<intRQST) );
-  }
-  else{
-    __builtin_sysreg_write( __ILATSTH, (1<<(intRQST-32)) );
-  }
+	if (intRQST < 32){
+		__builtin_sysreg_write( __ILATSTL, (1<<intRQST) );
+	}
+	else{
+		__builtin_sysreg_write( __ILATSTH, (1<<(intRQST-32)) );
+	}
 }
-
-
