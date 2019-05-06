@@ -5,7 +5,7 @@
 
 // -----------------------------------------------------------------------------
 #pragma interrupt
-void RtcIntHandler(void) {
+static void RtcIrqHandler(void) {
   AppTimeMsInc();
 }
 
@@ -14,6 +14,6 @@ void RtcInit(void) {
   /* make tic every millisecond */
   HAL_RTC_InitTicPeriod((int)ClockGetInputXtiKhz());
   HAL_RTC_InitSecPeriod(1000);
-  HAL_Interrupt_SubscribeHandler(intTIC, RtcIntHandler);
+  HAL_Interrupt_SubscribeHandler(intTIC, RtcIrqHandler);
   HAL_Interrupt_Enable(intTIC);
 }

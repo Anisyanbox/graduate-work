@@ -25,7 +25,7 @@ typedef enum {
 typedef struct {
   LedFlagType_t flag;
   LedFlagMode_t mode;
-  unsigned int cur_delay_state;
+  unsigned int cur_delay_phase;
   unsigned int delay_on;
   unsigned int delay_off;
   void (*led_on_func_ptr)(void);
@@ -104,25 +104,25 @@ static void * LedFlagThread(void * args) {
 
       switch (leds_table[i].mode) {
         case LED_BLINKY:
-          leds_table[i].cur_delay_state += SLEEP_LED_THREAD_MS;
+          leds_table[i].cur_delay_phase += SLEEP_LED_THREAD_MS;
 
-          if (leds_table[i].cur_delay_state <= leds_table[i].delay_on) {
+          if (leds_table[i].cur_delay_phase <= leds_table[i].delay_on) {
             leds_table[i].led_on_func_ptr();
-          } else if (leds_table[i].cur_delay_state <= period) {
+          } else if (leds_table[i].cur_delay_phase <= period) {
             leds_table[i].led_off_func_ptr();
           } else {
-            leds_table[i].cur_delay_state = 0;
+            leds_table[i].cur_delay_phase = 0;
           }
           break;
 
         case LED_STATIC_ON:
           leds_table[i].led_on_func_ptr();
-          leds_table[i].cur_delay_state = 0;
+          leds_table[i].cur_delay_phase = 0;
           break;
 
         case LED_STATIC_OFF:
           leds_table[i].led_off_func_ptr();
-          leds_table[i].cur_delay_state = 0;
+          leds_table[i].cur_delay_phase = 0;
           break;
 
         default:
@@ -134,10 +134,14 @@ static void * LedFlagThread(void * args) {
 }
 
 // -----------------------------------------------------------------------------
-void LedFlagInit(void) {
+LedInitStat_t LedFlagInit(void) {
   static pthread_t led_thread_handl;
 
   HAL_SYS_FlagEnable();
   FlagOutModeEn(LED_FLAG_0 | LED_FLAG_1 | LED_FLAG_2 | LED_FLAG_3);
-  pthread_create(&led_thread_handl, NULL, LedFlagThread, NULL);
+
+  if (pthread_create(&led_thread_handl, NULL, LedFlagThread, NULL) != 0) {
+    return LED_INIT_FALSE;
+  }
+  return LED_INIT;
 }
