@@ -74,9 +74,9 @@ void HAL_UART_DeInit (UART_type* UARTx){
 	UARTx->UBitRate = 0;
 	UARTx->UINT.word = 0;
 	UARTx->UCR_LOAD.word = 0;
-
 	return;
 }
+
 //-------------------------------------------------------------------------------------------//
 void HAL_UART_DefaultInitStruct (UART_Init_type* InitStruct){
 	InitStruct->BitRate		 = 9600;
@@ -113,6 +113,7 @@ int HAL_UART_Send (UART_type* UARTx, char* BuffAddr, unsigned int amount){
 	return 0;
 }
 
+//-------------------------------------------------------------------------------------------//
 int HAL_UART_Receive (UART_type* UARTx, char* BuffAddr, unsigned int amount){
 	unsigned char data;
 	unsigned int i;
@@ -133,13 +134,14 @@ int HAL_UART_Receive (UART_type* UARTx, char* BuffAddr, unsigned int amount){
 	return errFlag;
 }
 
-
+//-------------------------------------------------------------------------------------------//
 void HAL_UARTDMA_Send(int uart_num, int dma_ch, void *tcb){
 	uart_num++;
 	HAL_DMA_SourceRqstSet(dma_ch,(DMARequester_type)uart_num);
 	HAL_DMA_WriteDC(dma_ch,tcb);
 }
 
+//-------------------------------------------------------------------------------------------//
 void HAL_UARTDMA_Receive(int uart_num, int dma_ch, void *tcb){
 	uart_num++;
 	HAL_DMA_DestRqstSet(dma_ch,(DMARequester_type)uart_num);

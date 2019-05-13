@@ -1,6 +1,5 @@
 #include "clock.h"
 #include "hal_1967VN034R1.h"
-#include "stupid_delay.h"
 
 #define INPUT_XTI_CLOCK_KHZ	((unsigned int)25000)
 

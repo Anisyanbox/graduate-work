@@ -7,11 +7,40 @@
 #include "interrupt.h"
 #include "sysreg.h"
 #include "rtc.h"
+#include "uart.h"
 
-int main(void) {
+// -----------------------------------------------------------------------------
+static void SystemInitError(ErrFlags err) {
+  (void)err;
+  while (true);
+}
+
+// -----------------------------------------------------------------------------
+static void SystemInit(void) {
+  /* ====== */
   RstRsnSave();
+  
+  /* ====== */
   ClockInit();
-  IntInit();
+  
+  /* ====== */
   RtcInit();
-  LedFlagInit();
+  
+  /* ====== */
+  if (UartInit() != UART_INIT) {
+    SystemInitError(UART_INIT_ERROR);
+  }
+
+  /* ====== */
+  if (LedFlagInit() != LED_INIT) {
+    SystemInitError(LED_INIT_ERROR);
+  }
+
+  /* ====== */
+  IntInit();
+}
+
+// -----------------------------------------------------------------------------
+int main(void) {
+  SystemInit();
 }
