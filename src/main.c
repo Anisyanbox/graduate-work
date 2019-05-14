@@ -18,6 +18,9 @@ static void SystemInitError(ErrFlags err) {
 // -----------------------------------------------------------------------------
 static void SystemInit(void) {
   /* ====== */
+  InterruptDisableGlobal();
+
+  /* ====== */
   RstRsnSave();
   
   /* ====== */
@@ -37,7 +40,7 @@ static void SystemInit(void) {
   }
 
   /* ====== */
-  IntInit();
+  InterruptInit();
 }
 
 // -----------------------------------------------------------------------------

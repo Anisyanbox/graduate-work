@@ -4,10 +4,12 @@
 #include "hal_1967VN034R1.h"
 #include "delay.h"
 #include "pthread.h"
+#include "main.h"
 
-#define CNT_LEDS_ONBOARD               (4)
-#define SLEEP_LED_THREAD_MS            (10U)
-#define CUR_DELAY_IN_MS(steps)         (SLEEP_LED_THREAD_MS * (steps))
+#define CNT_LEDS_ONBOARD                (4)
+#define SLEEP_LED_THREAD_MS             (10U)
+#define CUR_DELAY_IN_MS(steps)          (SLEEP_LED_THREAD_MS * (steps))
+#define LED_FLAG_THREAD_PRIORITY        MAIN_THREAD_NORMAL_PRIO
 
 typedef enum {
   LED_FLAG_0 = ((unsigned int)(1 << 0)),
@@ -136,12 +138,29 @@ static void * LedFlagThread(void * args) {
 // -----------------------------------------------------------------------------
 LedInitStat_t LedFlagInit(void) {
   static pthread_t led_thread_handl;
+  pthread_attr_t led_flag_attr;
+  sched_param_t led_flag_thread_prio;
 
   HAL_SYS_FlagEnable();
   FlagOutModeEn(LED_FLAG_0 | LED_FLAG_1 | LED_FLAG_2 | LED_FLAG_3);
 
-  if (pthread_create(&led_thread_handl, NULL, LedFlagThread, NULL) != 0) {
+  if (pthread_attr_init(&led_flag_attr) != 0) {
     return LED_INIT_FALSE;
   }
+  led_flag_thread_prio.sched_priority = LED_FLAG_THREAD_PRIORITY;
+  if (pthread_attr_setschedparam(&led_flag_attr,
+                                (const sched_param_t*)&led_flag_thread_prio) != 0) {
+    return LED_INIT_FALSE;
+  }
+  if (pthread_create(&led_thread_handl,
+                    (const pthread_attr_t*)led_flag_attr,
+                    LedFlagThread,
+                    NULL) != 0) {
+    return LED_INIT_FALSE;
+  }
+  if (pthread_attr_destroy(&led_flag_attr) != 0) {
+    return LED_INIT_FALSE;
+  }
+
   return LED_INIT;
 }
