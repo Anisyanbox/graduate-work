@@ -7,8 +7,10 @@
 #include "pthread.h"
 #include "delay.h"
 #include "apptime.h"
+#include "main.h"
 
-#define UART1_THREAD_SLEEP_MS ((unsigned int)1000)
+#define UART1_THREAD_SLEEP_MS   ((unsigned int)1000)
+#define UART1_THREAD_PRIORITY   MAIN_THREAD_NORMAL_PRIO
 
 static bool is_it_happened = false;
 
@@ -33,6 +35,8 @@ static void * Uart1TxThread(void * args) {
 // -----------------------------------------------------------------------------
 UartInitStat_t UartInit(void) {
   static pthread_t uart1_tx_thread_handl;
+  pthread_attr_t uart_attr;
+  sched_param_t uart1_thread_prio;
   UART_Init_type uart1_init_struct;
 
   /* init UART1 (PA2 - RxD; PA3 - TxD) */
@@ -62,7 +66,21 @@ UartInitStat_t UartInit(void) {
   HAL_Interrupt_Enable(intUART1);
 
   /* create tx and rx thread for reading info from queue and further proccessing */
-  if (pthread_create(&uart1_tx_thread_handl, NULL, Uart1TxThread, NULL) != 0) {
+  if (pthread_attr_init(&uart_attr) != 0) {
+    return UART_INIT_FALSE;
+  }
+  uart1_thread_prio.sched_priority = UART1_THREAD_PRIORITY;
+  if (pthread_attr_setschedparam(&uart_attr,
+                                (const sched_param_t*)&uart1_thread_prio) != 0) {
+    return UART_INIT_FALSE;
+  }
+  if (pthread_create(&uart1_tx_thread_handl, 
+                    (const pthread_attr_t*)uart_attr, 
+                    Uart1TxThread, 
+                    NULL) != 0) {
+    return UART_INIT_FALSE;
+  }
+  if (pthread_attr_destroy(&uart_attr) != 0) {
     return UART_INIT_FALSE;
   }
 
