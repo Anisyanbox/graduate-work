@@ -154,9 +154,11 @@ typedef enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
-  /* for port PxD and PxA */
+  /* for port PxD */
   void HAL_GPIO_PxD_Init(const uint Pins, const GPIO_PinMode Mode);
   void HAL_GPIO_PxD_DeInit(const uint Pins);
+
+  /* enable/disable alternative functoin for ports PxD and PxA*/
   void HAL_GPIO_Px_AltInit(const GPIO_PxAlt_type PxAlt, const GPIO_PxAlt_Mode_type PxAltMode);
   void HAL_GPIO_Px_AltDeInit(void);
 

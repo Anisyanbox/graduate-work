@@ -1,13 +1,16 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <sysreg.h>
+
 #include "clock.h"
-#include "main.h"
-#include "led_flag.h"
 #include "reset_reason.h"
 #include "interrupt.h"
-#include "sysreg.h"
 #include "rtc.h"
+
+#include "main.h"
+#include "led_flag.h"
 #include "uart.h"
+#include "keyboard.h"
 
 // -----------------------------------------------------------------------------
 static void SystemInitError(ErrFlags err) {
@@ -40,7 +43,13 @@ static void SystemInit(void) {
   }
 
   /* ====== */
+  if (KeyboardInit() != KEYBOARD_INIT) {
+    SystemInitError(KEYBOARD_INIT_ERROR);
+  }
+  
+  /* ====== */
   InterruptInit();
+  InterruptEnableGlobal();
 }
 
 // -----------------------------------------------------------------------------

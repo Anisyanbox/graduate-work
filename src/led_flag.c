@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <sysreg.h>
 #include "led_flag.h"
-#include "hal_1967VN034R1.h"
+#include "led_flag_adapter.h"
 #include "delay.h"
 #include "pthread.h"
 #include "main.h"

@@ -3,15 +3,17 @@
 
 // -----------------------------------------------------------------------------
 void InterruptInit(void) {
-  asm("rds;;");
   HAL_Interrupt_IMASKClear();
   HAL_Interrupt_ILATClear();
-  HAL_Interrupt_GlobalEnable();
-  return;
 }
 
 // -----------------------------------------------------------------------------
 void InterruptDisableGlobal(void) {
-  asm("rds;;");
   HAL_Interrupt_GlobalDisable();
+  asm("rds;;");
+}
+
+// -----------------------------------------------------------------------------
+void InterruptEnableGlobal(void) {
+  HAL_Interrupt_GlobalEnable();
 }

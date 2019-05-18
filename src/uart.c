@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "uart.h"
-#include "hal_1967VN034R1.h"
+#include "uart_adapter.h"
 #include "clock.h"
 #include "pthread.h"
 #include "delay.h"

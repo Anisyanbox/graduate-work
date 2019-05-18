@@ -6,24 +6,32 @@ $OBJECTS =  $COMMAND_LINE_OBJECTS;
 // Memory map below should fit for both 28 & 34, with bigger unused areas left on 28
 MEMORY
 {
-    M0Code      { TYPE(RAM) START(0x00000000) END(0x0000FFFF) WIDTH(32) }
-    M1Code      { TYPE(RAM) START(0x00100000) END(0x0010DFFF) WIDTH(32) }
+    M0Code      { TYPE(RAM) START(0x00000000) END(0x0000FFFF) WIDTH(32) } // BANK0 = 256 Kb (only for code/command)
+    M1Code      { TYPE(RAM) START(0x00100000) END(0x0010DFFF) WIDTH(32) } // BANK4 = 224 Kb
     
-    M2DataA     { TYPE(RAM) START(0x00040000) END(0x0004FFFF) WIDTH(32) }
-    M4DataA     { TYPE(RAM) START(0x00080000) END(0x0008FFFF) WIDTH(32) }
-    M6DataA     { TYPE(RAM) START(0x000C0000) END(0x000CDFFF) WIDTH(32) }
-    M6Stack     { TYPE(RAM) START(0x000CE000) END(0x000CFFFF) WIDTH(32) }
-    M8Stack     { TYPE(RAM) START(0x0010E000) END(0x0010FFFF) WIDTH(32) }
-    M10Heap     { TYPE(RAM) START(0x00140000) END(0x0014FFFF) WIDTH(32) }
+    M2DataA     { TYPE(RAM) START(0x00040000) END(0x0004FFFF) WIDTH(32) } // BANK1 = 256 Kb 
+    M4DataA     { TYPE(RAM) START(0x00080000) END(0x0008FFFF) WIDTH(32) } // BANK2 = 256 Kb 
+    M6DataA     { TYPE(RAM) START(0x000C0000) END(0x000CDFFF) WIDTH(32) } // BANK3 = 224 Kb
+    M6Stack     { TYPE(RAM) START(0x000CE000) END(0x000CFFFF) WIDTH(32) } // BANK3 = (end 32 Kb)
+    M8Stack     { TYPE(RAM) START(0x0010E000) END(0x0010FFFF) WIDTH(32) } // BANK4 = (end 32 Kb)
+    M10Heap     { TYPE(RAM) START(0x00140000) END(0x0014FFFF) WIDTH(32) } // BANK5 = 256 Kb
 
+    // 512 MB external SRAM (is absent in board)
     MS0         { TYPE(RAM) START(0x30000000) END(0x37FFFFFF) WIDTH(32) }
-    MS1         { TYPE(RAM) START(0x38000000) END(0x3FFFFFFF) WIDTH(32) }
-    MSSD0       { TYPE(RAM) START(0x40000000) END(0x407FFFFF) WIDTH(32) }
-    MSSD1       { TYPE(RAM) START(0x50000000) END(0x53FFFFFF) WIDTH(32) }
-    MSSD2       { TYPE(RAM) START(0x60000000) END(0x63FFFFFF) WIDTH(32) }
-    MSSD3       { TYPE(RAM) START(0x70000000) END(0x73FFFFFF) WIDTH(32) }
 
-// Memory blocks need to be less than 2 Gig.
+    // 512 MB external SRAM (is absent in board)
+    MS1         { TYPE(RAM) START(0x38000000) END(0x3FFFFFFF) WIDTH(32) }
+    
+    // BANK0 32 MB (DRAM chip MT48LC16M16A2 TG) external DRAM (without byte addressing)
+    MSSD0       { TYPE(RAM) START(0x40000000) END(0x407FFFFF) WIDTH(32) } 
+    
+    // external BANKs 1-3 for DRAM are absent on board
+    MSSD1       { TYPE(RAM) START(0x50000000) END(0x53FFFFFF) WIDTH(32) } // BANK1 external DRAM (256 MB)
+    MSSD2       { TYPE(RAM) START(0x60000000) END(0x63FFFFFF) WIDTH(32) } // BANK2 external DRAM (256 MB)
+    MSSD3       { TYPE(RAM) START(0x70000000) END(0x73FFFFFF) WIDTH(32) } // BANK3 external DRAM (256 MB)
+
+    // Memory blocks need to be less than 2 Gig.
+    // Internal peripheral and reserved memory
     HOST        { TYPE(RAM) START(0x80000000) END(0x8FFFFFFF) WIDTH(32) }
     HOST1       { TYPE(RAM) START(0x90000000) END(0xAFFFFFFF) WIDTH(32) }
     HOST2       { TYPE(RAM) START(0xB0000000) END(0xCFFFFFFF) WIDTH(32) }

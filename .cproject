@@ -23,10 +23,13 @@
 							</tool>
 							<tool id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\queue\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
@@ -107,14 +110,15 @@
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.base.1952060994" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.base"/>
 							<builder buildPath="${workspace_loc:/lynx_run}/Release" id="llvm.toolchain.win32.builder.base.344081215" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.base"/>
 							<tool id="llvm.toolchain.assembler.release.221568887" name="Assembler" superClass="llvm.toolchain.assembler.release">
-								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
-								</option>
+								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
 								<inputType id="llvm.toolchain.assembler.inp.821279068" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
 							</tool>
 							<tool id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
 								<option id="llvm.toolchain.compiler.preproc.only.32329742" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\stupid_delay\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\adapters\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\queue\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
@@ -141,9 +145,7 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.cnature.release.1051235865" name="Linker" superClass="llvm.toolchain.linker.cnature.release">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1094216083" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
-								</option>
+								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.163444855" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>
