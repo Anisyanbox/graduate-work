@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <stdint.h>
-#include <sysreg.h>
 
 #include "clock.h"
 #include "reset_reason.h"
@@ -46,7 +45,11 @@ static void SystemInit(void) {
   if (KeyboardInit() != KEYBOARD_INIT) {
     SystemInitError(KEYBOARD_INIT_ERROR);
   }
-  
+
+  /* ---------- Enable BTB ---------- */
+  asm("btben;;");
+  asm("nop;;");
+
   /* ====== */
   InterruptInit();
   InterruptEnableGlobal();

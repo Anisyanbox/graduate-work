@@ -8,7 +8,6 @@
 
 #define CNT_LEDS_ONBOARD                (4)
 #define SLEEP_LED_THREAD_MS             (10U)
-#define CUR_DELAY_IN_MS(steps)          (SLEEP_LED_THREAD_MS * (steps))
 #define LED_FLAG_THREAD_PRIORITY        MAIN_THREAD_NORMAL_PRIO
 
 typedef enum {

@@ -109,7 +109,7 @@ typedef __IO struct {
 
 typedef enum {
   GPIO_PxPort_A = 0,
-  GPIO_PxPort_D = 1,
+  GPIO_PxPort_D = 1
 } GPIO_PxPort;
 
 typedef enum {
@@ -158,7 +158,7 @@ extern "C" {
   void HAL_GPIO_PxD_Init(const uint Pins, const GPIO_PinMode Mode);
   void HAL_GPIO_PxD_DeInit(const uint Pins);
 
-  /* enable/disable alternative functoin for ports PxD and PxA*/
+  /* enable/disable alternative functoin for ports PxD and PxA */
   void HAL_GPIO_Px_AltInit(const GPIO_PxAlt_type PxAlt, const GPIO_PxAlt_Mode_type PxAltMode);
   void HAL_GPIO_Px_AltDeInit(void);
 
@@ -168,13 +168,11 @@ extern "C" {
   /* for ports А, В and С */
   void HAL_GPIO_Init(GPIO_PortPi * const GPIO_Pi, const uint Pins, const GPIO_PinMode Mode);
   void HAL_GPIO_DeInit(GPIO_PortPi * const GPIO_Pi, const uint Pins);
-
   void HAL_GPIO_WritePin(GPIO_PortPi * const GPIO_Pi, const GPIO_PIN Pin, const GPIO_PinState NewState);
   GPIO_PinState HAL_GPIO_ReadPin(GPIO_PortPi * const GPIO_Pi, const GPIO_PIN Pin);
   void HAL_GPIO_WritePins(GPIO_PortPi * const GPIO_Pi, const uint Pins, const uint Data);
   void HAL_GPIO_TogglePins(GPIO_PortPi * const GPIO_Pi, const uint Pins);
   uint HAL_GPIO_ReadPins(GPIO_PortPi * const GPIO_Pi, const uint Pins);
-  
   void HAL_GPIO_InterruptConfig(GPIO_PortPi * const GPIO_Pi, const uint Pins, const GPIO_InterruptMode Mode);
   uint HAL_GPIO_InterruptCheck(GPIO_PortPi * const GPIO_Pi, const uint Pins);
   void HAL_GPIO_InterruptEdgeClear(GPIO_PortPi * const GPIO_Pi, const uint Pins);
