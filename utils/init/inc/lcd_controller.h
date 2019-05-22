@@ -1,0 +1,6 @@
+#ifndef _UTILS_INIT_INC_LCD_CONTROLLER_H_
+#define _UTILS_INIT_INC_LCD_CONTROLLER_H_
+
+void LcdInit(void);
+
+#endif  // _UTILS_INIT_INC_LCD_CONTROLLER_H_
