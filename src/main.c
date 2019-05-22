@@ -6,6 +6,7 @@
 #include "interrupt.h"
 #include "rtc.h"
 #include "sdram.h"
+#include "lcd_controller.h"
 
 #include "main.h"
 #include "led_flag.h"
@@ -34,7 +35,10 @@ static void SystemInit(void) {
   
   /* ====== */
   RtcInit();
-  
+
+  /* ====== */
+  LcdControllerInit();
+
   /* ====== */
   if (UartInit() != UART_INIT) {
     SystemInitError(UART_INIT_ERROR);
