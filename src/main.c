@@ -5,6 +5,7 @@
 #include "reset_reason.h"
 #include "interrupt.h"
 #include "rtc.h"
+#include "sdram.h"
 
 #include "main.h"
 #include "led_flag.h"
@@ -27,6 +28,9 @@ static void SystemInit(void) {
   
   /* ====== */
   ClockInit();
+
+  /* ====== */
+  SdramControllerInit();
   
   /* ====== */
   RtcInit();
@@ -45,10 +49,6 @@ static void SystemInit(void) {
   if (KeyboardInit() != KEYBOARD_INIT) {
     SystemInitError(KEYBOARD_INIT_ERROR);
   }
-
-  /* ---------- Enable BTB ---------- */
-  asm("btben;;");
-  asm("nop;;");
 
   /* ====== */
   InterruptInit();

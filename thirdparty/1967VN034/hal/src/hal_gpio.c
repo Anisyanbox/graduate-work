@@ -32,7 +32,7 @@ void HAL_GPIO_Px_AltInit (const GPIO_PxAlt_type PxAlt, const GPIO_PxAlt_Mode_typ
   GPIO_RegPxALT ALT;
   ALT.word = (uint)PxAlt;
   ALT.b.PDXF = (uint)PxAltMode;
-  LX_GPIO_PxALT->word = ALT.word;
+  LX_GPIO_PxALT->word |= ALT.word;
 }
 
 void HAL_GPIO_Px_AltDeInit (void) {
@@ -100,8 +100,7 @@ uint HAL_GPIO_Px_ReadPins (const GPIO_PxPort Px, const uint Pins) {
   if (Px == GPIO_PxPort_A) {
     data = LX_GPIO_PxA->DR;
   } else {
-    //LX_GPIO_PxD->DR;
-    data = LX_GPIO_PxD->PXD;
+    data = LX_GPIO_PxD->DR;
   }
   ret = (data & Pins);
   return ret;

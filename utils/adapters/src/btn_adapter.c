@@ -8,6 +8,7 @@
 #define THREAD_SLEEP_MS         ((unsigned int)10)
 #define SLEEP_DELAY_STEP        THREAD_SLEEP_MS
 #define THREAD_PRIORITY         MAIN_THREAD_NORMAL_PRIO
+#define EXT_PORT_BTN_ADR        ((unsigned int)0x38000000)
 
 // -----------------------------------------------------------------------------
 typedef struct {
@@ -88,8 +89,9 @@ static BtnState_t BtnGetState(BtnId_t id) {
   uint temp = 0;
 
   if (btns[id].is_external_port_used) {
-    temp = HAL_GPIO_Px_ReadPins((const GPIO_PxPort)btns[id].ext_port,
-                                           (const uint)btns[id].pin);
+    temp = (*(unsigned int* )EXT_PORT_BTN_ADR) & 0x0000FFFF;
+    temp &= btns[id].pin;
+
     if (temp > 0) {
       st = GPIO_PinState_Set;
     }
@@ -114,7 +116,9 @@ static void GpioIrqHandler (void) {
   for (int i = 0; i < BTN_CNT; ++i) {
     if (HAL_GPIO_InterruptCheck((GPIO_PortPi * const)btns[i].port,
                                 (const uint)btns[i].pin)) {
-      keyboard[i].async_handler();
+      if (keyboard[i].async_handler != NULL) {
+        keyboard[i].async_handler();
+      }
       HAL_GPIO_InterruptEdgeClear((GPIO_PortPi * const)btns[i].port,
                                   (const uint)btns[i].pin);
     }
@@ -167,8 +171,9 @@ int BtnInit(void) {
 
   for (int i = 0; i < BTN_CNT; ++i) {
     if (btns[i].is_external_port_used) {
-      HAL_GPIO_PxD_Init((const uint)btns[i].pin, 
-                        (const GPIO_PinMode)GPIO_PinMode_InPU);
+      asm("nop;;");
+      // Not config pins for external port, because it is read with help
+      // sdram controller
     } else {
       HAL_GPIO_Init((GPIO_PortPi * const)btns[i].port,
                     (const uint)btns[i].pin,
@@ -210,9 +215,9 @@ void BtnSubscribeAsyncEventHandler(BtnId_t id_key_btn,
 	  keyboard[id_key_btn].mode = BTN_ASYNC;
 	  keyboard[id_key_btn].async_handler = async_handler;
 
-      HAL_GPIO_InterruptConfig((GPIO_PortPi * const)btns[id_key_btn].port,
-                                (const uint)btns[id_key_btn].pin,
-                                (const GPIO_InterruptMode)it_mode);
+    HAL_GPIO_InterruptConfig((GPIO_PortPi * const)btns[id_key_btn].port,
+                             (const uint)btns[id_key_btn].pin,
+                             (const GPIO_InterruptMode)it_mode);
   }
 }
 

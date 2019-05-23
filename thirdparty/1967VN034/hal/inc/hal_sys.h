@@ -24,24 +24,23 @@
 
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
-	void HAL_SYS_ExtBusEnable(int size);
-	void HAL_SYS_ExtBusDisable(void);
-	void HAL_SYS_SDRAMEnable(int sdrconValue);
-	void HAL_SYS_SDRAMDisable(void);
-	void HAL_SYS_SRAMEnable(int sysconValue);
-	void HAL_SYS_SRAMDisable(void);
-	void HAL_SYS_FlagEnable(void);
-	void HAL_SYS_FlagDisable(void);
-	void HAL_Core_PrimariPriority(void);
+void HAL_SYS_ExtBusEnable(int size);
+void HAL_SYS_ExtBusDisable(void);
+void HAL_SYS_SDRAMEnable(int sdrconValue);
+void HAL_SYS_SDRAMDisable(void);
+void HAL_SYS_SRAMEnable(int sysconValue);
+void HAL_SYS_SRAMDisable(void);
+void HAL_SYS_FlagEnable(void);
+void HAL_SYS_FlagDisable(void);
+void HAL_Core_PrimariPriority(void);
 
-	static inline void HAL_SYS_WaitClk(unsigned int clk){
-	    unsigned long long int stop = __read_ccnt();
-	    stop += clk;
-	    while ((((unsigned long long int)(__read_ccnt())) - stop) & ((unsigned long long int)1<<63));
-	}
+static inline void HAL_SYS_WaitClk(unsigned int clk){
+		unsigned long long int stop = __read_ccnt();
+		stop += clk;
+		while ((((unsigned long long int)(__read_ccnt())) - stop) & ((unsigned long long int)1<<63));
+}
 
 #ifdef __cplusplus
 }
