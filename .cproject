@@ -9,19 +9,22 @@
 					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="llvm.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="milandr.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="llvm.win32.dxe.debug.1929216818" name="Debug" parent="llvm.win32.dxe.debug">
+				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;llvm.toolchain.errorparser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;milandr.toolchain.errorparser" id="llvm.win32.dxe.debug.1929216818" name="Debug" parent="llvm.win32.dxe.debug">
 					<folderInfo id="llvm.win32.dxe.debug.1929216818." name="/" resourcePath="">
-						<toolChain id="llvm.toolchain.dxe.debug.1572191774" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.debug">
+						<toolChain errorParsers="llvm.toolchain.errorparser" id="llvm.toolchain.dxe.debug.1572191774" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.debug.402402205" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.debug"/>
-							<builder buildPath="${workspace_loc:/lynx_run}/Debug" id="llvm.toolchain.win32.builder.debug.894495062" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.debug"/>
-							<tool id="llvm.toolchain.assembler.debug.2138561280" name="Assembler" superClass="llvm.toolchain.assembler.debug">
+							<builder buildPath="${workspace_loc:/lynx_run}/Debug" errorParsers="" id="llvm.toolchain.win32.builder.debug.894495062" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.debug"/>
+							<tool errorParsers="" id="llvm.toolchain.assembler.debug.2138561280" name="Assembler" superClass="llvm.toolchain.assembler.debug">
 								<option id="llvm.toolchain.assembler.incpath.23796076" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
 								<inputType id="llvm.toolchain.assembler.inp.1579188210" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
 							</tool>
-							<tool id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
+							<tool errorParsers="" id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\init\inc&quot;"/>
@@ -37,6 +40,8 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
 								<option id="llvm.toolchain.compiler.optimization.level.debug.1733571792" name="TsCompilerOptimization" superClass="llvm.toolchain.compiler.optimization.level.debug" value="co1_1=-O0" valueType="string"/>
+								<option id="llvm.toolchain.compiler.warnings.unknownpragmas.524546834" name="Warnings on unknown pragmas (-Wunknown-pragmas)" superClass="llvm.toolchain.compiler.warnings.unknownpragmas" value="true" valueType="boolean"/>
+								<option id="llvm.toolchain.compiler.proc1.640658018" name="TsCompilerProcessor1" superClass="llvm.toolchain.compiler.proc1" value="cp1_1=--double-size-64;cp1_2=false" valueType="string"/>
 								<inputType id="llvm.toolchain.compiler.inp.932479137" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
 								<inputType id="llvm.inputType1.708278450" name="CI CPP" superClass="llvm.inputType1"/>
 							</tool>
@@ -51,7 +56,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
 							</tool>
-							<tool id="llvm.toolchain.linker.cnature.debug.67204761" name="Linker" superClass="llvm.toolchain.linker.cnature.debug">
+							<tool errorParsers="" id="llvm.toolchain.linker.cnature.debug.67204761" name="Linker" superClass="llvm.toolchain.linker.cnature.debug">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1698415921" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
 								<option id="llvm.toolchain.linker.incpath.1218864087" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.1825093978" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
@@ -101,21 +106,23 @@
 					<extension id="org.eclipse.cdt.core.MakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="llvm.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="milandr.toolchain.errorparser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="llvm.win32.dxe.release.1017348798" name="Release" parent="llvm.win32.dxe.release">
+				<configuration artifactExtension="dxe" artifactName="${ProjName}" buildArtefactType="ru.angioscan.toolchain.buildArtefactType.dxe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=ru.angioscan.toolchain.buildArtefactType.dxe" cleanCommand="&quot;${eclipse_home}toolchain\Bin\rm&quot; -rf" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;llvm.toolchain.errorparser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.GmakeErrorParser;milandr.toolchain.errorparser" id="llvm.win32.dxe.release.1017348798" name="Release" parent="llvm.win32.dxe.release">
 					<folderInfo id="llvm.win32.dxe.release.1017348798." name="/" resourcePath="">
-						<toolChain id="llvm.toolchain.dxe.release.1597783841" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.release">
+						<toolChain errorParsers="llvm.toolchain.errorparser" id="llvm.toolchain.dxe.release.1597783841" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.release">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.base.1952060994" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.base"/>
-							<builder buildPath="${workspace_loc:/lynx_run}/Release" id="llvm.toolchain.win32.builder.base.344081215" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.base"/>
-							<tool id="llvm.toolchain.assembler.release.221568887" name="Assembler" superClass="llvm.toolchain.assembler.release">
-								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
-								</option>
+							<builder buildPath="${workspace_loc:/lynx_run}/Release" errorParsers="" id="llvm.toolchain.win32.builder.base.344081215" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.base"/>
+							<tool errorParsers="" id="llvm.toolchain.assembler.release.221568887" name="Assembler" superClass="llvm.toolchain.assembler.release">
+								<option id="llvm.toolchain.assembler.incpath.1709705569" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
 								<inputType id="llvm.toolchain.assembler.inp.821279068" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
 							</tool>
-							<tool id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
+							<tool errorParsers="" id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
 								<option id="llvm.toolchain.compiler.preproc.only.32329742" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\utils\init\inc&quot;"/>
@@ -131,6 +138,7 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
 								<option id="llvm.toolchain.compiler.optimization.level.release.554425205" name="TsCompilerOptimization" superClass="llvm.toolchain.compiler.optimization.level.release" value="co1_1=-O3" valueType="string"/>
+								<option id="llvm.toolchain.compiler.warnings.unknownpragmas.205724882" name="Warnings on unknown pragmas (-Wunknown-pragmas)" superClass="llvm.toolchain.compiler.warnings.unknownpragmas" value="true" valueType="boolean"/>
 								<inputType id="llvm.toolchain.compiler.inp.1203652117" name="Compiler Input" superClass="llvm.toolchain.compiler.inp"/>
 								<inputType id="llvm.inputType1.1675958530" name="CI CPP" superClass="llvm.inputType1"/>
 							</tool>
@@ -145,11 +153,9 @@
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\inc&quot;"/>
 								</option>
 							</tool>
-							<tool id="llvm.toolchain.linker.cnature.release.1051235865" name="Linker" superClass="llvm.toolchain.linker.cnature.release">
+							<tool errorParsers="" id="llvm.toolchain.linker.cnature.release.1051235865" name="Linker" superClass="llvm.toolchain.linker.cnature.release">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1094216083" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${eclipse_home}toolchain\Inc&quot;"/>
-								</option>
+								<option id="llvm.toolchain.linker.incpath.1698228044" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.163444855" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.03.01\workspace\lynx_run\thirdparty\clibNOFP&quot;"/>

@@ -8,9 +8,16 @@
 #define LCD_BUF_SIZE      ((int)((LCD_XSIZE) * (LCD_YSIZE)))
 #define LCD_DMA_CHAN_NUM  ((uint32_t)4)
 
+static long long int lcd_transfers = 0;
+
 // -----------------------------------------------------------------------------
-#pragma section(".sdr_data")
+__attribute__((section(".sdr_data")))
 static uint32_t lcd_buf[LCD_XSIZE * LCD_YSIZE];
+
+// -----------------------------------------------------------------------------
+static void LcdDmaDoneTransfIrqHandler(void) {
+  ++lcd_transfers;
+}
 
 // -----------------------------------------------------------------------------
 void LcdControllerInit(void) {
@@ -59,8 +66,8 @@ void LcdControllerInit(void) {
                    lcd_hx8257_conf.usHSize,
                    lcd_hx8257_conf.usVSize,
                    lcd_hx8257_conf.ulRgbMode,
-                   NULL);
+                   LcdDmaDoneTransfIrqHandler);
   HAL_LCD_Setup(&lcd_hx8257_conf);
   HAL_LCD_Enable();
-  HAL_LCD_PwmSetDuty(50);
+  HAL_LCD_PwmSetDuty(10);
 }
