@@ -32,7 +32,7 @@ void HAL_GPIO_Px_AltInit (const GPIO_PxAlt_type PxAlt, const GPIO_PxAlt_Mode_typ
   GPIO_RegPxALT ALT;
   ALT.word = (uint)PxAlt;
   ALT.b.PDXF = (uint)PxAltMode;
-  LX_GPIO_PxALT->word |= ALT.word;
+  LX_GPIO_PxALT->word = ALT.word;
 }
 
 void HAL_GPIO_Px_AltDeInit (void) {

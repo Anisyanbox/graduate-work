@@ -141,6 +141,7 @@ LedInitStat_t LedFlagInit(void) {
   sched_param_t led_flag_thread_prio;
 
   HAL_SYS_FlagEnable();
+  __builtin_sysreg_write(__FLAGREGST, 0xFF);
   FlagOutModeEn(LED_FLAG_0 | LED_FLAG_1 | LED_FLAG_2 | LED_FLAG_3);
 
   if (pthread_attr_init(&led_flag_attr) != 0) {

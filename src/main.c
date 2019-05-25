@@ -50,6 +50,10 @@ static void SystemInit(void) {
     SystemInitError(KEYBOARD_INIT_ERROR);
   }
 
+	//---------- Enable BTB ----------//
+  asm("btben;;");
+  asm("nop;;");
+
   /* ====== */
   InterruptInit();
   InterruptEnableGlobal();
