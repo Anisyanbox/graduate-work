@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdint.h>
 #include "btn_adapter.h"
 #include "pthread.h"
 #include "main.h"
@@ -8,7 +9,7 @@
 #define THREAD_SLEEP_MS         ((unsigned int)10)
 #define SLEEP_DELAY_STEP        THREAD_SLEEP_MS
 #define THREAD_PRIORITY         MAIN_THREAD_NORMAL_PRIO
-#define EXT_PORT_BTN_ADR        ((unsigned int)0x38000000)
+#define EXT_PORT_BTN_ADR        ((unsigned int)0x383FFFFF)
 
 // -----------------------------------------------------------------------------
 typedef struct {
@@ -65,22 +66,22 @@ typedef struct {
 } Btn_t;
 
 static Btn_t keyboard[BTN_CNT] = {
-  {BTN_SB15_ID, '0', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
   {BTN_SB1_ID, '1', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
   {BTN_SB2_ID, '2', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
   {BTN_SB3_ID, '3', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
+  {BTN_SB4_ID, '<', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
+  {BTN_SB5_ID, '^', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
+  {BTN_SB6_ID, '>', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
+  {BTN_SB7_ID, '~', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
   {BTN_SB8_ID, '4', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
   {BTN_SB9_ID, '5', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
   {BTN_SB10_ID, '6', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
   {BTN_SB11_ID, '7', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
   {BTN_SB12_ID, '8', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
   {BTN_SB13_ID, '9', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
-  {BTN_SB16_ID, '*', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
   {BTN_SB14_ID, '#', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL},
-  {BTN_SB4_ID, '<', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
-  {BTN_SB5_ID, '^', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
-  {BTN_SB6_ID, '>', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL},
-  {BTN_SB7_ID, '~', UNKNOWN_MODE, 30, 30, 0, 0, BOTH_EVNT, NULL, NULL, NULL}
+  {BTN_SB15_ID, '0', UNKNOWN_MODE, 30, 30, 0, 0, PRESS_EVNT, NULL, NULL, NULL},
+  {BTN_SB16_ID, '*', UNKNOWN_MODE, 30, 30, 0, 0, RELEASE_EVNT, NULL, NULL, NULL}
 };
 
 // -----------------------------------------------------------------------------
@@ -128,35 +129,40 @@ static void GpioIrqHandler (void) {
 // -----------------------------------------------------------------------------
 static void * KeyboardThread(void * args) {
   static BtnState_t last_state[BTN_CNT];
-  static BtnState_t curr_state;
-  static bool is_new_state = false;
+  static BtnState_t curr_state[BTN_CNT];
 
   for (int i = 0; i < BTN_CNT; ++i) {
     last_state[i] = BtnGetState((BtnId_t)i);
+    curr_state[i] = last_state[i];
   }
 
   while(true) {
     DelayMs(THREAD_SLEEP_MS);
     for (int i = 0; i < BTN_CNT; ++i) {
       if (keyboard[i].mode == BTN_SYNC) {
-        curr_state = BtnGetState((BtnId_t)i);
-        
-        /* detect new button state */
-        if (last_state[i] != curr_state) {
-          if (curr_state == BTN_PRESSED) {
+        curr_state[i] = BtnGetState((BtnId_t)i);
+        if  (curr_state[i] != last_state[i]) {
+          if (curr_state[i] == BTN_PRESSED) { /* PRESSED */
             keyboard[i].curr_released_delay_ms = 0;
             keyboard[i].curr_pressed_delay_ms += SLEEP_DELAY_STEP;
             if (keyboard[i].curr_pressed_delay_ms == keyboard[i].pressed_delay_ms) {
-              keyboard[i].press_handler(keyboard[i].character);
+              curr_state[i] = BTN_PRESSED;
+              last_state[i] = curr_state[i];
+              if (keyboard[i].press_handler != NULL) {
+                keyboard[i].press_handler(keyboard[i].character);
+              }
             }
-          } else {
+          } else { /* RELEASED */
             keyboard[i].curr_pressed_delay_ms = 0;
             keyboard[i].curr_released_delay_ms += SLEEP_DELAY_STEP;
             if (keyboard[i].curr_released_delay_ms == keyboard[i].released_delay_ms) {
-              keyboard[i].release_handler(keyboard[i].character);
+              curr_state[i] = BTN_RELEASED;
+              last_state[i] = curr_state[i];
+              if (keyboard[i].release_handler != NULL) {
+                keyboard[i].release_handler(keyboard[i].character);
+              }
             }
           }
-          last_state[i] = curr_state;
         }
       }
     }

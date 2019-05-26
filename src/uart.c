@@ -22,12 +22,11 @@ static void Uart1IrqHandler(void) {
 
 // -----------------------------------------------------------------------------
 static void * Uart1TxThread(void * args) {
-  (void)args;
-  char buffer[30] = {0};
+  static char buffer[30] = {0};
 
   while(true) {
     sprintf(buffer, "--> %llu", AppTimeGetInMs() / 1000);
-    HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
+    // HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
     DelayMs(UART1_THREAD_SLEEP_MS);
   }
 }

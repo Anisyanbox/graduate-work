@@ -7,7 +7,7 @@
 
 // -----------------------------------------------------------------------------
 static void EventHandler(BtnChar_t c) {
-  char buffer[10] = {0};
+  static char buffer[10] = {0};
 
   sprintf(buffer, "--> %c", c);
   HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
@@ -31,6 +31,7 @@ KeyboardInitStat_t KeyboardInit(void) {
   BtnSubscribeSyncEventHandler(BTN_SB7_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB8_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB9_ID, PRESS_EVNT, EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB10_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB11_ID, RELEASE_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB12_ID, RELEASE_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB13_ID, RELEASE_EVNT, EventHandler);
