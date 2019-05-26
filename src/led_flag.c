@@ -1,14 +1,13 @@
 #include <stdbool.h>
 #include <sysreg.h>
 #include "led_flag.h"
-#include "hal_1967VN034R1.h"
+#include "led_flag_adapter.h"
 #include "delay.h"
 #include "pthread.h"
 #include "main.h"
 
 #define CNT_LEDS_ONBOARD                (4)
 #define SLEEP_LED_THREAD_MS             (10U)
-#define CUR_DELAY_IN_MS(steps)          (SLEEP_LED_THREAD_MS * (steps))
 #define LED_FLAG_THREAD_PRIORITY        MAIN_THREAD_NORMAL_PRIO
 
 typedef enum {
@@ -142,6 +141,7 @@ LedInitStat_t LedFlagInit(void) {
   sched_param_t led_flag_thread_prio;
 
   HAL_SYS_FlagEnable();
+  __builtin_sysreg_write(__FLAGREGST, 0xFF);
   FlagOutModeEn(LED_FLAG_0 | LED_FLAG_1 | LED_FLAG_2 | LED_FLAG_3);
 
   if (pthread_attr_init(&led_flag_attr) != 0) {

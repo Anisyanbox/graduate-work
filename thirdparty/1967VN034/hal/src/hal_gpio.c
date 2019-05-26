@@ -94,8 +94,16 @@ void HAL_GPIO_Px_WritePins (const GPIO_PxPort Px, const uint Pins, const uint Da
 }
 
 uint HAL_GPIO_Px_ReadPins (const GPIO_PxPort Px, const uint Pins) {
-  __IO uint *DR = (Px == GPIO_PxPort_A)? &LX_GPIO_PxA->DR : &LX_GPIO_PxD->DR;
-  return (*DR & Pins);
+  uint data = 0;
+  uint ret = 0;
+
+  if (Px == GPIO_PxPort_A) {
+    data = LX_GPIO_PxA->DR;
+  } else {
+    data = LX_GPIO_PxD->DR;
+  }
+  ret = (data & Pins);
+  return ret;
 }
 
 void HAL_GPIO_InterruptConfig (GPIO_PortPi * const GPIO_Pi, const uint Pins, const GPIO_InterruptMode Mode) {

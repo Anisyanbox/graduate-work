@@ -14,6 +14,6 @@ void RstRsnSave(void) {
 }
 
 // -----------------------------------------------------------------------------
-RstRsn_t RstRsnGetSaveState(void) {
+RstRsn_t RstRsnGetSavedState(void) {
   return reset_rsn;
 }

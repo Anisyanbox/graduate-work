@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "uart.h"
-#include "hal_1967VN034R1.h"
+#include "uart_adapter.h"
 #include "clock.h"
 #include "pthread.h"
 #include "delay.h"
@@ -22,12 +22,11 @@ static void Uart1IrqHandler(void) {
 
 // -----------------------------------------------------------------------------
 static void * Uart1TxThread(void * args) {
-  (void)args;
-  char buffer[30] = {0};
+  static char buffer[30] = {0};
 
   while(true) {
     sprintf(buffer, "--> %llu", AppTimeGetInMs() / 1000);
-    HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
+    // HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
     DelayMs(UART1_THREAD_SLEEP_MS);
   }
 }
