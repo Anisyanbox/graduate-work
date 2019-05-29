@@ -63,7 +63,7 @@ PROCESSOR P0
 
             g_ldf_ext_mem_rest = .;
         } >MSSD0
-
+        
         program
         {
             FILL(0xb3c00000) // Fill any gaps with NOPs.
@@ -159,6 +159,5 @@ PROCESSOR P0
             _ldf_defheap_base = .;
             _ldf_defheap_size = MEMORY_SIZEOF(M10Heap);
         } >M10Heap
-
     }
 }

@@ -9,7 +9,7 @@
 #include "apptime.h"
 #include "main.h"
 
-#define UART1_THREAD_SLEEP_MS   ((unsigned int)1000)
+#define UART1_THREAD_SLEEP_MS   ((unsigned int)100)
 #define UART1_THREAD_PRIORITY   MAIN_THREAD_NORMAL_PRIO
 
 static bool is_it_happened = false;
@@ -23,10 +23,11 @@ static void Uart1IrqHandler(void) {
 // -----------------------------------------------------------------------------
 static void * Uart1TxThread(void * args) {
   static char buffer[30] = {0};
+  uint32_t * lcd_buf = NULL;
 
   while(true) {
     sprintf(buffer, "--> %llu", AppTimeGetInMs() / 1000);
-    // HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
+    HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
     DelayMs(UART1_THREAD_SLEEP_MS);
   }
 }

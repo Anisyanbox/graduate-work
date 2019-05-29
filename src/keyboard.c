@@ -9,7 +9,7 @@
 static void EventHandler(BtnChar_t c) {
   static char buffer[10] = {0};
 
-  sprintf(buffer, "--> %c", c);
+  sprintf(buffer, "%c", c);
   HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
   return;
 }

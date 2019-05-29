@@ -179,7 +179,7 @@ int BtnInit(void) {
     if (btns[i].is_external_port_used) {
       asm("nop;;");
       // Not config pins for external port, because it is read with help
-      // sdram controller
+      // SRAM controller
     } else {
       HAL_GPIO_Init((GPIO_PortPi * const)btns[i].port,
                     (const uint)btns[i].pin,
