@@ -3,6 +3,8 @@
 
 #define MAIN_THREAD_NORMAL_PRIO ((int)0)
 
+#define UART_DEBUG_PORT         (LX_UART1)
+
 typedef enum {
   UART_INIT_ERROR = 0,
   LED_INIT_ERROR,

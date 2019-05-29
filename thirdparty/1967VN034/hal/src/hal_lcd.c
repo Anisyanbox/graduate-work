@@ -2,8 +2,6 @@
 
 #define wa_delay()  asm("nop;; nop;; nop;; nop;;")
 
-static __builtin_quad tcb;
-
 void HAL_LCD_Enable(void) {
   LX_LCD->CTRL.field.VEN = 1;
 }
@@ -183,6 +181,9 @@ void HAL_LCD_StartDma(uint32_t ulChannel,
                       uint32_t ulYSize,
                       uint32_t ulRgbMode,
                       void *pvDmaIsrHandler ) {
+  // Transmitton Control Block (tcb) for DMA controller
+  // Block from 4 words defining DMA mode
+  static __builtin_quad tcb;
   uint32_t *ptr = ( uint32_t* ) &tcb;
 
   if( ulChannel < 4 || ulChannel > 7 ) {

@@ -40,7 +40,7 @@ static void pause_clk(unsigned int clk)
 static void HAL_PLL_CoreSwitch(PLL_ConfigTypeDef* pll_cfg){
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) &= ~(CPU_CPLL_SEL);
 	*((unsigned int*)PLL_CORE_CFG_LOC) = pll_cfg->value;
-	pause_clk(500);
+	pause_clk(50000);
 }
 
 static void HAL_PLL_LinkSwitch(PLL_ConfigTypeDef* pll_cfg)
@@ -50,7 +50,7 @@ static void HAL_PLL_LinkSwitch(PLL_ConfigTypeDef* pll_cfg)
 	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
 	pll_cfg->bypass = 0;
 	*((unsigned int*)PLL_LINK_CFG_LOC) = pll_cfg->value;
-	pause_clk(2000);
+	pause_clk(50000);
 }
 
 static void HAL_PLL_BusSwitch(PLL_ConfigTypeDef* pll_cfg)
@@ -60,7 +60,7 @@ static void HAL_PLL_BusSwitch(PLL_ConfigTypeDef* pll_cfg)
 	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
 	pll_cfg->bypass = 0;
 	*((unsigned int*)PLL_BUS_CFG_LOC) = pll_cfg->value;
-	pause_clk(2000);
+	pause_clk(50000);
 	*((unsigned int*) CPU_CLK_CONFIG_LOC) |= (CPU_BPLL_SEL);		//BPLL SET
 }
 

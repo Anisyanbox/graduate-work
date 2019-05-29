@@ -1,20 +1,20 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "lcd_controller.h"
 #include "hal_1967VN034R1.h"
+#include "sdram_adapter.h"
 
 #define LCD_XSIZE         ((uint16_t)480)
 #define LCD_YSIZE         ((uint16_t)272)
-#define LCD_BUF_SIZE      ((int)((LCD_XSIZE) * (LCD_YSIZE)))
+#define LCD_BUF_SIZE      ((int)(((LCD_XSIZE) * (LCD_YSIZE)) / 2))
 #define LCD_DMA_CHAN_NUM  ((uint32_t)4)
 
 static long long int lcd_transfers = 0;
+static uint32_t * lcd_buf = NULL;
 
 // -----------------------------------------------------------------------------
-__attribute__((section(".sdr_data")))
-static uint32_t lcd_buf[LCD_XSIZE * LCD_YSIZE];
-
-// -----------------------------------------------------------------------------
+#pragma interrupt
 static void LcdDmaDoneTransfIrqHandler(void) {
   ++lcd_transfers;
 }
@@ -48,13 +48,27 @@ void LcdControllerInit(void) {
     0,                // set to
   };
 
-  // fill in video-buffer with orange color
-  for(int i = 0; i < LCD_BUF_SIZE / 2; i++) {
-    lcd_buf[i] = 0xF4A3F4A3;
+  // fill in video-buffer
+  lcd_buf = SramGetStartBank0Addr();
+  for(int i = 0; i < LCD_BUF_SIZE / 4; i++) {
+    *(lcd_buf +i) = 0;
+  }
+
+  for(int i = LCD_BUF_SIZE / 4;  i < LCD_BUF_SIZE / 2; i++) {
+    *(lcd_buf +i) = 0xAAAAAAAA;
+  }
+
+  for(int i = LCD_BUF_SIZE / 2;  i < 3*LCD_BUF_SIZE / 4; i++) {
+    *(lcd_buf +i) = 0xffffffff;
+  }
+
+  for(int i = 3*LCD_BUF_SIZE / 4;  i < LCD_BUF_SIZE; i++) {
+    *(lcd_buf +i) = 0xFB0CFB0C;
   }
 
   HAL_LCD_Disable();
   HAL_LCD_GpioInit();
+  HAL_LCD_Setup(&lcd_hx8257_conf);
 
   // DMA will continously send data from video-buf to  LCD input buf.
   // Input buf is connected to 128-bit aligned bus and contain five 128-bit words.
@@ -66,8 +80,28 @@ void LcdControllerInit(void) {
                    lcd_hx8257_conf.usHSize,
                    lcd_hx8257_conf.usVSize,
                    lcd_hx8257_conf.ulRgbMode,
-                   LcdDmaDoneTransfIrqHandler);
-  HAL_LCD_Setup(&lcd_hx8257_conf);
+                   NULL);
   HAL_LCD_Enable();
-  HAL_LCD_PwmSetDuty(10);
+  HAL_LCD_PwmSetDuty(100);
 }
+
+// -----------------------------------------------------------------------------
+uint32_t * LcdControllerGetVideoBufAddr(void) {
+  return lcd_buf;
+}
+
+// -----------------------------------------------------------------------------
+int LcdControllerGetVideoBufSuze(void) {
+  return LCD_BUF_SIZE;
+}
+
+// -----------------------------------------------------------------------------
+int LcdControllerGetVideoBufWigth(void) {
+  return (int)LCD_XSIZE;
+}
+
+// -----------------------------------------------------------------------------
+int LcdControllerGetVideoBufHeigth(void) {
+  return (int)LCD_YSIZE;
+}
+ 

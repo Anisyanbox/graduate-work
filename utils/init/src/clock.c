@@ -4,7 +4,7 @@
 #define INPUT_XTI_CLOCK_KHZ ((unsigned int)25000)
 
 #define CORE_CLOCK_KHZ      ((unsigned int)300000)
-#define BUS_CLOCK_KHZ       ((unsigned int)133000)
+#define BUS_CLOCK_KHZ       ((unsigned int)125000)
 #define LINK_CLOCK_KHZ      ((unsigned int)300000)
 
 // -----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ void ClockInit(void) {
 
   HAL_PLL_StartCoreSync();
   HAL_PLL_StartExtBusSync();
-  
+
   HAL_Pll_CoreStart();
   HAL_Pll_LinkStart();
   HAL_Pll_BusStart();
