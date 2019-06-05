@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include "lcd_controller.h"
 #include "hal_1967VN034R1.h"
-#include "sdram_adapter.h"
+#include "ext_mem_alloc.h"
 
 #define LCD_XSIZE         ((uint16_t)480)
 #define LCD_YSIZE         ((uint16_t)272)
@@ -49,7 +49,7 @@ void LcdControllerInit(void) {
   };
 
   // fill in video-buffer
-  lcd_buf = SramGetStartBank0Addr();
+  lcd_buf = ExtMemAlloc((size_t)LCD_BUF_SIZE);
   for(int i = 0; i < LCD_BUF_SIZE / 4; i++) {
     *(lcd_buf +i) = 0;
   }

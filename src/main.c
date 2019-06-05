@@ -3,7 +3,6 @@
 #include <sysreg.h>
 #include <stdio.h>
 
-#include "hal_1967VN034R1.h"
 #include "clock.h"
 #include "reset_reason.h"
 #include "interrupt.h"
