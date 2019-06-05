@@ -20,7 +20,7 @@
 						<toolChain errorParsers="llvm.toolchain.errorparser" id="llvm.toolchain.dxe.debug.1572191774" name="Milandr DSP1967 LLVM Cross C/C++" superClass="llvm.toolchain.dxe.debug">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="llvm.toolchain.win32.targetplatform.debug.402402205" isAbstract="false" name="LLVM Target Platform" osList="win32" superClass="llvm.toolchain.win32.targetplatform.debug"/>
 							<builder buildPath="${workspace_loc:/lynx_run}/Debug" errorParsers="" id="llvm.toolchain.win32.builder.debug.894495062" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Milandr LLVM Cross C/C++ Builder" superClass="llvm.toolchain.win32.builder.debug"/>
-							<tool errorParsers="" id="llvm.toolchain.assembler.debug.2138561280" name="Assembler" superClass="llvm.toolchain.assembler.debug">
+							<tool command="&quot;${eclipse_home}toolchain\\Bin\\mca-tsh&quot;" commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX} ${OUTPUT} ${INPUTS}" errorParsers="" id="llvm.toolchain.assembler.debug.2138561280" name="Assembler" superClass="llvm.toolchain.assembler.debug">
 								<option id="llvm.toolchain.assembler.incpath.23796076" name="Include directories" superClass="llvm.toolchain.assembler.incpath" valueType="includePath"/>
 								<inputType id="llvm.toolchain.assembler.inp.1579188210" name="Assembler Input" superClass="llvm.toolchain.assembler.inp"/>
 							</tool>
@@ -28,13 +28,13 @@
 								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_i2c\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\Drivers\ov7670\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\ov7670\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\init\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\queue\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\adapters\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
@@ -50,12 +50,14 @@
 							<tool id="llvm.toolchain.compiler.ccnature.debug.95348852" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.215256817" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_i2c\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\ov7670\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\init\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\queue\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\adapters\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
@@ -83,7 +85,7 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.ccnature.debug.1895093336" name="Linker" superClass="llvm.toolchain.linker.ccnature.debug">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.339558645" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1961482766" name="Include" superClass="llvm.toolchain.linker.incpath"/>
+								<option id="llvm.toolchain.linker.incpath.1961482766" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.699168033" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\src&quot;"/>
@@ -130,13 +132,13 @@
 								<option id="llvm.toolchain.compiler.preproc.only.32329742" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_i2c\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\Drivers\ov7670\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\ov7670\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\init\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\queue\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\adapters\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
@@ -151,12 +153,14 @@
 							<tool id="llvm.toolchain.compiler.ccnature.release.1323103281" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.release">
 								<option id="llvm.toolchain.compiler.preproc.only.1654631180" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\init\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_i2c\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\ov7670\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\init\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\queue\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\apptime\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\delay\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\1967VN034\hal\inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\adapters\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\adapters\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\inc\1967x&quot;"/>
@@ -184,7 +188,7 @@
 							</tool>
 							<tool id="llvm.toolchain.linker.ccnature.release.1038890368" name="Linker" superClass="llvm.toolchain.linker.ccnature.release">
 								<option id="llvm.toolchain.linker.cnature.gen2.release.1560513415" name="TsLinkerGeneral2" superClass="llvm.toolchain.linker.cnature.gen2.release" value="lg2_1=true;lg2_2=false" valueType="string"/>
-								<option id="llvm.toolchain.linker.incpath.1163653548" name="Include" superClass="llvm.toolchain.linker.incpath"/>
+								<option id="llvm.toolchain.linker.incpath.1163653548" name="Include" superClass="llvm.toolchain.linker.incpath" valueType="includePath"/>
 								<option id="llvm.toolchain.linker.libs.1934663153" name="Library paths" superClass="llvm.toolchain.linker.libs" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\clib\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\thirdparty\dsp\src&quot;"/>

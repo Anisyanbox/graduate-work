@@ -1,5 +1,5 @@
-#ifndef _UTILS_INIT_INC_LCD_CONTROLLER_H_
-#define _UTILS_INIT_INC_LCD_CONTROLLER_H_
+#ifndef _INIT_INC_LCD_CONTROLLER_H_
+#define _INIT_INC_LCD_CONTROLLER_H_
 
 #include <stdint.h>
 
@@ -10,4 +10,4 @@ int LcdControllerGetVideoBufSuze(void);
 int LcdControllerGetVideoBufWigth(void);
 int LcdControllerGetVideoBufHeigth(void);
  
-#endif  // _UTILS_INIT_INC_LCD_CONTROLLER_H_
+#endif  // _INIT_INC_LCD_CONTROLLER_H_
