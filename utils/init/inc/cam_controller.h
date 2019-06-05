@@ -1,0 +1,6 @@
+#ifndef _UTILS_INIT_INC_CAM_CONTROLLER_H_
+#define _UTILS_INIT_INC_CAM_CONTROLLER_H_
+
+void CamControllerInit(void);
+
+#endif  // _UTILS_INIT_INC_CAM_CONTROLLER_H_

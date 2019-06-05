@@ -11,7 +11,7 @@
 static void IntHwIrq(void) {
   static char buf[50] = { 0 };
 
-  sprintf(buf, "System HW error: systat =  %X\n", __builtin_sysreg_read(__SYSTATCL));  
+  sprintf(buf, "System HW error: systat =  0x%X\n", __builtin_sysreg_read(__SYSTATCL));
   HAL_UART_Send(UART_DEBUG_PORT, buf, strlen((const char *)buf));
 }
 

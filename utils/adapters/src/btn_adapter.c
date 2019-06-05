@@ -90,7 +90,8 @@ static BtnState_t BtnGetState(BtnId_t id) {
   uint temp = 0;
 
   if (btns[id].is_external_port_used) {
-    temp = (*(unsigned int* )EXT_PORT_BTN_ADR) & 0x0000FFFF;
+    (*(unsigned int* )EXT_PORT_BTN_ADR) = 0;
+    temp = (*(unsigned int* )EXT_PORT_BTN_ADR) >> 16;
     temp &= btns[id].pin;
 
     if (temp > 0) {

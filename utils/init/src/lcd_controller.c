@@ -80,7 +80,7 @@ void LcdControllerInit(void) {
                    lcd_hx8257_conf.usHSize,
                    lcd_hx8257_conf.usVSize,
                    lcd_hx8257_conf.ulRgbMode,
-                   NULL);
+                   LcdDmaDoneTransfIrqHandler);
   HAL_LCD_Enable();
   HAL_LCD_PwmSetDuty(100);
 }

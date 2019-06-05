@@ -1,6 +1,8 @@
 #ifndef _UTILS_INIT_INC_LCD_CONTROLLER_H_
 #define _UTILS_INIT_INC_LCD_CONTROLLER_H_
 
+#include <stdint.h>
+
 void LcdControllerInit(void);
 uint32_t * LcdControllerGetVideoBufAddr(void);
 
