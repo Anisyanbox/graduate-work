@@ -2,7 +2,9 @@
 #include <stdint.h>
 #include <sysreg.h>
 #include <stdio.h>
+#include <builtins.h>
 
+#include "def1967VN034R1.h"
 #include "clock.h"
 #include "reset_reason.h"
 #include "interrupt.h"
@@ -17,6 +19,7 @@
 #include "keyboard.h"
 #include "pthread.h"
 #include "stupid_delay.h"
+#include "video_buffer.h"
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -34,6 +37,9 @@ static void ErrorHandler(ErrFlags err) {
       case CAMERA_INIT_ERROR:
       break;
 
+      case FRAME_BUF_INIT_ERROR:
+      break;
+      
       default:
       break;
     }
@@ -43,7 +49,8 @@ static void ErrorHandler(ErrFlags err) {
 
 // -----------------------------------------------------------------------------
 static void ResetErrHardwareFlag(void) {
-  uint32_t tmp = __builtin_sysreg_read(__SYSTATCL);
+  int stat = __builtin_sysreg_read(__SYSTATCL);
+  long long dmastat = __builtin_mem_read2((volatile long long *)base_DMASTATCL);
 }
 
 // -----------------------------------------------------------------------------
@@ -56,8 +63,13 @@ static void SystemInit(void) {
   SramInit();
   SdramInit();
   RtcInit();
+  if (VideoBufferInit() != FRAME_BUF_INIT) {
+    ErrorHandler(FRAME_BUF_INIT_ERROR);
+  }
   LcdControllerInit();
-  CamControllerInit();
+  if (CamControllerInit() != CAMERA_INIT) {
+    ErrorHandler(CAMERA_INIT_ERROR);
+  }
   if (UartInit() != UART_INIT) {
     ErrorHandler(UART_INIT_ERROR);
   }
@@ -74,6 +86,6 @@ static void SystemInit(void) {
 // -----------------------------------------------------------------------------
 int main(void) {
   SystemInit();
-  StupidDelayMs(500);
+  StupidDelayMs(100);
   pthread_exit(NULL);
 }

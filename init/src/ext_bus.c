@@ -57,7 +57,8 @@ void SramInit(void) {
             SYSCON_MS1_IDLE		| \
             SYSCON_MS1_WT3		| \
             SYSCON_MS1_PIPE4	| \
-            SYSCON_MEM_WID16;
+            SYSCON_MEM_WID16    | \
+			(1 << 27);
   __builtin_sysreg_write(__SYSCON, temp32u);
 }
 

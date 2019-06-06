@@ -25,7 +25,8 @@ typedef union {
   struct {
     uint32_t VCON:1;
     uint32_t VCIE:1;
-    uint32_t SMODE:1;  
+    uint32_t SMODE:1;
+    uint32_t VPOL :1;
   } b;
 } CAMERA_CR_type;
 
@@ -39,14 +40,24 @@ typedef volatile struct
 #define LX_CAMERA     ( ( CAMERA_Type * ) base_VIDEO )
 
 typedef enum {
-  RECEIVE_MODE_CAMERA = 0,
-  RECEIVE_MODE_MASTER
-}CAMERA_Mode_type;
+  CAMERA_RECEIVE_MODE_CAMERA = 0,
+  CAMERA_RECEIVE_MODE_MASTER
+} CAMERA_Mode_type;
+
+typedef enum {
+  CAMERA_VSYNC_LOW = 0,
+  CAMERA_VSYNC_HIGH
+} CAMERA_VSYNC_type;
+
+typedef struct {
+  CAMERA_Mode_type eMode;
+  CAMERA_VSYNC_type eVSYNC;
+} CAMERA_Conf_type;
 
 void HAL_CAMERA_SetupGpio( void );
-void HAL_CAMERA_Enable( CAMERA_Mode_type eMode );
+void HAL_CAMERA_Enable( void );
 void HAL_CAMERA_Disable( void );
-
+void HAL_CAMERA_Config( CAMERA_Conf_type *pxConf );
 void HAL_CAMERA_StartDma( uint32_t ulChannel, 
                           void *pvCameraBuf, 
                           uint32_t ulXSize, 

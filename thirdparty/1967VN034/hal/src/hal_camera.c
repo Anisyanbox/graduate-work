@@ -17,10 +17,11 @@ void HAL_CAMERA_SetupGpio(void) {
   LX_GPIO_PB->DDR.CLR = 0x0000000F;
 }
 
-void HAL_CAMERA_Enable(CAMERA_Mode_type eMode) {
-  if (eMode == RECEIVE_MODE_MASTER) {
-    LX_CAMERA->CR.b.SMODE = 1;
-  }
+void HAL_CAMERA_Config( CAMERA_Conf_type *pxConf ) {
+  (pxConf->eMode == CAMERA_RECEIVE_MODE_MASTER) ? ( LX_CAMERA->CR.b.SMODE = 1 ) : ( LX_CAMERA->CR.b.SMODE = 0 );
+}
+
+void HAL_CAMERA_Enable(void) {
   LX_CAMERA->CR.b.VCON = 1;
 }
 
@@ -57,9 +58,8 @@ void HAL_CAMERA_StartDma(uint32_t ulChannel,
   *( ptr + 1 ) = ( ulXSize << 16 ) | 4;
   *( ptr + 2 ) = ( ulYSize << 16 ) | ulDelta;
   *( ptr + 3 ) =  TCB_TWODIM |
-//                  TCB_HPRIORITY |
-                  TCB_QUAD |
-                  HAL_DMA_GetTCBChannelDest( ulChannel );
+                  TCB_HPRIORITY |
+                  TCB_QUAD;
   *( ptr + 3 ) |= ( ( uint32_t ) pvCameraBuf < 0x0C000000 ) ? TCB_INTMEM : TCB_EXTMEM;
   HAL_DMA_DestRqstSet(ulChannel, dmaVIDEO);
   

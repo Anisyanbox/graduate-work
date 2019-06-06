@@ -1,13 +1,9 @@
 #ifndef _INIT_INC_LCD_CONTROLLER_H_
 #define _INIT_INC_LCD_CONTROLLER_H_
 
-#include <stdint.h>
-
 void LcdControllerInit(void);
-uint32_t * LcdControllerGetVideoBufAddr(void);
+unsigned int LcdGetBufSizeInWords(void);
+unsigned int LcdGetBufWigthInPixels(void);
+unsigned int LcdGetBufHeigthInPixels(void);
 
-int LcdControllerGetVideoBufSuze(void);
-int LcdControllerGetVideoBufWigth(void);
-int LcdControllerGetVideoBufHeigth(void);
- 
 #endif  // _INIT_INC_LCD_CONTROLLER_H_
