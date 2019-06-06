@@ -1,5 +1,5 @@
-#ifndef _UTILS_ADAPTERS_INC_BTN_ADAPTER_H_
-#define _UTILS_ADAPTERS_INC_BTN_ADAPTER_H_
+#ifndef _ADAPTERS_INC_BTN_ADAPTER_H_
+#define _ADAPTERS_INC_BTN_ADAPTER_H_
 
 #define BTN_CNT     ((int)16)
 
@@ -50,4 +50,4 @@ void BtnSubscribeSyncEventHandler(BtnId_t id_key_btn,
                                   EventForHandler_t e,
                                   void (*handler)(BtnChar_t c));
 
-#endif  // _UTILS_ADAPTERS_INC_BTN_ADAPTER_H_
+#endif  // _ADAPTERS_INC_BTN_ADAPTER_H_

@@ -1,5 +1,6 @@
 #include "clock.h"
 #include "hal_1967VN034R1.h"
+#include "stupid_delay.h"
 
 #define INPUT_XTI_CLOCK_KHZ ((unsigned int)25000)
 
@@ -19,6 +20,10 @@ void ClockInit(void) {
   HAL_Pll_CoreStart();
   HAL_Pll_LinkStart();
   HAL_Pll_BusStart();
+
+  // disable clock for some peripherals
+  *(unsigned int* )(CMU_CFG8_LOAD_LOC) = 0x30e0;
+  StupidDelayMs(100);
 }
 
 // -----------------------------------------------------------------------------

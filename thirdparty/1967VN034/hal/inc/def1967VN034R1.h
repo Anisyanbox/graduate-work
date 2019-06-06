@@ -2051,6 +2051,8 @@
 
 #define base_DMACFGL  	0x80000078
 #define base_DMACFGH  	0x80000079
+#define base_DMASTAT  	0x8000006C
+#define base_DMASTATCL 	0x80000070
 
 #define base_INTCTL		0x80000300
 #define base_IVT		(base_INTCTL + 0x00)
