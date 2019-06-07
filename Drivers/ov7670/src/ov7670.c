@@ -1,6 +1,8 @@
 #include "ov7670.h"
-#include "stupid_delay.h"
-#include "soft_i2c.h"
+
+#ifndef NULL
+#define NULL 0
+#endif
 
 #define CAMERA_WR_ADR       ((unsigned char)0x42)
 #define CAMERA_RD_ADR       ((unsigned char)0x43)
@@ -103,37 +105,43 @@
 #define COM17_AECWIN    0xc0  /* AEC window - must match COM4 */
 #define COM17_CBAR      0x08  /* DSP Color bar */
 
-static unsigned char default_pid = 0x76;
-static unsigned char default_ver = 0x72;
+#define DEFAULT_PID     0x76
+#define DEFAULT_VER     0x72
+
+static Ov7670HwDependFunc_t hw_funcs = {NULL, NULL, NULL, NULL, NULL, NULL};
 
 // -----------------------------------------------------------------------------
 static void CamWriteReg(unsigned char reg_addr, unsigned char data) {
-  SoftI2cStart();
-  SoftI2cSendByte(CAMERA_WR_ADR);
-  SoftI2cSendByte((unsigned char)reg_addr);
-  SoftI2cSendByte(data);
-  SoftI2cEnd();
+  if (hw_funcs.sccb_start != NULL) {
+    hw_funcs.sccb_start();
+  }
+  hw_funcs.sccb_send_byte(CAMERA_WR_ADR);
+  hw_funcs.sccb_send_byte((unsigned char)reg_addr);
+  hw_funcs.sccb_send_byte(data);
+  if (hw_funcs.sccb_end != NULL) {
+    hw_funcs.sccb_end();
+  }
 }
 
 // -----------------------------------------------------------------------------
 static void CamReadReg(unsigned char reg_addr, unsigned char * data) {
-  SoftI2cStart();
-  SoftI2cSendByte(CAMERA_WR_ADR);
-  SoftI2cSendByte((unsigned char)reg_addr);
-  SoftI2cEnd();
+  if (hw_funcs.sccb_start != NULL) {
+    hw_funcs.sccb_start();
+  }
+  hw_funcs.sccb_send_byte(CAMERA_WR_ADR);
+  hw_funcs.sccb_send_byte((unsigned char)reg_addr);
+  if (hw_funcs.sccb_end != NULL) {
+    hw_funcs.sccb_end();
+  }
 
-  SoftI2cStart(); 
-  SoftI2cSendByte(CAMERA_RD_ADR);
-  SoftI2cReadByte(data);
-  SoftI2cEnd();
-}
-
-// -----------------------------------------------------------------------------
-static void QvgaRgb565Init(void) {
-  CamWriteReg(REG_COM7, COM7_FMT_QVGA | COM7_RGB);
-  CamWriteReg(REG_COM1, 0x0);       // CCIR601
-  CamWriteReg(REG_COM15, COM15_RGB565);
-  CamWriteReg(REG_COM3, 0x0C);      // enable scaling
+  if (hw_funcs.sccb_start != NULL) {
+    hw_funcs.sccb_start();
+  }
+  hw_funcs.sccb_send_byte(CAMERA_RD_ADR);
+  hw_funcs.sccb_rec_byte(data);
+  if (hw_funcs.sccb_end != NULL) {
+    hw_funcs.sccb_end();
+  }
 }
 
 // -----------------------------------------------------------------------------
@@ -146,11 +154,9 @@ static void Rgb565Init480x272(void) {
   CamWriteReg(REG_HSTOP, 0x50); // stop H
   CamWriteReg(REG_VSTART, 0x05); // start V
   CamWriteReg(REG_VSTOP, 0x49); // stop V
-}
-
-// -----------------------------------------------------------------------------
-void ov7670HwInit(void) {
-  SoftI2cInit();
+  CamWriteReg(REG_GAIN, 0xff);
+  CamWriteReg(REG_BLUE, 0xff);
+  CamWriteReg(REG_RED, 0xff);
 }
 
 // -----------------------------------------------------------------------------
@@ -166,7 +172,7 @@ void ov7670StandbyEnable(void) {
 // -----------------------------------------------------------------------------
 void ov7670Reset(void) {
   CamWriteReg(REG_COM7, COM7_RESET);
-  StupidDelayMs(1000);
+  hw_funcs.sccb_delay_ms(1000);
 }
 
 // -----------------------------------------------------------------------------
@@ -175,24 +181,53 @@ void ov7670MirrorImage(void) {
 }
 
 // -----------------------------------------------------------------------------
-int ov7670Init(void) {
+int ov7670Init(Ov7670HwDependFunc_t * hw_sccb_funcs, Ov7670Res_t res) {
   unsigned char pid;
   unsigned char ver;
 
+  if ((hw_sccb_funcs->sccb_delay_ms == NULL) || \
+      (hw_sccb_funcs->sccb_init == NULL) || \
+      (hw_sccb_funcs->sccb_rec_byte == NULL) || \
+      (hw_sccb_funcs->sccb_send_byte == NULL)) {
+        return 1;
+  }
+
+  hw_funcs.sccb_delay_ms = hw_sccb_funcs->sccb_delay_ms;
+  hw_funcs.sccb_end = hw_sccb_funcs->sccb_end;
+  hw_funcs.sccb_init = hw_sccb_funcs->sccb_init;
+  hw_funcs.sccb_rec_byte = hw_sccb_funcs->sccb_rec_byte;
+  hw_funcs.sccb_send_byte = hw_sccb_funcs->sccb_send_byte;
+  hw_funcs.sccb_start = hw_sccb_funcs->sccb_start;
+
+  // init hw 
+  hw_funcs.sccb_init();
+
+  // reset the device 
+  CamWriteReg(REG_COM7, COM7_RESET);
+  hw_funcs.sccb_delay_ms(1000);
+  
   // HREF
   CamWriteReg(REG_COM10, 0x06);
 
   // reset all timing when format changes
   CamWriteReg(REG_COM6, 0x82);
 
-  // rgb565 enable
-  Rgb565Init480x272();
+  // image settings
+  switch (res) {
+    case RES480x272_RGB565:
+      Rgb565Init480x272();
+      break;
+
+    default:
+      break;
+  }
 
   // detect device on DCMI bus
   CamReadReg(REG_PID, &pid);
   CamReadReg(REG_VER, &ver);
 
-  if ((pid != default_pid) || (ver != default_ver)) {
+  if ((pid != (unsigned char)DEFAULT_PID) || \
+      (ver != (unsigned char)DEFAULT_VER)) {
     return 1;
   }
   return 0;

@@ -1,6 +1,5 @@
 #include "soft_i2c.h"
 #include "hal_1967VN034R1.h"
-#include "def1967VN034R1.h"
 
 #define I2C_PORT_BASE    base_GPA
 #define I2C_GPIO_PORT    LX_GPIO_PA
@@ -103,7 +102,7 @@ void SoftI2cEnd(void) {
 }
 
 // -----------------------------------------------------------------------------
-SoftI2cAckStatus_t SoftI2cSendByte(unsigned char data) {
+int SoftI2cSendByte(unsigned char data) {
   unsigned char bit_mask = 0x80;
   unsigned char ack_state = 0;
   		
@@ -130,7 +129,7 @@ SoftI2cAckStatus_t SoftI2cSendByte(unsigned char data) {
   // Leave bus
   SetSda(0);
   SetSdaMode(MODE_DRV);
-  return (ack_state == 0) ? (SOFT_I2C_ACK) : (SOFT_I2C_NO_ACK);
+  return (ack_state == 0) ? (0) : (1);
 }
 
 // -----------------------------------------------------------------------------

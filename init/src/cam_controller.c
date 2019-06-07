@@ -1,15 +1,10 @@
-#include <sysreg.h>
-#include <builtins.h>
-#include <stdbool.h>
 #include "cam_controller.h"
 #include "hal_1967VN034R1.h"
-#include "ext_mem_alloc.h"
 #include "stupid_delay.h"
 #include "video_buffer.h"
-#include "lcd_controller.h"
 #include "ov7670.h"
+#include "soft_i2c.h"
 
-#define CAM_THREAD_PRIORITY       MAIN_THREAD_NORMAL_PRIO
 #define CAM_DMA_CHAN_NUM          ((uint32_t)8)
 #define PIXELS_IN_WORD            ((uint8_t)2)
 
@@ -35,12 +30,17 @@ static void CamDmaDoneTransfIrqHandler(void) {
 // -----------------------------------------------------------------------------
 CameraInitStat_t CamControllerInit(void) {
   CAMERA_Conf_type pxConf;
+  Ov7670HwDependFunc_t cam_hw;
   unsigned int* ptr;
 
-  /* init I2C and ov7670 camera driver */
-  ov7670HwInit();
-  ov7670Reset();
-  if (ov7670Init() != 0) {
+  /* init SCCB and ov7670 camera driver */
+  cam_hw.sccb_delay_ms = StupidDelayMs;
+  cam_hw.sccb_start = SoftI2cStart;
+  cam_hw.sccb_end = SoftI2cEnd;
+  cam_hw.sccb_init = SoftI2cInit;
+  cam_hw.sccb_send_byte = SoftI2cSendByte;
+  cam_hw.sccb_rec_byte = SoftI2cReadByte;
+  if (ov7670Init(&cam_hw, RES480x272_RGB565) != 0) {
     return CAMERA_INIT_FALSE;
   }
   ov7670MirrorImage();
