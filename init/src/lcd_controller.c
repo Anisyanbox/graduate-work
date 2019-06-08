@@ -52,6 +52,10 @@ void LcdControllerInit(void) {
 
   HAL_LCD_Disable();
   HAL_LCD_GpioInit();
+  HAL_LCD_ExGpioDeInit(LCD_Gpio_0);
+  HAL_LCD_ExGpioDeInit(LCD_Gpio_1);
+  HAL_LCD_ExGpioDeInit(LCD_Gpio_2);
+  HAL_LCD_ExGpioDeInit(LCD_Gpio_3);
   HAL_LCD_Setup(&lcd_hx8257_conf);
   
   /* fill in white background */

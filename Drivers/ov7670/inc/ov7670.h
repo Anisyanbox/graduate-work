@@ -25,7 +25,8 @@ typedef enum {
 // Only 'sccb_start' and 'sccb_end' functions can be NULL.
 // This will mean that start and stop condition for SCCB protocol 
 // are done inside send/receive functions.
-// Pointer hw_sccb_funcs can be created on stackm because it fields are seved
+//
+// Pointer hw_sccb_funcs can be created on stack because it fields are seved
 // into ov7670 driver
 int ov7670Init(Ov7670HwDependFunc_t * hw_sccb_funcs, Ov7670Res_t res);
 void ov7670Reset(void);

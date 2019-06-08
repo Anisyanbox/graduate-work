@@ -23,7 +23,6 @@ static void Uart1IrqHandler(void) {
 // -----------------------------------------------------------------------------
 static void * Uart1TxThread(void * args) {
   static char buffer[30] = {0};
-  uint32_t * lcd_buf = NULL;
 
   while(true) {
     sprintf(buffer, "--> %llu", AppTimeGetInMs() / 1000);
