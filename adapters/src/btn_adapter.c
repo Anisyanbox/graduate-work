@@ -93,6 +93,7 @@ static BtnState_t BtnGetState(BtnId_t id) {
     (*(unsigned int* )EXT_PORT_BTN_ADR) = 0;
     temp = (*(unsigned int* )EXT_PORT_BTN_ADR) >> 16;
     temp &= btns[id].pin;
+    (*(unsigned int* )EXT_PORT_BTN_ADR) = 0;
 
     if (temp > 0) {
       st = GPIO_PinState_Set;
