@@ -5,6 +5,7 @@
 #include <hal_typedef.h>
 #include <hal_dma.h>
 #include <hal_interrupt.h>
+#include <hal_audio.h>
 #include <hal_pll.h>
 #include <hal_rtc.h>
 #include <hal_sys.h>
