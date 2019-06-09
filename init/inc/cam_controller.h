@@ -9,6 +9,8 @@ typedef enum {
 } CameraInitStat_t;
 
 CameraInitStat_t CamControllerInit(void);
+void CamControllerStop(void);
+void CamControllerStart(void);
 unsigned int CamGetBufSizeInWords(void);
 unsigned int CamGetBufWigthInPixels(void);
 unsigned int CamGetBufHeigthInPixels(void);

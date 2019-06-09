@@ -3,7 +3,9 @@
 #include <string.h>
 #include "keyboard.h"
 #include "btn_adapter.h"
+#include "camera_adapter.h"
 #include "hal_1967VN034R1.h"
+#include "gui_func.h"
 
 // -----------------------------------------------------------------------------
 static void EventHandler(BtnChar_t c) {
@@ -12,6 +14,18 @@ static void EventHandler(BtnChar_t c) {
   sprintf(buffer, "%c", c);
   HAL_UART_Send(LX_UART1, buffer, strlen((const char*)buffer));
   return;
+}
+
+// -----------------------------------------------------------------------------
+static void LeftBtnEventHandler(BtnChar_t c) {
+  (void)c;
+  CameraStopShowVideo(GuiDrawMainWindow);
+}
+
+// -----------------------------------------------------------------------------
+static void RightBtnEventHandler(BtnChar_t c) {
+  (void)c;
+  CameraStartVideo();
 }
 
 // -----------------------------------------------------------------------------
@@ -25,9 +39,9 @@ KeyboardInitStat_t KeyboardInit(void) {
   BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB4_ID, PRESS_EVNT, EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB6_ID, PRESS_EVNT, EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB6_ID, RELEASE_EVNT, RightBtnEventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB7_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB8_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB9_ID, PRESS_EVNT, EventHandler);

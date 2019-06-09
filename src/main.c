@@ -21,6 +21,7 @@
 #include "stupid_delay.h"
 #include "video_buffer.h"
 #include "touch_events.h"
+#include "gui_func.h"
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -94,5 +95,6 @@ static void SystemInit(void) {
 int main(void) {
   SystemInit();
   StupidDelayMs(100);
+  GuiDrawMainWindow();
   pthread_exit(NULL);
 }
