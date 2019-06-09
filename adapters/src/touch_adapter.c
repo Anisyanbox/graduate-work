@@ -11,11 +11,13 @@
 #include "pthread.h"
 #include "main.h"
 #include "delay.h"
+#include "stupid_delay.h"
 
 #ifndef NULL
 #define NULL 0
 #endif
 
+#define SLEEP_TOUCH_MS      50
 #define THREAD_PRIORITY     MAIN_THREAD_NORMAL_PRIO
 
 #define SPI_CLOCK_PIN       GPIO_PIN_4
@@ -29,27 +31,13 @@
 #define XPT2046_penIRQ_PIN  GPIO_PIN_22
 
 // -----------------------------------------------------------------------------
-static void SelectTouch(void) {
-  HAL_GPIO_WritePin(SPI_CS_PORT, SPI_CS_PIN, GPIO_PinState_Reset);
-}
-
-// -----------------------------------------------------------------------------
-static void UnselectTouch(void) {
-  HAL_GPIO_WritePin(SPI_CS_PORT, SPI_CS_PIN, GPIO_PinState_Set);
-}
-
-// -----------------------------------------------------------------------------
 static void SpiAndGpioInit(void) {
   SPI_TypeDefInit spi_init_struct;
 
   // init GPIO for SPI controller
   HAL_GPIO_Init(LX_GPIO_PA, 
-                SPI_CLOCK_PIN | SPI_MOSI_PIN | SPI_MISO_PIN, 
+                SPI_CLOCK_PIN | SPI_MOSI_PIN | SPI_MISO_PIN | SPI_CS_PIN,
                 GPIO_PinMode_Alt);
-  HAL_GPIO_Init(SPI_CS_PORT, SPI_CS_PIN, GPIO_PinMode_OutPU);
-
-  // init GPIO for busy pin
-  HAL_GPIO_Init(XPT2046_BUSY_PORT, XPT2046_BUSY_PIN, GPIO_PinMode_InPU);
 
   // init penIRQ pin
   HAL_GPIO_Init(XPT2046_penIRQ_PORT, XPT2046_penIRQ_PIN, GPIO_PinMode_In);
@@ -69,20 +57,15 @@ static void SpiAndGpioInit(void) {
 }
 
 // -----------------------------------------------------------------------------
-static void SpiSendReceive(unsigned char send_byte, unsigned char * two_bytes_arr) {
+static void SpiSendReceive(unsigned char send_byte, unsigned char * two_bytes_rx_arr) {
   uint16_t tx_data[3] = { 0 };
   uint16_t rx_data[3] = { 0 };
   
   tx_data[0] = (uint16_t)send_byte;
   HAL_SPI_SendAndReceive(tx_data, rx_data, 2);
 
-  *(two_bytes_arr + 0) = (unsigned char)(rx_data[1]);
-  *(two_bytes_arr + 1) = (unsigned char)(rx_data[0]);
-}
-
-// -----------------------------------------------------------------------------
-static int GetBusyPinState(void) {
-  return HAL_GPIO_ReadPin(XPT2046_BUSY_PORT, XPT2046_BUSY_PIN);
+  *(two_bytes_rx_arr + 0) = (unsigned char)(rx_data[1]);
+  *(two_bytes_rx_arr + 1) = (unsigned char)(rx_data[0]);
 }
 
 // -----------------------------------------------------------------------------
@@ -91,24 +74,18 @@ static int GetPenIrqPinState(void) {
 }
 
 // -----------------------------------------------------------------------------
-static void DrawPoint(unsigned int x, unsigned int y) {
-  return;
-}
-
-// -----------------------------------------------------------------------------
 static void * TouchThread(void * args) {
-  static char buffer[50] = {0};
+  static char buffer[40] = {0};
   unsigned int x = 0;
   unsigned int y = 0;
 
-  Xpt2046Calibrate(DrawPoint);
   while(true) {
-    DelayMs(100);
     if (Xpt2046IsTouched()) {
       Xpt2046GetXY(&x, &y);
       sprintf(buffer, "--> X = %d Y = %d", x, y);
       HAL_UART_Send(UART_DEBUG_PORT, buffer, strlen((const char*)buffer));
     }
+    DelayMs(SLEEP_TOUCH_MS);
   }
 }
 
@@ -120,12 +97,12 @@ int TouchPanelInit(void) {
   Xpt2046HwDependFuncs_t xpt2046_hw_funcs;
 
   // init hw
-  xpt2046_hw_funcs.select = SelectTouch;
-  xpt2046_hw_funcs.unselect = UnselectTouch;
+  xpt2046_hw_funcs.select = NULL;
+  xpt2046_hw_funcs.unselect = NULL;
   xpt2046_hw_funcs.spi_and_gpio_init = SpiAndGpioInit;
   xpt2046_hw_funcs.send_receive = SpiSendReceive;
-  xpt2046_hw_funcs.get_busy_pin = GetBusyPinState;
   xpt2046_hw_funcs.get_penirq_pin = GetPenIrqPinState;
+  xpt2046_hw_funcs.delay = StupidDelayMs;
   xpt2046_hw_funcs.is_generate_irq = 1;
   if (Xpt2046Init(&xpt2046_hw_funcs)!= 0) {
     return 1;

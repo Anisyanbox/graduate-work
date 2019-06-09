@@ -54,7 +54,17 @@ CameraInitStat_t CamControllerInit(void) {
 
   /* Stop camera and reset flags */
   HAL_CAMERA_Disable();
+  return CAMERA_INIT;
+}
 
+// -----------------------------------------------------------------------------
+void CamControllerStop(void) {
+  HAL_Interrupt_Disable(intDMA8);
+  HAL_CAMERA_Disable();
+}
+
+// -----------------------------------------------------------------------------
+void CamControllerStart(void) {
   /* Select request source Video for channel 8 and setup it */
   delta = 4;
   HAL_CAMERA_StartDma(CAM_DMA_CHAN_NUM,             \
@@ -66,7 +76,6 @@ CameraInitStat_t CamControllerInit(void) {
                       CamDmaDoneTransfIrqHandler);
   /* Start video */
   HAL_CAMERA_Enable();
-  return CAMERA_INIT;
 }
 
 // -----------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 #include "video_buffer.h"
 #include "ext_mem_alloc.h"
 #include "cam_controller.h"
+#include "lcd_controller.h"
 
 static uint32_t * video_buf = NULL;
 
@@ -18,4 +19,14 @@ VideoBufStat_t VideoBufferInit(void) {
 // -----------------------------------------------------------------------------
 uint32_t * GetVideoBufferAddr(void) {
   return video_buf;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t GetVideoBufferSizeInWords(void) {
+  return LcdGetBufSizeInWords();
+}
+
+// -----------------------------------------------------------------------------
+uint32_t GetVideoBufferWidthInWords(void) {
+  return LcdGetWigthInPixels() / 2;
 }
