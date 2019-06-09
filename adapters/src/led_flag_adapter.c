@@ -1,1 +1,0 @@
-#include "led_flag_adapter.h"

@@ -1,10 +1,10 @@
 #include <stdbool.h>
 #include <sysreg.h>
 #include "led_flag.h"
-#include "led_flag_adapter.h"
 #include "delay.h"
 #include "pthread.h"
 #include "main.h"
+#include "hal_1967VN034R1.h"
 
 #define CNT_LEDS_ONBOARD                (4)
 #define SLEEP_LED_THREAD_MS             (10U)

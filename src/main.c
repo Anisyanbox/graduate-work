@@ -20,6 +20,7 @@
 #include "pthread.h"
 #include "stupid_delay.h"
 #include "video_buffer.h"
+#include "touch_events.h"
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -38,6 +39,9 @@ static void ErrorHandler(ErrFlags err) {
       break;
 
       case FRAME_BUF_INIT_ERROR:
+      break;
+      
+      case TOUCH_INIT_ERROR:
       break;
       
       default:
@@ -78,6 +82,9 @@ static void SystemInit(void) {
   }
   if (KeyboardInit() != KEYBOARD_INIT) {
     ErrorHandler(KEYBOARD_INIT_ERROR);
+  }
+  if (TouchInit() != TOUCH_INIT) {
+    ErrorHandler(TOUCH_INIT_ERROR);
   }
   InterruptInit();
   InterruptEnableGlobal();
