@@ -16,11 +16,11 @@
 #include "main.h"
 #include "led_flag.h"
 #include "uart.h"
-#include "keyboard.h"
 #include "pthread.h"
 #include "stupid_delay.h"
 #include "video_buffer.h"
 #include "touch_events.h"
+#include "keyboard_events.h"
 #include "gui_func.h"
 
 // -----------------------------------------------------------------------------

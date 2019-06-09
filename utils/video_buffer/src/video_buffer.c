@@ -25,3 +25,8 @@ uint32_t * GetVideoBufferAddr(void) {
 uint32_t GetVideoBufferSizeInWords(void) {
   return LcdGetBufSizeInWords();
 }
+
+// -----------------------------------------------------------------------------
+uint32_t GetVideoBufferWidthInWords(void) {
+  return LcdGetWigthInPixels() / 2;
+}

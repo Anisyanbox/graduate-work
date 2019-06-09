@@ -1,4 +1,4 @@
-#include "camera_adapter.h"
+#include "camera.h"
 #include "cam_controller.h"
 
 typedef enum {
@@ -13,7 +13,6 @@ void CameraStartVideo(void) {
   if (video_streaming_status == STREAMING_EN) {
     return;
   }
-
   video_streaming_status = STREAMING_EN;
   CamControllerStart();
 }
@@ -23,7 +22,6 @@ void CameraStopShowVideo(LcdFillBackground lcd_fill) {
   if (video_streaming_status == STREAMING_DIS) {
     return;
   }
-  
   video_streaming_status = STREAMING_DIS;
   CamControllerStop();
   lcd_fill();

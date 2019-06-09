@@ -74,7 +74,7 @@ void LcdControllerInit(void) {
                    lcd_hx8257_conf.usHSize,
                    lcd_hx8257_conf.usVSize,
                    lcd_hx8257_conf.ulRgbMode,
-                   LcdDmaDoneTransfIrqHandler);
+                   NULL);
   HAL_LCD_Enable();
   HAL_LCD_PwmSetDuty(100);
 }
@@ -85,12 +85,19 @@ unsigned int LcdGetBufSizeInWords(void) {
 }
 
 // -----------------------------------------------------------------------------
-unsigned int LcdGetBufWigthInPixels(void) {
+unsigned int LcdGetWigthInPixels(void) {
   return (unsigned int)LCD_XSIZE;
 }
 
 // -----------------------------------------------------------------------------
-unsigned int LcdGetBufHeigthInPixels(void) {
+unsigned int LcdGetHeigthInPixels(void) {
   return (unsigned int)LCD_YSIZE;
 }
- 
+
+// -----------------------------------------------------------------------------
+void LcdControllerSetPwm(unsigned int pwm) {
+  if (pwm > 100) {
+    pwm = 100;
+  }
+  HAL_LCD_PwmSetDuty(pwm);
+}
