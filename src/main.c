@@ -12,6 +12,7 @@
 #include "ext_bus.h"
 #include "lcd_controller.h"
 #include "cam_controller.h"
+#include "audio_controller.h"
 
 #include "main.h"
 #include "led_flag.h"
@@ -41,10 +42,13 @@ static void ErrorHandler(ErrFlags err) {
 
       case FRAME_BUF_INIT_ERROR:
       break;
-      
+
       case TOUCH_INIT_ERROR:
       break;
-      
+
+      case AUDIO_INIT_ERROR:
+      break;
+
       default:
       break;
     }
@@ -72,6 +76,9 @@ static void SystemInit(void) {
     ErrorHandler(FRAME_BUF_INIT_ERROR);
   }
   LcdControllerInit();
+  if (AudioControllerInit() != AUDIO_INIT) {
+    ErrorHandler(AUDIO_INIT_ERROR);
+  }
   if (CamControllerInit() != CAMERA_INIT) {
     ErrorHandler(CAMERA_INIT_ERROR);
   }
