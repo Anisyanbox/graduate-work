@@ -4,6 +4,7 @@
 #include "lcd.h"
 #include "hal_1967VN034R1.h"
 #include "gui_func.h"
+#include "audio.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -48,6 +49,17 @@ static void DownBtnEventHandler(BtnChar_t c) {
 }
 
 // -----------------------------------------------------------------------------
+static void SB1EventHandler(BtnChar_t c) {
+  AudioVolumeSet(100);
+  AudioGenerateSin(1000);
+}
+
+// -----------------------------------------------------------------------------
+static void SB2EventHandler(BtnChar_t c) {
+  AudioStopPlay();
+}
+
+// -----------------------------------------------------------------------------
 KeyboardInitStat_t KeyboardInit(void) {
   /* low level initialization and thread create */
   if (BtnInit() != 0) {
@@ -55,8 +67,8 @@ KeyboardInitStat_t KeyboardInit(void) {
   }
 
   /* Subscribe handlers for event */
-  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, SB1EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, SB2EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, UpBtnEventHandler);

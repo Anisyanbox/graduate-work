@@ -11,5 +11,6 @@ typedef enum {
 AudioInitStat_t AudioControllerInit(void);
 void AudioControllerStart(void * buf, size_t len, void (*end_handler)(void));
 void AudioControllerStop(void);
+unsigned int AudioConrollerGetSampleRate(void);
 
 #endif  // _INIT_INC_AUDIO_CONTROLLER_H_

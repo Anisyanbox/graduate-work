@@ -27,6 +27,7 @@
 							<tool errorParsers="" id="llvm.toolchain.compiler.cnature.debug.1521768279" name="Compiler" superClass="llvm.toolchain.compiler.cnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.1019054692" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\audio_buffer\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_spi\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\libs\audio\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\tvl320aic23b\inc&quot;"/>
@@ -58,6 +59,7 @@
 							<tool id="llvm.toolchain.compiler.ccnature.debug.95348852" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.debug">
 								<option id="llvm.toolchain.compiler.preproc.only.215256817" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\audio_buffer\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_spi\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\libs\audio\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\tvl320aic23b\inc&quot;"/>
@@ -147,6 +149,7 @@
 							<tool errorParsers="" id="llvm.toolchain.compiler.cnature.release.2075258028" name="Compiler" superClass="llvm.toolchain.compiler.cnature.release">
 								<option id="llvm.toolchain.compiler.preproc.only.32329742" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\audio_buffer\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_spi\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\libs\audio\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\tvl320aic23b\inc&quot;"/>
@@ -177,6 +180,7 @@
 							<tool id="llvm.toolchain.compiler.ccnature.release.1323103281" name="Compiler" superClass="llvm.toolchain.compiler.ccnature.release">
 								<option id="llvm.toolchain.compiler.preproc.only.1654631180" name="Include paths (-E)" superClass="llvm.toolchain.compiler.preproc.only" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\reset_reason\inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\audio_buffer\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\utils\soft_spi\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\libs\audio\inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;C:\Milandr\CM-LYNX.1.06.04\workspace\lynx_run\drivers\tvl320aic23b\inc&quot;"/>

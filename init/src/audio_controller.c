@@ -9,8 +9,8 @@
 #endif
 
 #define DMA_AUDIO_CHANNEL   5
-#define AUDIO_RATE_HZ       44100
-#define DATA_LEN_BIT        16
+#define AUDIO_RATE_HZ       48000
+#define DATA_LEN_BIT        32
 
 static void (*app_handler_ptr)(void) = NULL;
 
@@ -52,15 +52,20 @@ AudioInitStat_t AudioControllerInit(void) {
 
 // -----------------------------------------------------------------------------
 void AudioControllerStart(void * buf, size_t len, void (*end_handler)(void)) {
-  HAL_AUDIO_StartDMA(DMA_AUDIO_CHANNEL, 
-                    LX_AUDIO0, 
-                    buf, 
-                    len, 
-                    AudioDoneTransfIrqHandler);
   app_handler_ptr = end_handler;
+  HAL_AUDIO_StartDMA(DMA_AUDIO_CHANNEL, 
+                     LX_AUDIO0,
+                     buf,
+                     len,
+                     AudioDoneTransfIrqHandler);
 }
 
 // -----------------------------------------------------------------------------
 void AudioControllerStop(void) {
   HAL_AUDIO_StopDMA(LX_AUDIO0);
+}
+
+// -----------------------------------------------------------------------------
+unsigned int AudioConrollerGetSampleRate(void) {
+  return (unsigned int)AUDIO_RATE_HZ;
 }

@@ -9,5 +9,7 @@ void AudioPlayTrack(unsigned int * track,
                      size_t len, 
                      void (*end_handler)(void));
 void AudioStopPlay(void);
+void AudioGenerateSin(unsigned int hz);
+void AudioVolumeSet(unsigned int vol);
 
 #endif  // _ADAPTERS_INC_AUDIO_H_

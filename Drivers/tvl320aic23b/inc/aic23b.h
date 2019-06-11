@@ -19,6 +19,15 @@ typedef struct {
   Aic23bDelayMs_t    delay;
 } Aic23bHwDependFuncs_t;
 
+typedef enum {
+  ADC_96_DAC_96 = 0,
+  ADC_48_DAC_48,
+  ADC_32_DAC_32,
+  ADC_8_DAC_8,
+  ADC_48_DAC_8,
+  ADC_8_DAC_48,
+} Aic23bSamples_t;
+
 //
 // Pointer hw_depend_funcs can be created on stack because its fields are seved
 // into aic23b driver.
@@ -34,7 +43,7 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs);
 // Default (0db) is 121
 void Aic23bSetVolume(unsigned short val);
 
-// 44100 default after init function
-void Aic23bSetRate(unsigned short sample_rate);
+// 48000 default after init function
+void Aic23bSetRate(Aic23bSamples_t srate);
 
 #endif  // _DRIVERS_TVL320AIC23B_INC_AIC23B_H_

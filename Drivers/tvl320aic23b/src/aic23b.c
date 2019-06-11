@@ -1,7 +1,5 @@
 #include "aic23b.h"
 #include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 #ifndef NULL
 #define NULL 0
@@ -116,9 +114,7 @@
 #define SND_SOC_BIAS_OFF         0x4
 
 #define SR_MULT         (11*12)
-#define MCLK            12e+6 //Hz
-#define ADC_SRATE       22050 //Hz
-#define DAC_SRATE       22050 //Hz
+#define MCLK            12500000 //Hz
 
 #define LOWER_GROUP ((1<<0) | (1<<1) | (1<<2) | (1<<3) | (1<<6) | (1<<7))
 #define UPPER_GROUP ((1<<8) | (1<<9) | (1<<10) | (1<<11)        | (1<<15))
@@ -127,44 +123,11 @@
  * AIC23 register cache
  */
 static unsigned short tlv320aic23_reg[16] = { 0 };
-static long bosr_usb_divisor_table[4];
-static unsigned short sr_valid_mask[4];
-static unsigned char sr_adc_mult_table[16];
-static unsigned char sr_dac_mult_table[16];
-
-/*
-250  * Common Crystals used
-251  * 11.2896 Mhz /128 = *88.2k  /192 = 58.8k
-252  * 12.0000 Mhz /125 = *96k    /136 = 88.235K
-253  * 12.2880 Mhz /128 = *96k    /192 = 64k
-254  * 16.9344 Mhz /128 = 132.3k /192 = *88.2k
-255  * 18.4320 Mhz /128 = 144k   /192 = *96k
-*/
 
 /*
  * Hw func pointers
  */
 static Aic23bHwDependFuncs_t hw_funcs = { 0 };
-
-// -----------------------------------------------------------------------------
-static unsigned long get_score(long adc, 
-                               long adc_l, 
-                               long adc_h, 
-                               long need_adc,
-                               long dac, 
-                               long dac_l, 
-                               long dac_h, 
-                               long need_dac) {
-  long diff_adc;
-  long diff_dac;
-
-  if ((adc >= adc_l) && (adc <= adc_h) && (dac >= dac_l) && (dac <= dac_h)) {
-    diff_adc = need_adc - adc;
-    diff_dac = need_dac - dac;
-    return abs(diff_adc) + abs(diff_dac);
-  }
-  return UINT32_MAX;
-}
 
 // -----------------------------------------------------------------------------
 static void Aic23bInitRegCache(void) {
@@ -179,50 +142,6 @@ static void Aic23bInitRegCache(void) {
   tlv320aic23_reg[TLV320AIC23_SRATE]      = 0x0020;
   tlv320aic23_reg[TLV320AIC23_ACTIVE]     = 0x0000;
   tlv320aic23_reg[TLV320AIC23_RESET]      = 0x0000;
-
-  bosr_usb_divisor_table[0]               = 93750; 
-  bosr_usb_divisor_table[1]               = 96000; 
-  bosr_usb_divisor_table[2]               = 62500; 
-  bosr_usb_divisor_table[3]               = 88235;
-
-  sr_valid_mask[0] = LOWER_GROUP|UPPER_GROUP;
-  sr_valid_mask[1] = LOWER_GROUP;
-  sr_valid_mask[2] = LOWER_GROUP|UPPER_GROUP;
-  sr_valid_mask[3] = UPPER_GROUP;
-
-  sr_adc_mult_table[0]=66;
-  sr_adc_mult_table[1]=66;
-  sr_adc_mult_table[2]=11;
-  sr_adc_mult_table[3]=11;
-  sr_adc_mult_table[4]=0;
-  sr_adc_mult_table[5]=0;
-  sr_adc_mult_table[6]=44;
-  sr_adc_mult_table[7]=132;
-  sr_adc_mult_table[8]=66;
-  sr_adc_mult_table[9]=66;
-  sr_adc_mult_table[10]=12;
-  sr_adc_mult_table[11]=12;
-  sr_adc_mult_table[12]=0;
-  sr_adc_mult_table[13]=0;
-  sr_adc_mult_table[14]=0;
-  sr_adc_mult_table[15]=132;
-  
-  sr_dac_mult_table[0]=66;
-  sr_dac_mult_table[1]=11;
-  sr_dac_mult_table[2]=66;
-  sr_dac_mult_table[3]=11;
-  sr_dac_mult_table[4]=0;
-  sr_dac_mult_table[5]=0;
-  sr_dac_mult_table[6]=44;
-  sr_dac_mult_table[7]=132;
-  sr_dac_mult_table[8]=66;
-  sr_dac_mult_table[9]=12;
-  sr_dac_mult_table[10]=66;
-  sr_dac_mult_table[11]=12;
-  sr_dac_mult_table[12]=0;
-  sr_dac_mult_table[13]=0;
-  sr_dac_mult_table[14]=0;
-  sr_dac_mult_table[15]=132;
 }
 
 // -----------------------------------------------------------------------------
@@ -273,7 +192,7 @@ static void Aic23SetBiasLevel(unsigned short level) {
     case SND_SOC_BIAS_ON:
     /* vref/mid, osc on, dac unmute */
     reg &= ~(TLV320AIC23_DEVICE_PWR_OFF | TLV320AIC23_OSC_OFF | TLV320AIC23_DAC_OFF);
-    reg &= ~(TLV320AIC23_ADC_OFF | TLV320AIC23_MIC_OFF);
+    reg &= ~(TLV320AIC23_ADC_OFF | TLV320AIC23_MIC_OFF | TLV320AIC23_CLK_OFF);
     Aic23WriteReg(TLV320AIC23_PWR, reg);
     break;
 
@@ -303,88 +222,8 @@ static void Aic23SetDaiFmt(void) {
 
   /* set master/slave audio interface */
   iface_reg |= TLV320AIC23_MS_MASTER;
-  
-  /* interface format */
-  #if 1
-    iface_reg |= TLV320AIC23_FOR_I2S; //I2S
-  #else
-    //iface_reg |= TLV320AIC23_LRP_ON;
-    iface_reg |= TLV320AIC23_FOR_DSP | TLV320AIC23_LRP_ON;/* | TLV320AIC23_IWL_32;*/
-  #endif
+  iface_reg |= TLV320AIC23_FOR_I2S;
   Aic23WriteReg(TLV320AIC23_DIGT_FMT, iface_reg);
-}
-
-// -----------------------------------------------------------------------------
-static long FindRate(unsigned short mclk, 
-                     unsigned long need_adc, 
-                     unsigned long need_dac) {
-  long i, j;
-  long best_i;
-  long best_j;
-  long best_div = 0;
-  unsigned long best_score;
-  long adc_l, adc_h, dac_l, dac_h;
-  long base;
-  long mask;
-  long adc;
-  long dac;
-  long score;
-
-  best_i = -1;
-  best_j = -1;
-  best_score = UINT32_MAX;
-  adc=0x0000;
-  dac=0x0000;
-
-  need_adc *= SR_MULT;
-  need_dac *= SR_MULT;
-
-  /*
-  311          * rates given are +/- 1/32
-  312          */
-  adc_l = need_adc - (need_adc >> 5);
-  adc_h = need_adc + (need_adc >> 5);
-  dac_l = need_dac - (need_dac >> 5);
-  dac_h = need_dac + (need_dac >> 5);
-
-  for (i = 0; i < sizeof(bosr_usb_divisor_table); i++) {
-    base = bosr_usb_divisor_table[i];
-    mask = sr_valid_mask[i];
-    for (j = 0; j < sizeof(sr_adc_mult_table); j++, mask >>= 1)  {    
-      if ((mask & 1) == 0) {
-        continue;
-      }
-      adc = base * sr_adc_mult_table[j];
-      dac = base * sr_dac_mult_table[j];      
-      
-      score = get_score(adc, adc_l, adc_h, need_adc,dac, dac_l, dac_h, need_dac);
-      if (best_score > score)  {
-        best_score = score;
-        best_i = i;
-        best_j = j;
-        best_div = 0;
-      }
-      
-      score = get_score((adc >> 1), adc_l, adc_h, need_adc,(dac >> 1), dac_l, dac_h, need_dac);
-      /* prefer to have a /2 */
-      if ((score != UINT32_MAX) && (best_score >= score))  {
-        best_score = score;
-        best_i = i;
-        best_j = j;
-        best_div = 1;
-      }
-    }
-  }
-  return (best_j << 2) | best_i | (best_div << TLV320AIC23_CLKIN_SHIFT);
-}
-
-// -----------------------------------------------------------------------------
-static void Aic23SetSampleRateControl(unsigned long mclk,
-                                                unsigned long sample_rate_adc, 
-                                                unsigned long sample_rate_dac) {
-  /* Search for the right sample rate */
-  long data = FindRate(mclk, sample_rate_adc, sample_rate_dac);
-  Aic23WriteReg(TLV320AIC23_SRATE, data);
 }
 
 // -----------------------------------------------------------------------------
@@ -405,7 +244,7 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
 
   /* Reset codec */
   Aic23WriteReg(TLV320AIC23_RESET, 0);
-  hw_funcs.delay(100);
+  hw_funcs.delay(1000);
 
   /* power on device */
   Aic23SetBiasLevel(SND_SOC_BIAS_ON);
@@ -439,10 +278,10 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
   hw_funcs.delay(100);
 
   /* sample rate playback */
-  Aic23SetSampleRateControl(MCLK, 44100, 44100);
+  Aic23WriteReg(TLV320AIC23_SRATE, 0xC0);
   hw_funcs.delay(100);
 
-  Aic23WriteReg(TLV320AIC23_ACTIVE, 0x1);
+  Aic23WriteReg(TLV320AIC23_ACTIVE, TLV320AIC23_ACT_ON);
   hw_funcs.delay(100);
   return 0;
 }
@@ -456,7 +295,37 @@ void Aic23bSetVolume(unsigned short val) {
 }
 
 // -----------------------------------------------------------------------------  
-void Aic23bSetRate(unsigned short sample_rate) {
-  Aic23SetSampleRateControl(MCLK, sample_rate, sample_rate);
+void Aic23bSetRate(Aic23bSamples_t srate) {
+  unsigned short data;
+
+  switch (srate) {
+    case ADC_96_DAC_96:
+      data = 0xDC;
+      break;
+
+    case ADC_48_DAC_48:
+      data = 0xC0;
+      break;
+
+    case ADC_32_DAC_32:
+      data = 0xD8;
+      break;
+
+    case ADC_8_DAC_8:
+      data = 0xCC;
+      break;
+
+    case ADC_48_DAC_8:
+      data = 0xC4;
+      break;
+
+    case ADC_8_DAC_48:
+      data = 0xC8;
+      break;
+
+    default:
+      return;
+  }
+  Aic23WriteReg(TLV320AIC23_SRATE, data);
   hw_funcs.delay(100);
 }

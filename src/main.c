@@ -20,6 +20,7 @@
 #include "pthread.h"
 #include "stupid_delay.h"
 #include "video_buffer.h"
+#include "audio_buffer.h"
 #include "touch_events.h"
 #include "keyboard_events.h"
 #include "gui_func.h"
@@ -38,6 +39,9 @@ static void ErrorHandler(ErrFlags err) {
       break;
 
       case CAMERA_INIT_ERROR:
+      break;
+
+      case AUDIO_BUF_INIT_ERROR:
       break;
 
       case FRAME_BUF_INIT_ERROR:
@@ -74,6 +78,9 @@ static void SystemInit(void) {
   RtcInit();
   if (VideoBufferInit() != FRAME_BUF_INIT) {
     ErrorHandler(FRAME_BUF_INIT_ERROR);
+  }
+  if (AudioBufferInit() != AUDIO_BUF_INIT) {
+    ErrorHandler(AUDIO_BUF_INIT_ERROR);
   }
   LcdControllerInit();
   if (AudioControllerInit() != AUDIO_INIT) {
