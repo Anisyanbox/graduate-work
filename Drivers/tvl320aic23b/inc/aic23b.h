@@ -20,13 +20,20 @@ typedef struct {
 } Aic23bHwDependFuncs_t;
 
 typedef enum {
-  ADC_96_DAC_96 = 0,
-  ADC_48_DAC_48,
-  ADC_32_DAC_32,
-  ADC_8_DAC_8,
-  ADC_48_DAC_8,
-  ADC_8_DAC_48,
+  AIC23B_ADC_96_DAC_96 = 0,
+  AIC23B_ADC_48_DAC_48,
+  AIC23B_ADC_32_DAC_32,
+  AIC23B_ADC_8_DAC_8,
+  AIC23B_ADC_48_DAC_8,
+  AIC23B_ADC_8_DAC_48
 } Aic23bSamples_t;
+
+typedef enum {
+  AIC23B_16BIT_SOUNND = 0,
+  AIC23B_20BIT_SOUNND,
+  AIC23B_24BIT_SOUNND,
+  AIC23B_32BIT_SOUNND
+} Aic23bSoundDepth_t;
 
 //
 // Pointer hw_depend_funcs can be created on stack because its fields are seved
@@ -39,11 +46,15 @@ typedef enum {
 // Returns 0, if init was done successly.
 int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs);
 
-// 48 (min) to 127 (max)
-// Default (0db) is 121
-void Aic23bSetVolume(unsigned short val);
+// percent = 0 - mute 
+// percent = 100 - max volume
+void Aic23bSetInputVolume(unsigned short percent);
+void Aic23bSetOutVolume(unsigned short percent);
 
-// 48000 default after init function
+// 'AIC23B_ADC_48_DAC_48' is default after init function
 void Aic23bSetRate(Aic23bSamples_t srate);
+
+// 'AIC23B_16BIT_SOUNND' is default after init function
+void Aic23bSetAdcDacResolution(Aic23bSoundDepth_t depth);
 
 #endif  // _DRIVERS_TVL320AIC23B_INC_AIC23B_H_

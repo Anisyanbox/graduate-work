@@ -20,7 +20,7 @@ static void SoftSpiPeriodDelay(int delay) {
 // -----------------------------------------------------------------------------
 static void SoftSpiClkPulse(void) {
   *(unsigned int *)(GPA_DR_SET_LOC)   = SPI_CLK_PIN;
-  SoftSpiPeriodDelay(100);
+  SoftSpiPeriodDelay(50);
   *(unsigned int *)(GPA_DR_CLEAR_LOC) = SPI_CLK_PIN;
 }
 
@@ -54,9 +54,9 @@ void SoftSpiSend(uint8_t * tx_data, size_t n) {
       } else {
         *(unsigned int *)(GPA_DR_SET_LOC) = GPIO_PIN_22;
       }
-      SoftSpiPeriodDelay(100);
+      SoftSpiPeriodDelay(50);
       SoftSpiClkPulse();
-      SoftSpiPeriodDelay(10);
+      SoftSpiPeriodDelay(5);
       temp_tx_byte <<= 1;
     }
   }

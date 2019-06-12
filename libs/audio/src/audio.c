@@ -11,17 +11,17 @@
 void AudioPlayTrack(unsigned int * track, 
                      size_t len, 
                      void (*end_handler)(void)) {
-  AudioControllerStart((void*)track, len, end_handler);                     
+  AudioControllerStartOut((void*)track, len, end_handler);                     
 }
 
 // -----------------------------------------------------------------------------
 void AudioStopPlay(void) {
-  AudioControllerStop();
+  AudioControllerStopOut();
 }
 
 // -----------------------------------------------------------------------------
-void AudioVolumeSet(unsigned int vol) {
-  Aic23bSetVolume((unsigned short)vol);
+void AudioVolumeSet(unsigned short percent) {
+	Aic23bSetOutVolume(percent);
 }
 
 // -----------------------------------------------------------------------------
@@ -31,10 +31,14 @@ void AudioGenerateSin(unsigned int hz) {
 
   int i = 0;
   while(i < nsamples) {
+    volatile uint32_t temp_sig_val = 0;
     double t = ((double)i)/((double)nsamples);
-    signal[i] = ((uint32_t)(32767*sin(hz * 2 * PI * t))) << 16; // left
-    signal[i] |= (uint16_t)signal[i]; // right
+    uint32_t tmp = (uint32_t)(32767*sin((double)hz * 2.0 * PI * t));
+
+    temp_sig_val = tmp << 16;       // left
+    temp_sig_val |= (uint16_t)tmp;   // right
+    signal[i] = temp_sig_val;      
     ++i;
   }
-  AudioControllerStart((void*)signal, nsamples, NULL);
+  AudioControllerStartOut((void*)signal, nsamples, NULL);
 }

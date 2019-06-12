@@ -193,7 +193,9 @@ static void Aic23SetBiasLevel(unsigned short level) {
     /* vref/mid, osc on, dac unmute */
     reg &= ~(TLV320AIC23_DEVICE_PWR_OFF | TLV320AIC23_OSC_OFF | TLV320AIC23_DAC_OFF);
     reg &= ~(TLV320AIC23_ADC_OFF | TLV320AIC23_MIC_OFF | TLV320AIC23_CLK_OFF);
+    reg &= ~(TLV320AIC23_OUT_OFF | TLV320AIC23_LINE_OFF);
     Aic23WriteReg(TLV320AIC23_PWR, reg);
+    Aic23WriteRegCache(TLV320AIC23_PWR, reg);
     break;
 
     case SND_SOC_BIAS_PREPARE:
@@ -202,6 +204,7 @@ static void Aic23SetBiasLevel(unsigned short level) {
     case SND_SOC_BIAS_STANDBY:
     /* everything off except vref/vmid, */
     Aic23WriteReg(TLV320AIC23_PWR, reg | TLV320AIC23_CLK_OFF);
+    Aic23WriteRegCache(TLV320AIC23_PWR, reg | TLV320AIC23_CLK_OFF);
     break;
 
     case SND_SOC_BIAS_OFF:
@@ -216,7 +219,7 @@ static void Aic23SetBiasLevel(unsigned short level) {
 }
 
 // -----------------------------------------------------------------------------
-static void Aic23SetDaiFmt(void) {
+static void Aic23SetI2SMasterFmt(void) {
   unsigned short iface_reg;
   iface_reg = Aic23ReadRegCache(TLV320AIC23_DIGT_FMT) & (~0x03);
 
@@ -262,19 +265,15 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
   hw_funcs.delay(100);
 
   reg = Aic23ReadRegCache(TLV320AIC23_ANLG);
-  Aic23WriteReg(TLV320AIC23_ANLG, ((reg) /*& (~TLV320AIC23_BYPASS_ON)*/ & (~TLV320AIC23_MICM_MUTED)) |
+  Aic23WriteReg(TLV320AIC23_ANLG, ((reg) & (~TLV320AIC23_BYPASS_ON) & (~TLV320AIC23_MICM_MUTED)) |
   TLV320AIC23_INSEL_MIC /*| TLV320AIC23_MICB_20DB*/);
   hw_funcs.delay(100);
 
   /* Default output volume */
-  Aic23WriteReg(TLV320AIC23_LCHNVOL, 0x080 + 121);
-  hw_funcs.delay(100);
-
-  Aic23WriteReg(TLV320AIC23_RCHNVOL, 0x080 + 121);
-  hw_funcs.delay(100);
+  Aic23bSetOutVolume(50);
 
   /* audio */
-  Aic23SetDaiFmt();
+  Aic23SetI2SMasterFmt();
   hw_funcs.delay(100);
 
   /* sample rate playback */
@@ -287,11 +286,33 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
 }
 
 // -----------------------------------------------------------------------------  
-void Aic23bSetVolume(unsigned short val) {
-  Aic23WriteReg(TLV320AIC23_LCHNVOL, 0x080 + val);
-  hw_funcs.delay(100);
-  Aic23WriteReg(TLV320AIC23_RCHNVOL, 0x080 + val);
-  hw_funcs.delay(100);
+void Aic23bSetOutVolume(unsigned short percent) {
+  unsigned short reg_data = 0;
+
+  reg_data = (unsigned short)(((float)(TLV320AIC23_LHV_MAX - TLV320AIC23_LHV_MIN) * \
+                              (float)percent) / 100.0);
+
+  reg_data &= TLV320AIC23_LHV_MAX;
+  reg_data |= TLV320AIC23_LZC_ON;
+  Aic23WriteReg(TLV320AIC23_LCHNVOL, reg_data);
+  Aic23WriteReg(TLV320AIC23_RCHNVOL, reg_data);
+  Aic23WriteRegCache(TLV320AIC23_LCHNVOL, reg_data);
+  Aic23WriteRegCache(TLV320AIC23_RCHNVOL, reg_data);
+}
+
+// ----------------------------------------------------------------------------- 
+void Aic23bSetInputVolume(unsigned short percent) {
+  unsigned short reg_data = 0;
+
+  reg_data = (unsigned short)(((float)(TLV320AIC23_LIV_MAX - TLV320AIC23_LIV_MIN) * \
+                              (float)percent) / 100.0);
+  reg_data &= TLV320AIC23_LIV_MAX;
+  reg_data &= (~TLV320AIC23_LIM_MUTED);
+
+  Aic23WriteReg(TLV320AIC23_LINVOL, reg_data);
+  Aic23WriteReg(TLV320AIC23_RINVOL, reg_data);
+  Aic23WriteRegCache(TLV320AIC23_LINVOL, reg_data);
+  Aic23WriteRegCache(TLV320AIC23_RINVOL, reg_data);
 }
 
 // -----------------------------------------------------------------------------  
@@ -299,33 +320,63 @@ void Aic23bSetRate(Aic23bSamples_t srate) {
   unsigned short data;
 
   switch (srate) {
-    case ADC_96_DAC_96:
+    case AIC23B_ADC_96_DAC_96:
       data = 0xDC;
       break;
 
-    case ADC_48_DAC_48:
+    case AIC23B_ADC_48_DAC_48:
       data = 0xC0;
       break;
 
-    case ADC_32_DAC_32:
+    case AIC23B_ADC_32_DAC_32:
       data = 0xD8;
       break;
 
-    case ADC_8_DAC_8:
+    case AIC23B_ADC_8_DAC_8:
       data = 0xCC;
       break;
 
-    case ADC_48_DAC_8:
+    case AIC23B_ADC_48_DAC_8:
       data = 0xC4;
       break;
 
-    case ADC_8_DAC_48:
+    case AIC23B_ADC_8_DAC_48:
       data = 0xC8;
       break;
 
     default:
       return;
   }
+
   Aic23WriteReg(TLV320AIC23_SRATE, data);
-  hw_funcs.delay(100);
+  Aic23WriteRegCache(TLV320AIC23_SRATE, data);
+}
+
+// -----------------------------------------------------------------------------  
+void Aic23bSetAdcDacResolution(Aic23bSoundDepth_t depth) {
+  unsigned short iface_reg = Aic23ReadRegCache(TLV320AIC23_DIGT_FMT);
+
+  iface_reg &= (~0x0c);
+  switch (depth) {
+    case AIC23B_16BIT_SOUNND:
+      iface_reg |= TLV320AIC23_IWL_16;
+      break;
+
+    case AIC23B_20BIT_SOUNND:
+      iface_reg |= TLV320AIC23_IWL_20;
+      break;
+
+    case AIC23B_24BIT_SOUNND:
+      iface_reg |= TLV320AIC23_IWL_24;
+      break;
+
+    case AIC23B_32BIT_SOUNND:
+      iface_reg |= TLV320AIC23_IWL_32;
+      break;
+
+    default:
+      return;
+  }
+  Aic23WriteReg(TLV320AIC23_DIGT_FMT, iface_reg);
+  Aic23WriteRegCache(TLV320AIC23_SRATE, iface_reg);
 }

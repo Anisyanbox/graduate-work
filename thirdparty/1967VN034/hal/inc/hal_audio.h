@@ -257,9 +257,10 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-  void HAL_AUDIO_I2SInit(AUDIO_type* const AudioX, AUDIO_I2S_type* I2sConf);
-  void HAL_AUDIO_StartDMA(uint32_t channel, AUDIO_type* const AudioX, void *pvDataBuf, uint16_t usSize, void* pvDmaIsrHandler);
-  void HAL_AUDIO_StopDMA(AUDIO_type* const AudioX);
+  void HAL_AUDIO_I2SInit(AUDIO_type* const AudioX, AUDIO_I2S_type* I2sConf); // NOT WORKING FUNC !!!!
+  void HAL_AUDIO_StartDMATx(uint32_t channel, AUDIO_type* const AudioX, void *pvDataBuf, uint16_t usSize, void* pvDmaIsrHandler);
+  void HAL_AUDIO_StartDMARx(uint32_t channel, AUDIO_type* const AudioX, void *pvDataBuf, uint16_t usSize, void* pvDmaIsrHandler);
+  void HAL_AUDIO_StopDMA(uint32_t channel);
 #ifdef __cplusplus
 }
 #endif // __cplusplus

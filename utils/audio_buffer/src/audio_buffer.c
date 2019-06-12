@@ -6,7 +6,7 @@ static uint32_t * audio_buf = NULL;
 
 // -----------------------------------------------------------------------------
 AudioBufStat_t AudioBufferInit(void) {
-  audio_buf = (uint32_t *)ExtMemAlloc(2*(size_t)AudioConrollerGetSampleRate());
+  audio_buf = (uint32_t *)ExtMemAlloc((size_t)AudioConrollerGetSampleRate());
   if (audio_buf == NULL) {
     return AUDIO_BUF_FALSE;
   }
@@ -20,5 +20,5 @@ uint32_t * GetAudioBufferAddr(void) {
 
 // -----------------------------------------------------------------------------
 uint32_t GetAudioBufferSizeInWords(void) {
-  return (uint32_t)(2*(size_t)AudioConrollerGetSampleRate());
+  return (uint32_t)((size_t)AudioConrollerGetSampleRate());
 }

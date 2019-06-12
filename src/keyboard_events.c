@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-static int curr_lcd_bright = 100;
+static short curr_volume = 50;
 
 // -----------------------------------------------------------------------------
 static void EventHandler(BtnChar_t c) {
@@ -32,26 +32,25 @@ static void RightBtnEventHandler(BtnChar_t c) {
 
 // -----------------------------------------------------------------------------
 static void UpBtnEventHandler(BtnChar_t c) {
-  curr_lcd_bright += 20;
-  if (curr_lcd_bright > 100) {
-    curr_lcd_bright = 100;
+  curr_volume += 5;
+  if (curr_volume > 80) {
+    curr_volume = 80;
   }
-  LcdSetBrightness((unsigned int)curr_lcd_bright);
+  AudioVolumeSet((unsigned short)curr_volume);
 }
 
 // -----------------------------------------------------------------------------
 static void DownBtnEventHandler(BtnChar_t c) {
-  curr_lcd_bright -= 20;
-  if (curr_lcd_bright < 0) {
-    curr_lcd_bright = 0;
+  curr_volume -= 5;
+  if (curr_volume < 20) {
+    curr_volume = 20;
   }
-  LcdSetBrightness((unsigned int)curr_lcd_bright);
+  AudioVolumeSet((unsigned short)curr_volume);
 }
 
 // -----------------------------------------------------------------------------
 static void SB1EventHandler(BtnChar_t c) {
-  AudioVolumeSet(100);
-  AudioGenerateSin(1000);
+  AudioGenerateSin(440);
 }
 
 // -----------------------------------------------------------------------------
