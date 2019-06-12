@@ -36,21 +36,21 @@ static void UpBtnEventHandler(BtnChar_t c) {
   if (curr_volume > 80) {
     curr_volume = 80;
   }
-  AudioVolumeSet((unsigned short)curr_volume);
+  AudioPlayVolumeSet((unsigned short)curr_volume);
 }
 
 // -----------------------------------------------------------------------------
 static void DownBtnEventHandler(BtnChar_t c) {
   curr_volume -= 5;
-  if (curr_volume < 20) {
-    curr_volume = 20;
+  if (curr_volume < 30) {
+    curr_volume = 30;
   }
-  AudioVolumeSet((unsigned short)curr_volume);
+  AudioPlayVolumeSet((unsigned short)curr_volume);
 }
 
 // -----------------------------------------------------------------------------
 static void SB1EventHandler(BtnChar_t c) {
-  AudioGenerateSin(440);
+  AudioPlaySin(440);
 }
 
 // -----------------------------------------------------------------------------

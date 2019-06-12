@@ -3,12 +3,7 @@
 
 #include <stddef.h>
 
-typedef enum {
-  AUDIO_INIT = 0,
-  AUDIO_INIT_FALSE
-} AudioInitStat_t;
-
-AudioInitStat_t AudioControllerInit(void);
+void AudioControllerInit(void);
 void AudioControllerStartOut(void * out, 
                              size_t len_in_word, 
                              void (*end_handler)(void));

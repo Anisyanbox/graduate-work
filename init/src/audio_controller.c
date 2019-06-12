@@ -1,8 +1,6 @@
 #include "audio_controller.h"
 #include "hal_1967VN034R1.h"
-#include "aic23b.h"
 #include "stupid_delay.h"
-#include "soft_spi.h"
 
 #ifndef NULL
 #define NULL 0
@@ -35,22 +33,10 @@ static void AudioDoneReceiveIrqHandler(void) {
 }
 
 // -----------------------------------------------------------------------------
-AudioInitStat_t AudioControllerInit(void) {
+void AudioControllerInit(void) {
   AUDIO_I2S_type i2s_conf;
-  Aic23bHwDependFuncs_t hw_funcs;
   uint16_t usReqlp = usReqlp = (PLL_Freq.CoreClk * 1000 / 4 ) / \
                                (AUDIO_RATE_HZ * DATA_LEN_BIT);
-
-  // Init external audio codec
-  hw_funcs.delay = StupidDelayMs;
-  hw_funcs.hw_init = SoftSpiInit;
-  hw_funcs.select = SoftSpiSelect;
-  hw_funcs.unselect = SoftSpiUnselect;
-  hw_funcs.send = SoftSpiSend;
-  if (Aic23bInit(&hw_funcs) != 0) {
-    return AUDIO_INIT_FALSE;
-  }
-
   // init I2S gpio
   HAL_GPIO_Init(LX_GPIO_PA, 
                 GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15 | \
@@ -100,7 +86,6 @@ AudioInitStat_t AudioControllerInit(void) {
   LX_AUDIO0->I2S_R_CR.b.DSS = DATA_LEN_BIT - 1;
   LX_AUDIO0->I2S_R_CR.b.PNOS = 0;
   LX_AUDIO0->I2S_R_CR.b.SWHW = 0;
-  return AUDIO_INIT;
 }
 
 // -----------------------------------------------------------------------------

@@ -24,6 +24,8 @@
 #include "touch_events.h"
 #include "keyboard_events.h"
 #include "gui_func.h"
+#include "audio_adapter.h"
+#include "audio.h"
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -83,7 +85,7 @@ static void SystemInit(void) {
     ErrorHandler(AUDIO_BUF_INIT_ERROR);
   }
   LcdControllerInit();
-  if (AudioControllerInit() != AUDIO_INIT) {
+  if (AudioInit() != AUDIO_INIT) {
     ErrorHandler(AUDIO_INIT_ERROR);
   }
   if (CamControllerInit() != CAMERA_INIT) {
