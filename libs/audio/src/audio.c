@@ -23,13 +23,12 @@
 // play continue cyclically after end
 //
 // 'sound_end' will be called after each cycle
-// 
 extern void AudioSend(uint32_t * music_buf_out, 
                size_t len_in_words,
                AudioPlaySoundDone sound_end,
                bool is_playback_cyclically);
 extern void AudioStopSend(void);
-extern void AudioStartReceive(void);
+extern void AudioStartReceive(AudioRecordFrameDone record_frame_done);
 extern void AudioStopReceive(void);
 
 // -----------------------------------------------------------------------------
@@ -70,7 +69,7 @@ void AudioStopPlay(void) {
 
 // -----------------------------------------------------------------------------
 void AudioStartRecording(AudioRecordFrameDone record_done) {
-  AudioStartReceive();
+  AudioStartReceive(record_done);
 }
 
 // -----------------------------------------------------------------------------

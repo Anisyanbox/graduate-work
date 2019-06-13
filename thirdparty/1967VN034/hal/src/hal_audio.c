@@ -96,7 +96,6 @@ void HAL_AUDIO_StartDMATx( uint32_t ulChannel, AUDIO_type* const AudioX, void *p
   *( ptr + 1 ) = ( usSize << 16 ) | 1;
   *( ptr + 2 ) = 0;
   *( ptr + 3 ) = TCB_NORMAL;
-  HAL_DMA_CreateChannelDest( ulChannel, &audioTcbRx, &audioTcbRx );
   *( ptr + 3 ) |=   ((uint32_t)pvDataBuf < 0x0C000000) ? TCB_INTMEM : TCB_EXTMEM;
 
   if( AudioX == LX_AUDIO0 ) {

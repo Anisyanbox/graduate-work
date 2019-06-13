@@ -28,10 +28,11 @@ static bool is_play_started = false;
 static bool is_music_end = false;
 
 /* Variables for microphone data reading */
-static uint32_t * in_buffer = NULL;
-static uint32_t in_len = 0;
-static AudioRecordFrameDone record_end_handler;
+static uint32_t * in_curr_buffer = NULL;
+static uint32_t * in_next_buffer = NULL;
+static AudioRecordFrameDone record_end_handler = NULL;
 static bool is_record_start = false;
+static bool is_record_end = false;
 
 // ----------------------------------------------------------------------------
 static void DoAppMusicEndHandler(void) {
@@ -40,18 +41,42 @@ static void DoAppMusicEndHandler(void) {
   }
 }
 
+// ----------------------------------------------------------------------------
+static void DoAppMicrophoneEndHandler(void) {
+  if (record_end_handler != NULL) {
+    record_end_handler(in_curr_buffer, GetAudioInBufferSizeInWords());
+  }
+}
+
 /*
 * Funcs for reading music
 */
 // ----------------------------------------------------------------------------
 static void RecFrameDoneHandler(void) {
-  //
+  static int calls = 0;
+  
+  if (calls == 0) {
+    in_curr_buffer = GetAudioCurrInBufferAddr();
+    in_next_buffer = GetAudioNextInBufferAddr();
+    calls = 1;
+  } else {
+    in_curr_buffer = GetAudioNextInBufferAddr();
+    in_next_buffer = GetAudioCurrInBufferAddr();
+    calls = 0;
+  }
+  AudioControllerStartIn((void*)in_next_buffer, 
+                         GetAudioInBufferSizeInWords(), 
+                         RecFrameDoneHandler);
+  is_record_end = true; // ToDo: need semaphore here
 }
 
 // -----------------------------------------------------------------------------
-static void * AudioInThread(void * args) { 
+static void * AudioInThread(void * args) {
   while(true) {
-    //
+     if (is_record_end) {
+       DoAppMicrophoneEndHandler();
+       is_record_end = false;
+     }
   }
 }
 
@@ -72,9 +97,7 @@ static void * AudioOutThread(void * args) {
       DoAppMusicEndHandler();
       is_music_end = false;
 
-      if (is_replay_need) {
-        AudioControllerStartOut((void*)out_buffer, out_len, SendFrameDoneHandler);
-      } else {
+      if (!is_replay_need) {
         AudioControllerStopOut();
         is_music_end = false;
         is_replay_need = false;
@@ -108,15 +131,20 @@ void AudioStopSend(void) {
 }
 
 // -----------------------------------------------------------------------------
-void AudioStartReceive(void) {
-  AudioControllerStartIn((void*)GetAudioCurrInBufferAddr(), 
-                         GetAudioInBufferSizeInWords(), 
-                         RecFrameDoneHandler);
+void AudioStartReceive(AudioRecordFrameDone record_frame_done) {
+  if (!is_record_start) {
+    is_record_start = true;
+    record_end_handler = record_frame_done;
+    AudioControllerStartIn((void*)GetAudioCurrInBufferAddr(), 
+                          GetAudioInBufferSizeInWords(), 
+                          RecFrameDoneHandler);
+  }
 }
 
 // -----------------------------------------------------------------------------
 void AudioStopReceive(void) {
   AudioControllerStopIn();
+  is_record_start = false;
 }
 
 // -----------------------------------------------------------------------------

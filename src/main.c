@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <sysreg.h>
 #include <stdio.h>
 #include <builtins.h>
@@ -26,6 +27,11 @@
 #include "gui_func.h"
 #include "audio_adapter.h"
 #include "audio.h"
+
+// -----------------------------------------------------------------------------
+static void ProcessMicrophoneFrame(unsigned int * frame, size_t len) {
+  AudioPlayTrack(frame, len, NULL);
+}
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -112,5 +118,6 @@ int main(void) {
   SystemInit();
   StupidDelayMs(100);
   GuiDrawMainWindow();
+  AudioStartRecording(ProcessMicrophoneFrame);
   pthread_exit(NULL);
 }

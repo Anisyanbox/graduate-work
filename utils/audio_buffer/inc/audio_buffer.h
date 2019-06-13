@@ -11,6 +11,7 @@ typedef enum {
 AudioBufStat_t AudioBufferInit(void);
 uint32_t * GetAudioOutBufferAddr(void);
 uint32_t * GetAudioCurrInBufferAddr(void);
+uint32_t * GetAudioNextInBufferAddr(void);
 uint32_t GetAudioOutBufferSizeInWords(void);
 uint32_t GetAudioInBufferSizeInWords(void);
 
