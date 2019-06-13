@@ -351,3 +351,22 @@ void HAL_DMA_PrimaryPriority(void){
 	*(unsigned *)CMU_CFG1_LOC |= (1<<12);
 }
 
+void HAL_DMA_RqstSet( uint32_t ch_number, DMARequester_type dmaRqster )
+{
+	if( ch_number < 8 )
+	{
+		*( uint32_t * ) base_DMACFGL &= ~( 0xF << ( ch_number * 4 ) );
+		*( uint32_t * ) base_DMACFGH &= ~( 0x10000 << ch_number );
+		*( uint32_t * ) base_DMACFGL |= ( ( dmaRqster & 0xF ) << ( ch_number * 4 ) );
+		*( uint32_t * ) base_DMACFGH |= ( ( ( dmaRqster & 0x10 ) << 12 ) << ch_number );
+	}
+	else if( ch_number <= 11 )
+	{
+		*( uint32_t * ) base_DMACFGH &= ~( 0x10000 << ch_number );
+		*( uint32_t * ) base_DMACFGH |= ( ( ( dmaRqster & 0x10 ) << 12 ) << ch_number );
+		ch_number *= 4;
+		ch_number &= 0x1F;
+		*( uint32_t * ) base_DMACFGH &= ~( 0xF << ch_number );
+		*( uint32_t * ) base_DMACFGH |= ( ( dmaRqster & 0xF ) << ch_number );
+	}
+}

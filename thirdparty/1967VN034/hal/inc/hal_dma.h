@@ -7,8 +7,24 @@
 #ifndef __HAL_DMA_H__
 #define __HAL_DMA_H__
 
-typedef enum {	dmaSTD, dmaUART0, dmaUART1, dmaSPI, dmaVIDEO, dmaSSI0, dmaSSI1, dmaNAND, dmaUPDOWN1, dmaUPDOWN0, dmaUPDOWN2, dmaUPDOWN3,
-				dmaH264RQ1 = 14,dmaH264RQ0} DMARequester_type;
+#include <stdint.h>
+
+typedef enum {	
+ dmaSTD,
+ dmaUART0,
+ dmaUART1,
+ dmaSPI,
+ dmaVIDEO,
+ dmaSSI0,
+ dmaSSI1,
+ dmaNAND,
+ dmaUPDOWN1,
+ dmaUPDOWN0,
+ dmaUPDOWN2,
+ dmaUPDOWN3,
+ dmaH264RQ1 = 14,
+ dmaH264RQ0
+} DMARequester_type;
 typedef enum {dmaCopyValid, dmaCopyAddrErr,dmaCopyLengthErr, dmaCopyChNumErr, dmaCopyInitActCh, dmaCopyCfgErr} DMAReturnType;
 /*******************Include Function*********************/
 #ifdef __cplusplus
@@ -28,6 +44,7 @@ int HAL_DMA_WaitForChannel(int channel);
 DMAReturnType HAL_DMA_MemCopy32(int ch_number, const void *src, const void *dst, int size);
 int HAL_DMA_GetTCBChannelDest(int channel);
 void HAL_DMA_CreateChannelDest(int channel, void *tcb_current, void *tcb_next );
+void HAL_DMA_RqstSet( uint32_t ch_number, DMARequester_type dmaRqster );
 void HAL_DMA_SourceRqstSet(int ch_number, DMARequester_type dmaRqster);
 void HAL_DMA_SourceRqstCl(int ch_number);
 void HAL_DMA_DestRqstSet(int ch_number, DMARequester_type dmaRqster);

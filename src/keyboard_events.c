@@ -4,11 +4,12 @@
 #include "lcd.h"
 #include "hal_1967VN034R1.h"
 #include "gui_func.h"
+#include "audio.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
-static int curr_lcd_bright = 100;
+static short curr_volume = 50;
 
 // -----------------------------------------------------------------------------
 static void EventHandler(BtnChar_t c) {
@@ -31,20 +32,30 @@ static void RightBtnEventHandler(BtnChar_t c) {
 
 // -----------------------------------------------------------------------------
 static void UpBtnEventHandler(BtnChar_t c) {
-  curr_lcd_bright += 20;
-  if (curr_lcd_bright > 100) {
-    curr_lcd_bright = 100;
+  curr_volume += 5;
+  if (curr_volume > 80) {
+    curr_volume = 80;
   }
-  LcdSetBrightness((unsigned int)curr_lcd_bright);
+  AudioPlayVolumeSet((unsigned short)curr_volume);
 }
 
 // -----------------------------------------------------------------------------
 static void DownBtnEventHandler(BtnChar_t c) {
-  curr_lcd_bright -= 20;
-  if (curr_lcd_bright < 0) {
-    curr_lcd_bright = 0;
+  curr_volume -= 5;
+  if (curr_volume < 30) {
+    curr_volume = 30;
   }
-  LcdSetBrightness((unsigned int)curr_lcd_bright);
+  AudioPlayVolumeSet((unsigned short)curr_volume);
+}
+
+// -----------------------------------------------------------------------------
+static void SB1EventHandler(BtnChar_t c) {
+  AudioPlaySin(440);
+}
+
+// -----------------------------------------------------------------------------
+static void SB2EventHandler(BtnChar_t c) {
+  AudioStopPlay();
 }
 
 // -----------------------------------------------------------------------------
@@ -55,8 +66,8 @@ KeyboardInitStat_t KeyboardInit(void) {
   }
 
   /* Subscribe handlers for event */
-  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, SB1EventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, SB2EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, UpBtnEventHandler);

@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <sysreg.h>
 #include <stdio.h>
 #include <builtins.h>
@@ -12,6 +13,7 @@
 #include "ext_bus.h"
 #include "lcd_controller.h"
 #include "cam_controller.h"
+#include "audio_controller.h"
 
 #include "main.h"
 #include "led_flag.h"
@@ -19,9 +21,17 @@
 #include "pthread.h"
 #include "stupid_delay.h"
 #include "video_buffer.h"
+#include "audio_buffer.h"
 #include "touch_events.h"
 #include "keyboard_events.h"
 #include "gui_func.h"
+#include "audio_adapter.h"
+#include "audio.h"
+
+// -----------------------------------------------------------------------------
+static void ProcessMicrophoneFrame(unsigned int * frame, size_t len) {
+  AudioPlayTrack(frame, len, NULL);
+}
 
 // -----------------------------------------------------------------------------
 static void ErrorHandler(ErrFlags err) {
@@ -39,12 +49,18 @@ static void ErrorHandler(ErrFlags err) {
       case CAMERA_INIT_ERROR:
       break;
 
+      case AUDIO_BUF_INIT_ERROR:
+      break;
+
       case FRAME_BUF_INIT_ERROR:
       break;
-      
+
       case TOUCH_INIT_ERROR:
       break;
-      
+
+      case AUDIO_INIT_ERROR:
+      break;
+
       default:
       break;
     }
@@ -71,7 +87,13 @@ static void SystemInit(void) {
   if (VideoBufferInit() != FRAME_BUF_INIT) {
     ErrorHandler(FRAME_BUF_INIT_ERROR);
   }
+  if (AudioBufferInit() != AUDIO_BUF_INIT) {
+    ErrorHandler(AUDIO_BUF_INIT_ERROR);
+  }
   LcdControllerInit();
+  if (AudioInit() != AUDIO_INIT) {
+    ErrorHandler(AUDIO_INIT_ERROR);
+  }
   if (CamControllerInit() != CAMERA_INIT) {
     ErrorHandler(CAMERA_INIT_ERROR);
   }
@@ -96,5 +118,6 @@ int main(void) {
   SystemInit();
   StupidDelayMs(100);
   GuiDrawMainWindow();
+  AudioStartRecording(ProcessMicrophoneFrame);
   pthread_exit(NULL);
 }
