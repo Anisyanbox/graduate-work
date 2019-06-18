@@ -101,3 +101,23 @@ void LcdControllerSetPwm(unsigned int pwm) {
   }
   HAL_LCD_PwmSetDuty(pwm);
 }
+
+// -----------------------------------------------------------------------------
+void LcdControllerSaveCurrImage2PhotoBuf(void) {
+  uint32_t * video_buf = GetVideoBufferAddr();
+  uint32_t * photo = GetPhotoBufferAddr();
+
+  for (int i = 0; i < LCD_BUF_SIZE; ++i) {
+    photo[i] = video_buf[i];
+  }
+}
+
+// -----------------------------------------------------------------------------
+void LcdControllerFillInVideoBuf(uint32_t * new_buf) {
+  uint32_t * video_buf = GetVideoBufferAddr();
+
+  for (int i = 0; i < LCD_BUF_SIZE; ++i) {
+    video_buf[i] = new_buf[i];
+  }
+}
+

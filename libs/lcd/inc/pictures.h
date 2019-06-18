@@ -1,5 +1,5 @@
-#ifndef _INC_PICTURES_H_
-#define _INC_PICTURES_H_
+#ifndef _LIBS_LCD_INC_PICTURES_H_
+#define _LIBS_LCD_INC_PICTURES_H_
 
 #include <string.h> // for size_t type
 #include <stdint.h>
@@ -16,4 +16,4 @@ size_t GetVideoIconArray(uint16_t ** picture_data, size_t * pixels_cnt);
 size_t GetMusicIconArray(uint16_t ** picture_data, size_t * pixels_cnt);
 size_t GetMicrophoneIconArray(uint16_t ** picture_data, size_t * pixels_cnt);
  
-#endif  // _INC_PICTURES_H_
+#endif  // _LIBS_LCD_INC_PICTURES_H_

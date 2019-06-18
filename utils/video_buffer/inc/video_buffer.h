@@ -10,6 +10,7 @@ typedef enum {
 
 VideoBufStat_t VideoBufferInit(void);
 uint32_t * GetVideoBufferAddr(void);
+uint32_t * GetPhotoBufferAddr(void);
 uint32_t GetVideoBufferSizeInWords(void);
 uint32_t GetVideoBufferWidthInWords(void);
 

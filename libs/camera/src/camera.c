@@ -1,5 +1,8 @@
 #include "camera.h"
 #include "cam_controller.h"
+#include "lcd_controller.h"
+#include "video_buffer.h"
+#include <string.h>
 
 typedef enum {
   STREAMING_EN = 0,
@@ -24,5 +27,24 @@ void CameraStopShowVideo(LcdFillBackground lcd_fill) {
   }
   video_streaming_status = STREAMING_DIS;
   CamControllerStop();
-  lcd_fill();
+
+  if (lcd_fill != NULL) {
+    lcd_fill();
+  }
+}
+
+// -----------------------------------------------------------------------------
+void CameraTakePhoto(void) {
+  if (video_streaming_status == STREAMING_DIS) {
+    return;
+  }
+
+  CamControllerStop();
+  LcdControllerSaveCurrImage2PhotoBuf();
+  CamControllerStart();
+}
+
+// -----------------------------------------------------------------------------
+uint32_t * CameraGetPhoto(void){
+  return GetPhotoBufferAddr();
 }

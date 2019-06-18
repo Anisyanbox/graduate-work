@@ -67,3 +67,8 @@ void LcdDrawIcon(unsigned int x_start,
 void LcdSetBrightness(unsigned int bright_pwm) {
   LcdControllerSetPwm(bright_pwm);
 }
+
+// -----------------------------------------------------------------------------
+void LcdDrawPhotoBuffer(void) {
+  LcdControllerFillInVideoBuf(GetPhotoBufferAddr());
+}

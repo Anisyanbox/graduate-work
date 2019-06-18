@@ -6,6 +6,10 @@
 #include "gui_func.h"
 #include "camera.h"
 #include "audio.h"
+#include "lcd.h"
+#include "gui_func.h"
+#include "video_buffer.h"
+#include <string.h>
 
 // -----------------------------------------------------------------------------
 static void DrawPoint(unsigned int x, unsigned int y) {
@@ -27,8 +31,25 @@ static void CamIconEvent(void) {
 }
 
 // -----------------------------------------------------------------------------
+static void TakePhotoEvent(void) {
+  CameraTakePhoto();
+}
+
+// -----------------------------------------------------------------------------
 static void MusicIconEvent(void) {
   AudioStopPlay();
+}
+
+// -----------------------------------------------------------------------------
+static void ShowPhotoEvent(void) {
+  CameraStopShowVideo(NULL);
+  LcdDrawPhotoBuffer();
+}
+
+// -----------------------------------------------------------------------------
+static void ShowMainScreenEvent(void) {
+  CameraStopShowVideo(NULL);
+  GuiDrawMainWindow();
 }
 
 // -----------------------------------------------------------------------------
@@ -37,6 +58,8 @@ TouchInitStat_t TouchInit(void) {
   TouchArea_t cam_icon;
   TouchArea_t music_icon;
   TouchArea_t take_photo_region;
+  TouchArea_t show_photo_region;
+  TouchArea_t return_screen_region;
 
   // init touch hw and thread creation
   if (TouchPanelInit() != 0) {
@@ -61,6 +84,23 @@ TouchInitStat_t TouchInit(void) {
   cam_icon.p2.x = 140;
   cam_icon.p2.y = 175;
   TouchSubsribeArea(&cam_icon, CamIconEvent);
+
+  take_photo_region.p1.x = 440;
+  take_photo_region.p1.y = 1;
+  take_photo_region.p2.x = 480;
+  take_photo_region.p2.y = 52;
+  TouchSubsribeArea(&take_photo_region, TakePhotoEvent);
+
+  show_photo_region.p1.x = 440;
+  show_photo_region.p1.y = 225;
+  show_photo_region.p2.x = 480;
+  show_photo_region.p2.y = 272;
+  TouchSubsribeArea(&show_photo_region, ShowPhotoEvent);
   
+  return_screen_region.p1.x = 1;
+  return_screen_region.p1.y = 225;
+  return_screen_region.p2.x = 50;
+  return_screen_region.p2.y = 272;
+  TouchSubsribeArea(&return_screen_region, ShowMainScreenEvent); 
   return TOUCH_INIT;
 }
