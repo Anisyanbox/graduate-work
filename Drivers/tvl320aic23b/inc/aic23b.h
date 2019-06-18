@@ -56,5 +56,7 @@ void Aic23bSetRate(Aic23bSamples_t srate);
 
 // 'AIC23B_16BIT_SOUNND' is default after init function
 void Aic23bSetAdcDacResolution(Aic23bSoundDepth_t depth);
+unsigned int Aic23bGetAdcRes(void);
+unsigned int Aic23bGetDacRes(void);
 
 #endif  // _DRIVERS_TVL320AIC23B_INC_AIC23B_H_

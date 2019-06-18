@@ -3,6 +3,7 @@
 #include "audio_controller.h"
 
 static uint32_t * audio_out_buf = NULL;
+static uint32_t * audio_out_effects_buf = NULL;
 static uint32_t * audio_curr_in_buf = NULL;
 static uint32_t * audio_next_in_buf = NULL;
 
@@ -16,12 +17,13 @@ AudioBufStat_t AudioBufferInit(void) {
   audio_out_buf = (uint32_t *)ExtMemAlloc((size_t)srate);
   audio_curr_in_buf = (uint32_t *)ExtMemAlloc((size_t)srate);
   audio_next_in_buf = (uint32_t *)ExtMemAlloc((size_t)srate);
+  audio_out_effects_buf = (uint32_t *)ExtMemAlloc((size_t)srate);
 
   audio_out_size = (uint32_t)srate;
   audio_in_size = (uint32_t)srate;
 
   if ((audio_out_buf == NULL) || (audio_curr_in_buf == NULL) || \
-      (audio_next_in_buf == NULL)) {
+      (audio_next_in_buf == NULL) || (audio_out_effects_buf == NULL)) {
     return AUDIO_BUF_FALSE;
   }
   return AUDIO_BUF_INIT;
@@ -30,6 +32,11 @@ AudioBufStat_t AudioBufferInit(void) {
 // -----------------------------------------------------------------------------
 uint32_t * GetAudioOutBufferAddr(void) {
   return audio_out_buf;
+}
+
+// -----------------------------------------------------------------------------
+uint32_t * GetAudioOutEffectsBufferAddr(void) {
+  return audio_out_effects_buf;
 }
 
 // -----------------------------------------------------------------------------

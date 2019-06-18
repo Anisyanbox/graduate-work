@@ -125,6 +125,12 @@
 static unsigned short tlv320aic23_reg[16] = { 0 };
 
 /*
+ * Resolutions
+*/
+static unsigned int adc_res = 65535;
+static unsigned int dac_res = 65535;
+
+/*
  * Hw func pointers
  */
 static Aic23bHwDependFuncs_t hw_funcs = { 0 };
@@ -265,7 +271,7 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
   hw_funcs.delay(100);
 
   reg = Aic23ReadRegCache(TLV320AIC23_ANLG);
-  Aic23WriteReg(TLV320AIC23_ANLG, ((reg) & (~TLV320AIC23_BYPASS_ON) & (~TLV320AIC23_MICM_MUTED)) |
+  Aic23WriteReg(TLV320AIC23_ANLG, ((reg) /*& (~TLV320AIC23_BYPASS_ON)*/ & (~TLV320AIC23_MICM_MUTED)) |
   TLV320AIC23_INSEL_MIC /*| TLV320AIC23_MICB_20DB*/);
   hw_funcs.delay(100);
 
@@ -277,7 +283,7 @@ int Aic23bInit(Aic23bHwDependFuncs_t * hw_depend_funcs) {
   hw_funcs.delay(100);
 
   /* sample rate playback */
-  Aic23WriteReg(TLV320AIC23_SRATE, 0xC0);
+  Aic23WriteReg(TLV320AIC23_SRATE, (0 << 7) | (0 << 6));
   hw_funcs.delay(100);
 
   Aic23WriteReg(TLV320AIC23_ACTIVE, TLV320AIC23_ACT_ON);
@@ -321,27 +327,27 @@ void Aic23bSetRate(Aic23bSamples_t srate) {
 
   switch (srate) {
     case AIC23B_ADC_96_DAC_96:
-      data = 0xDC;
+      data = 0x1C;
       break;
 
     case AIC23B_ADC_48_DAC_48:
-      data = 0xC0;
+      data = 0x00;
       break;
 
     case AIC23B_ADC_32_DAC_32:
-      data = 0xD8;
+      data = 0x18;
       break;
 
     case AIC23B_ADC_8_DAC_8:
-      data = 0xCC;
+      data = 0x0C;
       break;
 
     case AIC23B_ADC_48_DAC_8:
-      data = 0xC4;
+      data = 0x04;
       break;
 
     case AIC23B_ADC_8_DAC_48:
-      data = 0xC8;
+      data = 0x08;
       break;
 
     default:
@@ -360,18 +366,26 @@ void Aic23bSetAdcDacResolution(Aic23bSoundDepth_t depth) {
   switch (depth) {
     case AIC23B_16BIT_SOUNND:
       iface_reg |= TLV320AIC23_IWL_16;
+      adc_res = 65535;
+      dac_res = 65535;
       break;
 
     case AIC23B_20BIT_SOUNND:
       iface_reg |= TLV320AIC23_IWL_20;
+      adc_res = 1048575;
+      dac_res = 1048575;
       break;
 
     case AIC23B_24BIT_SOUNND:
       iface_reg |= TLV320AIC23_IWL_24;
+      adc_res = 16777215;
+      dac_res = 16777215;
       break;
 
     case AIC23B_32BIT_SOUNND:
       iface_reg |= TLV320AIC23_IWL_32;
+      adc_res = 4294967295;
+      dac_res = 4294967295;
       break;
 
     default:
@@ -379,4 +393,14 @@ void Aic23bSetAdcDacResolution(Aic23bSoundDepth_t depth) {
   }
   Aic23WriteReg(TLV320AIC23_DIGT_FMT, iface_reg);
   Aic23WriteRegCache(TLV320AIC23_SRATE, iface_reg);
+}
+
+// -----------------------------------------------------------------------------  
+unsigned int Aic23bGetAdcRes(void) {
+  return adc_res;
+}
+
+// -----------------------------------------------------------------------------  
+unsigned int Aic23bGetDacRes(void) {
+  return dac_res;
 }

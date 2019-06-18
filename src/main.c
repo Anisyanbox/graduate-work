@@ -30,7 +30,7 @@
 
 // -----------------------------------------------------------------------------
 static void ProcessMicrophoneFrame(unsigned int * frame, size_t len) {
-  AudioPlayTrack(frame, len, NULL);
+  // AudioPlayTrack(frame, len, NULL, false);
 }
 
 // -----------------------------------------------------------------------------
