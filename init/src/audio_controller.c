@@ -70,8 +70,9 @@ void AudioControllerInit(void) {
   LX_AUDIO0->I2S_T_CR.b.SONY = STANDART_PHILLIPS;
   LX_AUDIO0->I2S_T_CR.b.MS = ROLE_SLAVE;
   LX_AUDIO0->I2S_T_CR.b.DSS = DATA_LEN_BIT - 1;
-  LX_AUDIO0->I2S_T_CR.b.PNOS = 0;
+  LX_AUDIO0->I2S_T_CR.b.PNOS = 1;
   LX_AUDIO0->I2S_T_CR.b.SWHW = 0;
+  
   if(DATA_LEN_BIT <= 16) {
     LX_AUDIO0->I2S_T_CR.b.PACKH = 1;
   } else {
@@ -84,7 +85,7 @@ void AudioControllerInit(void) {
   LX_AUDIO0->I2S_R_CR.b.SONY = STANDART_PHILLIPS;
   LX_AUDIO0->I2S_R_CR.b.MS = ROLE_SLAVE;
   LX_AUDIO0->I2S_R_CR.b.DSS = DATA_LEN_BIT - 1;
-  LX_AUDIO0->I2S_R_CR.b.PNOS = 0;
+  LX_AUDIO0->I2S_R_CR.b.PNOS = 1;
   LX_AUDIO0->I2S_R_CR.b.SWHW = 0;
 }
 

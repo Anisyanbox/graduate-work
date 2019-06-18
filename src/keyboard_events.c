@@ -3,13 +3,15 @@
 #include "camera.h"
 #include "lcd.h"
 #include "hal_1967VN034R1.h"
+#include "audio_controller.h"
+#include "audio_effects.h"
+#include "audio_buffer.h"
 #include "gui_func.h"
 #include "audio.h"
+#include "aic23b.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-
-static short curr_volume = 50;
 
 // -----------------------------------------------------------------------------
 static void EventHandler(BtnChar_t c) {
@@ -21,17 +23,18 @@ static void EventHandler(BtnChar_t c) {
 }
 
 // -----------------------------------------------------------------------------
-static void LeftBtnEventHandler(BtnChar_t c) {
+static void LeftBtnEvent(BtnChar_t c) {
   CameraStopShowVideo(GuiDrawMainWindow);
 }
 
-// -----------------------------------------------------------------------------
-static void RightBtnEventHandler(BtnChar_t c) {
+static void RightBtnEvent(BtnChar_t c) {
   CameraStartVideo();
 }
 
 // -----------------------------------------------------------------------------
-static void UpBtnEventHandler(BtnChar_t c) {
+static short curr_volume = 50;
+
+static void UpBtnEvent(BtnChar_t c) {
   curr_volume += 5;
   if (curr_volume > 80) {
     curr_volume = 80;
@@ -39,8 +42,7 @@ static void UpBtnEventHandler(BtnChar_t c) {
   AudioPlayVolumeSet((unsigned short)curr_volume);
 }
 
-// -----------------------------------------------------------------------------
-static void DownBtnEventHandler(BtnChar_t c) {
+static void DownBtnEvent(BtnChar_t c) {
   curr_volume -= 5;
   if (curr_volume < 30) {
     curr_volume = 30;
@@ -49,13 +51,33 @@ static void DownBtnEventHandler(BtnChar_t c) {
 }
 
 // -----------------------------------------------------------------------------
-static void SB1EventHandler(BtnChar_t c) {
-  AudioPlaySin(440);
+static void SB1Event(BtnChar_t c) {
+  AudioStopPlay();
+  AudioPlayTrack((unsigned int * )AudioGeneratePureSinSignal(32767, 440),
+                  GetAudioOutBufferSizeInWords(),
+                  NULL,
+                  true);
 }
 
-// -----------------------------------------------------------------------------
-static void SB2EventHandler(BtnChar_t c) {
+static void SB2Event(BtnChar_t c) {
   AudioStopPlay();
+  AudioPlayTrack((unsigned int * )AudioGenerateChangingSinSignal(440, 
+                                                                 640, 
+                                                                 32767, 
+                                                                 NULL),
+                  GetAudioOutBufferSizeInWords(),
+                  NULL,
+                  true);
+}
+
+static void SB3Event(BtnChar_t c) {
+  AudioStopPlay();
+  unsigned int * signal = (unsigned int * )AudioGenerateChangingSinSignal(440, 
+                                                                          640, 
+                                                                          32767, 
+                                                                          NULL);
+
+  AudioPlayEchoEffect(signal, GetAudioOutBufferSizeInWords(), 5000);
 }
 
 // -----------------------------------------------------------------------------
@@ -66,13 +88,13 @@ KeyboardInitStat_t KeyboardInit(void) {
   }
 
   /* Subscribe handlers for event */
-  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, SB1EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, SB2EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, EventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, UpBtnEventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB6_ID, RELEASE_EVNT, RightBtnEventHandler);
-  BtnSubscribeSyncEventHandler(BTN_SB7_ID, PRESS_EVNT, DownBtnEventHandler);
+  BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, SB1Event);
+  BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, SB2Event);
+  BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, SB3Event);
+  BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEvent);
+  BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, UpBtnEvent);
+  BtnSubscribeSyncEventHandler(BTN_SB6_ID, RELEASE_EVNT, RightBtnEvent);
+  BtnSubscribeSyncEventHandler(BTN_SB7_ID, PRESS_EVNT, DownBtnEvent);
   BtnSubscribeSyncEventHandler(BTN_SB8_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB9_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB10_ID, PRESS_EVNT, EventHandler);

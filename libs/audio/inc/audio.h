@@ -1,13 +1,17 @@
-#ifndef _ADAPTERS_INC_AUDIO_H_
-#define _ADAPTERS_INC_AUDIO_H_
+#ifndef _LIBS_AUDIO_INC_AUDIO_H_
+#define _LIBS_AUDIO_INC_AUDIO_H_
 
 #include <stddef.h>
+#include <stdbool.h>
 #include "audio_adapter.h"
+
+// type for define sweep function
+typedef double (*SweepFunc_t)(double f0, double f1, double koef);
 
 void AudioPlayTrack(unsigned int * track, 
                     size_t len,
-                    AudioPlaySoundDone play_done);
-void AudioPlaySin(unsigned int hz);
+                    AudioPlaySoundDone play_done,
+                    bool is_replay);
 void AudioPlayVolumeSet(unsigned short percent);
 void AudioStopPlay(void);
 
@@ -19,4 +23,14 @@ void AudioStartRecording(AudioRecordFrameDone record_done);
 void AudioInVolumeSet(unsigned short percent);
 void AudioStopRecording(void);
 
-#endif  // _ADAPTERS_INC_AUDIO_H_
+unsigned int * AudioGeneratePureSinSignal(unsigned int ampl_dac, 
+                                          unsigned int hz);
+
+// Func for generate chirp impulse
+// If 'sweep_func' == NULL, standart linear sweepping function will be used 
+unsigned int * AudioGenerateChangingSinSignal(unsigned int f0,
+                                              unsigned int f1,
+                                              unsigned int ampl_dac,
+                                              SweepFunc_t sweep_func);
+
+#endif  // _LIBS_AUDIO_INC_AUDIO_H_
