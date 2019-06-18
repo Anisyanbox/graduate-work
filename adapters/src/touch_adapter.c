@@ -12,6 +12,8 @@
 #include "main.h"
 #include "delay.h"
 #include "stupid_delay.h"
+#include "ext_mem_alloc.h"
+#include "lcd_controller.h"
 
 #ifndef NULL
 #define NULL 0
@@ -29,6 +31,8 @@
 #define XPT2046_BUSY_PIN    GPIO_PIN_23
 #define XPT2046_penIRQ_PORT LX_GPIO_PB
 #define XPT2046_penIRQ_PIN  GPIO_PIN_22
+
+static uint32_t * handlers_buf = NULL;
 
 // -----------------------------------------------------------------------------
 static void SpiAndGpioInit(void) {
@@ -74,6 +78,13 @@ static int GetPenIrqPinState(void) {
 }
 
 // -----------------------------------------------------------------------------
+static void CallAppHandler(unsigned int x, unsigned int y) {
+  if (*(handlers_buf + ((y - 1)*LcdGetWigthInPixels()) +  x) != NULL ) {
+    ((TouchAreaHandler_t)(*(handlers_buf + ((y - 1)*LcdGetWigthInPixels()) +  x)))();
+  }
+}
+
+// -----------------------------------------------------------------------------
 static void * TouchThread(void * args) {
   static char buffer[40] = {0};
   unsigned int x = 0;
@@ -82,8 +93,8 @@ static void * TouchThread(void * args) {
   while(true) {
     if (Xpt2046IsTouched()) {
       Xpt2046GetXY(&x, &y);
-      sprintf(buffer, "--> X = %d Y = %d", x, y);
-      HAL_UART_Send(UART_DEBUG_PORT, buffer, strlen((const char*)buffer));
+      CallAppHandler(x, y);
+      while(Xpt2046IsTouched());
     }
     DelayMs(SLEEP_TOUCH_MS);
   }
@@ -126,5 +137,49 @@ int TouchPanelInit(void) {
   if (pthread_attr_destroy(&touch_attr) != 0) {
     return 1;
   }
+
+  // allocate memory for subsription events
+  handlers_buf = ExtMemAlloc( LcdGetWigthInPixels() * LcdGetHeigthInPixels() );
+  if (handlers_buf == NULL) {
+    return 1;
+  } else {
+    for (unsigned int j = 1; j < LcdGetHeigthInPixels(); ++j) {
+      for (unsigned int i = 1; i < LcdGetWigthInPixels(); ++i) {
+        *(handlers_buf + ((j - 1)*LcdGetWigthInPixels()) +  i) = NULL;
+      }
+    }
+  }
   return 0;
+}
+
+// -----------------------------------------------------------------------------
+void TouchSubsribeArea(TouchArea_t * touch_area, TouchAreaHandler_t h) {
+  if (handlers_buf == NULL) {
+    return;
+  }
+  if ((touch_area->p2.x == 0) || (touch_area->p2.y == 0) || \
+      (touch_area->p1.x == 0) || (touch_area->p1.y == 0)) {
+    return;
+  }
+  if (touch_area->p2.x < touch_area->p1.x) {
+    unsigned int t = touch_area->p2.x;
+    touch_area->p2.x = touch_area->p1.x;
+    touch_area->p1.x = t;
+  }
+  if (touch_area->p2.y < touch_area->p1.y) {
+    unsigned int t = touch_area->p2.y;
+    touch_area->p2.y = touch_area->p1.y;
+    touch_area->p1.y = t;
+  }
+
+  for (unsigned int j = touch_area->p1.y; j < touch_area->p2.y; ++j) {
+    for (unsigned int i = touch_area->p1.x; i < touch_area->p2.x; ++i) {
+      *(handlers_buf + ((j - 1)*LcdGetWigthInPixels()) +  i) = (uint32_t)h;
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+void TouchUnsubsribeArea(TouchArea_t * touch_area) {
+  TouchSubsribeArea(touch_area, (TouchAreaHandler_t)NULL);
 }

@@ -15,10 +15,13 @@ static AllocatedMemMap_t alloced_mem = {SDRAM_BANK0_SIZE_IN_WORDS, SDRAM_START_B
 
 // -----------------------------------------------------------------------------
 void * ExtMemAlloc(size_t num_words) {
+  int tmp = alloced_mem.curr_free_addr;
+
   if (num_words > alloced_mem.free_words_count) {
     return NULL;
   }
+  
   alloced_mem.free_words_count -= num_words;
   alloced_mem.curr_free_addr += (unsigned int)num_words;
-  return (void* )(alloced_mem.curr_free_addr - (unsigned int)num_words);
+  return (void* )tmp;
 }

@@ -88,7 +88,7 @@ unsigned int * AudioGenerateChangingSinSignal(unsigned int f0,
 
   for (int i = 0 ; i < nsamples; i++) {
     temp_ch_val = (uint32_t)((double)ampl_dac * (sin(current_phase) + 1.0));
-    instantaneous_f = sweep_func(f0, f1, (1.0 * i) / nsamples);
+    instantaneous_f = sweep_func(f0, f1, (0.2 * i) / nsamples);
     current_phase = 2.0 * M_PI * instantaneous_f * (double)i / (double)nsamples;
 
     temp_sig_val = temp_ch_val << 16;       // left

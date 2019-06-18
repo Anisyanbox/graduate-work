@@ -23,17 +23,7 @@ static void EventHandler(BtnChar_t c) {
 }
 
 // -----------------------------------------------------------------------------
-static void LeftBtnEvent(BtnChar_t c) {
-  CameraStopShowVideo(GuiDrawMainWindow);
-}
-
-static void RightBtnEvent(BtnChar_t c) {
-  CameraStartVideo();
-}
-
-// -----------------------------------------------------------------------------
 static short curr_volume = 50;
-
 static void UpBtnEvent(BtnChar_t c) {
   curr_volume += 5;
   if (curr_volume > 80) {
@@ -61,8 +51,8 @@ static void SB1Event(BtnChar_t c) {
 
 static void SB2Event(BtnChar_t c) {
   AudioStopPlay();
-  AudioPlayTrack((unsigned int * )AudioGenerateChangingSinSignal(440, 
-                                                                 640, 
+  AudioPlayTrack((unsigned int * )AudioGenerateChangingSinSignal(220,
+                                                                 880,
                                                                  32767, 
                                                                  NULL),
                   GetAudioOutBufferSizeInWords(),
@@ -71,12 +61,12 @@ static void SB2Event(BtnChar_t c) {
 }
 
 static void SB3Event(BtnChar_t c) {
-  AudioStopPlay();
-  unsigned int * signal = (unsigned int * )AudioGenerateChangingSinSignal(440, 
-                                                                          640, 
+  unsigned int * signal = (unsigned int * )AudioGenerateChangingSinSignal(220,
+                                                                          880,
                                                                           32767, 
                                                                           NULL);
 
+  AudioStopPlay();
   AudioPlayEchoEffect(signal, GetAudioOutBufferSizeInWords(), 5000);
 }
 
@@ -91,9 +81,9 @@ KeyboardInitStat_t KeyboardInit(void) {
   BtnSubscribeSyncEventHandler(BTN_SB1_ID, PRESS_EVNT, SB1Event);
   BtnSubscribeSyncEventHandler(BTN_SB2_ID, PRESS_EVNT, SB2Event);
   BtnSubscribeSyncEventHandler(BTN_SB3_ID, PRESS_EVNT, SB3Event);
-  BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, LeftBtnEvent);
+  BtnSubscribeSyncEventHandler(BTN_SB4_ID, RELEASE_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB5_ID, PRESS_EVNT, UpBtnEvent);
-  BtnSubscribeSyncEventHandler(BTN_SB6_ID, RELEASE_EVNT, RightBtnEvent);
+  BtnSubscribeSyncEventHandler(BTN_SB6_ID, RELEASE_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB7_ID, PRESS_EVNT, DownBtnEvent);
   BtnSubscribeSyncEventHandler(BTN_SB8_ID, PRESS_EVNT, EventHandler);
   BtnSubscribeSyncEventHandler(BTN_SB9_ID, PRESS_EVNT, EventHandler);
